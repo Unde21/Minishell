@@ -1,32 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/02 10:38:54 by samaouch         ###   ########lyon.fr   */
+/*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
+/*   Updated: 2025/04/02 10:32:29 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "libft.h"
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_data
+void	init_data(t_data *data, int ac, char **av, char **env)
 {
-	char	*line_read;
-	int		ac;
-	char	**av;
-	char	**env;
-}	t_data;
-
-void	init_data(t_data *data, int ac, char **av, char **env);
-void	get_input(t_data *data);
-
-#endif
+	data->ac = ac;
+	data->av = av;
+	data->env = env;
+	data->line_read = NULL;
+}

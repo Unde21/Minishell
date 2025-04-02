@@ -1,6 +1,8 @@
 NAME = minishell
 
 SRCS := srcs/main.c \
+	srcs/init.c \
+	srcs/get_input.c \
 	
 HEADER := includes/minishell.h \
 		libft/libft.h
@@ -40,7 +42,7 @@ DONE := "🏁"
 all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJS) Makefile
-	@$(CC) $(CFLAGS) $(OBJS) $(INCS) ./libft/libft.a -o $@
+	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) ./libft/libft.a -o $@
 	@echo "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
 
 
