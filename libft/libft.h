@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:45:35 by samaouch          #+#    #+#             */
-/*   Updated: 2025/03/27 11:22:27 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/03 12:09:31 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_isprint(int c);
 int		ft_isdigit(int c);
 int		ft_isascii(int c);
+bool	ft_isspace(int c);
 int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 int		ft_atoi(const char *nptr, int *check_error);

@@ -6,15 +6,16 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 10:59:22 by samaouch          #+#    #+#             */
-/*   Updated: 2025/03/27 11:17:16 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/03 09:46:29 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <unistd.h>
 
 int	dprint_char(int c, int fd)
 {
-	return (write(fd, c, 1));
+	return (write(fd, &c, 1));
 }
 
 int	dprint_str(char *str, int fd)

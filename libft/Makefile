@@ -20,6 +20,7 @@ SRCS := srcs/isbool_functions/ft_isalpha.c \
 	srcs/isbool_functions/ft_isalnum.c \
 	srcs/isbool_functions/ft_isascii.c \
 	srcs/isbool_functions/ft_isprint.c \
+	srcs/isbool_functions/ft_isspace.c \
 	srcs/convert_functions/ft_toupper.c \
 	srcs/convert_functions/ft_tolower.c \
 	srcs/convert_functions/ft_atoi.c \
@@ -53,6 +54,7 @@ SRCS := srcs/isbool_functions/ft_isalpha.c \
 	srcs/print_functions/ft_printf.c \
 	srcs/print_functions/ft_print_format.c \
 	srcs/print_functions/ft_dprintf.c \
+	srcs/print_functions/ft_dprint_format.c \
 	srcs/list_functions/ft_lstnew.c \
 	srcs/list_functions/ft_lstadd_front.c \
 	srcs/list_functions/ft_lstsize.c \
