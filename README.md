@@ -55,7 +55,7 @@
 
 2) Analyse lexicale (lexer):
 
-	- Découpae de la ligne de commande en tokens (mot, opérateurs, redirections).
+	- Découpage de la ligne de commande en tokens (mot, opérateurs, redirections).
 	- Gestion des quotes (simple ou double).
 	- Détections des opérateurs spéciaux (|, <, >, <<, >>).
 

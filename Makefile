@@ -1,13 +1,18 @@
 NAME = minishell
 
 SRCS := srcs/main.c \
-	srcs/init.c \
-	srcs/get_input.c \
+	srcs/init/init.c \
+	srcs/parsing/get_input.c \
+	srcs/parsing/parsing.c \
+	srcs/parsing/utils.c \
+	srcs/parsing/handle_tokens/handle_word.c \
+	srcs/parsing/handle_tokens/handle_tokens.c \
+	srcs/parsing/handle_tokens/create_node_for_token.c \
 	
 HEADER := includes/minishell.h \
 		libft/libft.h
 CC := cc
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -g3
 CPPFFLAGS := -MMD -MP
 
 RM := rm -rf

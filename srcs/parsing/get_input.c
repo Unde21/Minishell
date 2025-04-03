@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:10:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/02 13:50:07 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/03 10:12:06 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	get_input(t_data *data)
 	while(data->line_read != NULL)
 	{
 		ft_printf("line : %s\n", data->line_read);
+		parsing(data);
 		free(data->line_read);
 		data->line_read = readline(str);
 		if (data->line_read != NULL)
