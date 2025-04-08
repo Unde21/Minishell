@@ -6,16 +6,16 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:19:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/03 12:43:04 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 15:15:03 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-t_token *new_token(char *content, t_token_type type)
+t_token	*new_token(char *content, t_token_type type)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
@@ -26,7 +26,7 @@ t_token *new_token(char *content, t_token_type type)
 	return (token);
 }
 
-static void save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
+static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 {
 	if (new != NULL)
 	{
@@ -39,11 +39,8 @@ static void save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 	}
 }
 
-t_token_lst	*handle_token(char	*input, t_token_lst *tokens, t_token *current)
+t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current)
 {
-	// t_token	*current;
-
-	// current = NULL;
 	while (*input != '\0')
 	{
 		if (*input == '|')

@@ -10,6 +10,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/handle_tokens/create_node_for_token.c \
 	
 HEADER := includes/minishell.h \
+		includes/parsing.h \
 		libft/libft.h
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g3
