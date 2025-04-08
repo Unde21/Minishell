@@ -1,0 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
+/*   Updated: 2025/04/08 15:30:59 by samaouch         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PARSING_H
+# define PARSING_H
+
+# include "minishell.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+
+# define ERR_MALLOC "malloc failed\n"
+# define ASCII_DBLE_QUOTE 34
+# define ASCII_SNGL_QUOTE 39
+
+struct						s_data;
+struct						s_token;
+struct						s_token_lst;
+enum						e_token_type;
+
+typedef struct s_data		t_data;
+typedef struct s_token		t_token;
+typedef struct s_token_lst	t_token_lst;
+typedef enum e_token_type	t_token_type;
+
+// parsing.c
+void		get_input(t_data *data);
+void		parsing(t_data *data);
+
+// handle_token.c
+t_token		*new_token(char *content, t_token_type type);
+t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current);
+
+// handle_word.c
+size_t		handle_word(char *input, t_token **new);
+
+// create_node_for_token.c
+size_t		handle_pipes(t_token **new);
+size_t		handle_redir_out(t_token **new);
+size_t		handle_redir_in(t_token **new);
+
+#endif
