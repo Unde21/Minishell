@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/08 15:30:59 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 17:30:13 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef enum e_token_type	t_token_type;
 void		get_input(t_data *data);
 void		parsing(t_data *data);
 
+
 // handle_token.c
 t_token		*new_token(char *content, t_token_type type);
 t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current);
@@ -46,5 +47,7 @@ size_t		handle_word(char *input, t_token **new);
 size_t		handle_pipes(t_token **new);
 size_t		handle_redir_out(t_token **new);
 size_t		handle_redir_in(t_token **new);
+size_t		handle_append_redir_in(t_token **new);
+size_t		handle_append_redir_out(t_token **new);
 
 #endif

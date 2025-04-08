@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/08 15:27:14 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 17:29:49 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ typedef enum e_token_type
 	WORD,
 	PIPE,
 	REDIR_IN,
-	REDIR_OUT
+	REDIR_OUT,
+	APPEND_REDIR_IN,
+	APPEND_REDIR_OUT
 }		t_token_type;
 
 typedef struct s_token

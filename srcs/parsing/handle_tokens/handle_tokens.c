@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:19:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/08 15:15:03 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/08 17:42:20 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,12 @@ t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current)
 	{
 		if (*input == '|')
 			input += handle_pipes(&current);
+		else if (*input == '>' && *(input + 1) == '>')
+			input += handle_append_redir_out(&current);
 		else if (*input == '>')
 			input += handle_redir_out(&current);
+		else if (*input == '<' && *(input + 1) == '<')
+			input += handle_append_redir_in(&current);
 		else if (*input == '<')
 			input += handle_redir_in(&current);
 		else
