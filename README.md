@@ -101,6 +101,7 @@
 
 	- SIGINT (CTRL + C)
 	- SIGQUIT (CTRL + D)
+	- CTRL + \
 
 6) Gestion des variables d'environnement:
 

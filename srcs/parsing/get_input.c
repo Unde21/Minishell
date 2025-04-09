@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:10:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/08 15:14:16 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/09 18:37:12 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	get_input(t_data *data)
 	char	*str;
 	char	*path;
 
+	//TODO Voir ce qu on met ! 
 	path = getcwd(NULL, 0);
 	str = ft_strjoin(path, "$ ");
 	free(path);
@@ -27,7 +28,7 @@ void	get_input(t_data *data)
 		add_history(data->line_read);
 	while (data->line_read != NULL)
 	{
-		ft_printf("line : %s\n", data->line_read);
+		ft_printf("\nline : %s\n", data->line_read);
 		parsing(data);
 		free(data->line_read);
 		data->line_read = readline(str);

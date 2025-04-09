@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:34:57 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/08 17:32:30 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/09 18:37:39 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ size_t	handle_redir_out(t_token **new)
 
 size_t	handle_redir_in(t_token **new)
 {
-	ft_printf("ici\n");
 	*new = new_token("<", REDIR_IN);
 	return (1);
 }
