@@ -107,5 +107,3 @@
 
 	- Stockage et mise a jour
 	- Passage aux commandes exécutées
-	- Stockage et mise a jour
-	- Passage aux commandes exécutées
