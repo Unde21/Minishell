@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/03 12:39:49 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 21:18:43 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,82 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->line_read = NULL;
 	data->name_infile = NULL;
 	data->name_outfile = NULL;
+}
+
+bool	init_cmd_args(t_cmd *cmd)
+{
+	cmd->args = malloc(sizeof(char *) * (cmd->nb_args + 1));
+	if (cmd->args == NULL)
+	{
+		ft_dprintf(2, ERR_MALLOC);
+		return (false);
+	}
+	return (true);
+}
+
+static bool	init_cmd(t_data *data)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (cmd == NULL)
+	{
+		ft_dprintf(2, ERR_MALLOC);
+		return (false);
+	}
+	cmd->nb_args = 0;
+	data->cmd = cmd;
+	return (true);
+}
+
+static	bool init_redir(t_data *data)
+{
+	t_redir	*redir;
+	
+	redir = malloc(sizeof(t_redir));
+	if (redir == NULL)
+	{
+		ft_dprintf(2, ERR_MALLOC);
+		return (false);
+	}
+	data->redir = redir;
+	return (true);
+}
+
+static bool	init_token(t_data *data)
+{
+	t_token_lst	*tokens;
+	t_token		*current;
+
+	tokens = malloc(sizeof(t_token_lst));
+	if (tokens == NULL)
+	{
+		ft_dprintf(2, ERR_MALLOC);
+		return (false);
+	}
+	tokens->head = NULL;
+	tokens->tail = NULL;
+	current = NULL;
+	data->token_lst = tokens;
+	return (true);
+}
+
+bool	init_lst(t_data *data)
+{
+	if (init_token(data) == false)
+		return (false);
+	else if (init_cmd(data) == false)
+	{
+		clear_token(data->token_lst->head);
+		free(data->token_lst);
+		return (false);
+	}
+	else if (init_redir(data) == false)
+	{
+		clear_cmd(data->cmd);
+		clear_token(data->token_lst->head);
+		free(data->token_lst);
+		return (false);
+	}
+	return (true);
 }

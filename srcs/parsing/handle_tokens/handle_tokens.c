@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:19:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 14:32:36 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 21:21:54 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 	}
 }
 
-t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current)
+bool	handle_token(char *input, t_token_lst *tokens, t_token *current)
 {
+	bool	error;
+
+	error = false;
 	while (*input != '\0')
 	{
 		if (*input == '|')
@@ -54,10 +57,13 @@ t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current)
 		else if (*input == '<')
 			input += new_node_redir_in(&current);
 		else
-			input += handle_word(input, &current);
-		save_head_and_tail_lst(tokens, current);
+			input += handle_word(input, &current, &error);
+		if (error != true)
+			save_head_and_tail_lst(tokens, current);
 		while (*input == ' ')
 			++input;
 	}
-	return (tokens);
+	if (error == true)
+		return (false);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 16:38:20 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 21:21:24 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void		parsing(t_data *data);
 
 // handle_token.c
 t_token		*new_token(char *content, t_token_type type);
-t_token_lst	*handle_token(char *input, t_token_lst *tokens, t_token *current);
+bool	handle_token(char *input, t_token_lst *tokens, t_token *current);
 
 // handle_word.c
-size_t		handle_word(char *input, t_token **new);
+size_t		handle_word(char *input, t_token **new, bool *error);
 
 // create_node_for_token.c
 size_t		new_node_pipes(t_token **new);

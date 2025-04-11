@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 16:38:13 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 18:41:23 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 	return (false);
 }
 
-size_t	handle_word(char *input, t_token **new)
+size_t	handle_word(char *input, t_token **new, bool *error)
 {
 	size_t	word_size;
 	char	*word;
@@ -96,12 +96,17 @@ size_t	handle_word(char *input, t_token **new)
 	word_size = get_word_size(input, is_quote);
 	word = extract_word(input, word_size);
 	if (is_quote_missing(word, word_size, is_quote) == true)
+	{
+		*error = true;
+		free(word);
 		return (ft_strlen(input));
+	}
 	if (is_quote == ASCII_DBLE_QUOTE)
 		*new = new_token(word, DBLE_QUOTE);
 	else if (is_quote == ASCII_SNGL_QUOTE)
 		*new = new_token(word, SNGL_QUOTE);
 	else
 		*new = new_token(word, WORD);
+	free(word);
 	return (word_size);
 }
