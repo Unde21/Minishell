@@ -6,35 +6,35 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/09 18:35:07 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/11 16:38:13 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-static size_t	get_word_size(char *input, bool *is_quote)
+static size_t	get_word_size(char *input, int is_quote)
 {
 	size_t	word_size;
-	int		check_quote;
+	int		count_quote;
 
+	count_quote = 0;
 	word_size = 0;
-	check_quote = wich_quote(*input);
-	if (check_quote != 0)
+	if (is_quote != NO_QUOTE)
 	{
+		++count_quote;
 		++input;
-		*is_quote = true;
+		++word_size;
 	}
 	while ((ft_isspace(*input) == false && *input != '\0')
-		|| (*is_quote == true && *input != '\0'))
+		|| (is_quote != NO_QUOTE && *input != '\0' && count_quote < 2))
 	{
-		if (wich_quote(*input) == ASCII_DBLE_QUOTE
-			&& check_quote == ASCII_DBLE_QUOTE)
-			break ;
-		else if (wich_quote(*input) == ASCII_SNGL_QUOTE
-			&& check_quote == ASCII_SNGL_QUOTE)
-			break ;
 		++word_size;
+		if (*input == ASCII_DBLE_QUOTE || *input == ASCII_SNGL_QUOTE)
+		{
+			++count_quote;
+			break ;
+		}
 		++input;
 	}
 	return (word_size);
@@ -52,8 +52,6 @@ static char	*extract_word(char *input, size_t word_size)
 		ft_dprintf(2, ERR_MALLOC);
 		return (NULL);
 	}
-	if (wich_quote(*input) != 0)
-		++input;
 	while (*input != '\0' && i < word_size)
 	{
 		word[i] = *(input + i);
@@ -63,21 +61,47 @@ static char	*extract_word(char *input, size_t word_size)
 	return (word);
 }
 
+static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
+{
+	if ((word[word_size - 1] != ASCII_DBLE_QUOTE
+			&& check_quote == ASCII_DBLE_QUOTE)
+		|| (check_quote == NO_QUOTE && word[word_size - 1] == ASCII_DBLE_QUOTE))
+	{
+		ft_dprintf(2, MISS_DBLE_QUOTE);
+		return (true);
+	}
+	else if ((word[word_size - 1] != ASCII_SNGL_QUOTE
+			&& check_quote == ASCII_SNGL_QUOTE)
+		|| (check_quote == NO_QUOTE && word[word_size - 1] == ASCII_SNGL_QUOTE))
+	{
+		ft_dprintf(2, MISS_SNGL_QUOTE);
+		return (true);
+	}
+	else if (word[word_size - 1] == ASCII_DBLE_QUOTE
+		&& check_quote == NO_QUOTE)
+	{
+		ft_dprintf(2, MISS_DBLE_QUOTE);
+		return (true);
+	}
+	return (false);
+}
+
 size_t	handle_word(char *input, t_token **new)
 {
 	size_t	word_size;
 	char	*word;
-	bool	is_quote;
+	int		is_quote;
 
-	is_quote = false;
-	word_size = get_word_size(input, &is_quote);
-	if (word_size == 0)
-		return (1);
+	is_quote = wich_quote(*input);
+	word_size = get_word_size(input, is_quote);
 	word = extract_word(input, word_size);
-	if (word == NULL)
-		return (word_size);
-	*new = new_token(word, WORD);
-	if (is_quote == true && word_size != 0)
-		word_size += 2;
+	if (is_quote_missing(word, word_size, is_quote) == true)
+		return (ft_strlen(input));
+	if (is_quote == ASCII_DBLE_QUOTE)
+		*new = new_token(word, DBLE_QUOTE);
+	else if (is_quote == ASCII_SNGL_QUOTE)
+		*new = new_token(word, SNGL_QUOTE);
+	else
+		*new = new_token(word, WORD);
 	return (word_size);
 }
