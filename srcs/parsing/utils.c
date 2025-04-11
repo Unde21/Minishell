@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 21:48:18 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/12 00:45:06 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,23 @@ void	print_lst_cmd(t_cmd *cmd)
 		ft_printf("\033[34m--------------------------------------------------------------------\033[0m\n");
 		while (cmd->args[i])
 		{
-			ft_printf("\033[32m%s\n\033[0m", cmd->args[i]);
+			if (i == 0)
+				ft_printf("\033[32m%s\033[0m", cmd->args[i]);
+			else
+				ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
 			++i;
+		}
+		if (cmd->redir != NULL)
+		{	
+		 	if (cmd->redir->type == 4)
+				ft_printf("\033[32m		REDIR: REDIR_IN\033[0m");
+			else if (cmd->redir->type == 5)
+				ft_printf("\033[32m		REDIR: REDIR_OUT\033[0m");
+			else if (cmd->redir->type == 6)
+				ft_printf("\033[32m		REDIR: HERE_DOC\033[0m");
+			else if (cmd->redir->type == 7)
+				ft_printf("\033[32m		REDIR: APPEND\033[0m");
+			ft_printf("		\033[32mFILE: %s\n\033[0m", cmd->redir->file);
 		}
 		ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 		ft_printf("       				|\n      				v\n");
@@ -91,14 +106,30 @@ void	print_lst_cmd(t_cmd *cmd)
 	i = 0;
 	while (cmd->args[i])
 	{
-		ft_printf("\033[32m%s\n\033[0m", cmd->args[i]);
+		if (i == 0)
+			ft_printf("\033[32m%s\033[0m", cmd->args[i]);
+		else
+			ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
 		++i;
+	}
+	if (cmd->redir != NULL)
+	{	
+		if (cmd->redir->type == 4)
+			ft_printf("\033[32m		REDIR: REDIR_IN\033[0m");
+		else if (cmd->redir->type == 5)
+			ft_printf("\033[32m		REDIR: REDIR_OUT\033[0m");
+		else if (cmd->redir->type == 6)
+			ft_printf("\033[32m		REDIR: HERE_DOC\033[0m");
+		else if (cmd->redir->type == 7)
+			ft_printf("\033[32m		REDIR: APPEND\033[0m");
+		ft_printf("	\033[32mFILE: %s\n\033[0m", cmd->redir->file);
 	}
 	ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 	ft_printf("       				|\n       				v\n");
 	ft_printf("\033[34m--------------------------------------------------------------------\033[0m\n\033[32mNULL\033[0m");
 	ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 }
+
 
 void	free_all(char **str)
 {
@@ -131,6 +162,11 @@ void	clear_cmd(t_cmd *cmd)
 	while (cmd != NULL)
 	{
 		tmp = cmd->next;
+		if (cmd->redir != NULL)
+		{
+			free(cmd->redir->file);
+			free(cmd->redir);
+		}
 		free_all(cmd->args);
 		free(cmd);
 		cmd = tmp;

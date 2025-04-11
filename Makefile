@@ -8,6 +8,9 @@ SRCS := srcs/main.c \
 	srcs/parsing/handle_tokens/handle_word.c \
 	srcs/parsing/handle_tokens/handle_tokens.c \
 	srcs/parsing/handle_tokens/create_node_for_token.c \
+	srcs/parsing/parser_srcs/parser.c \
+	srcs/parsing/parser_srcs/fill_cmd_lst.c \
+	srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
 	
 HEADER := includes/minishell.h \
 		includes/parsing.h \

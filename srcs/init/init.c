@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 21:18:43 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/12 00:31:48 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,8 @@ static bool	init_cmd(t_data *data)
 		return (false);
 	}
 	cmd->nb_args = 0;
+	cmd->redir = NULL;
 	data->cmd = cmd;
-	return (true);
-}
-
-static	bool init_redir(t_data *data)
-{
-	t_redir	*redir;
-	
-	redir = malloc(sizeof(t_redir));
-	if (redir == NULL)
-	{
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
-	}
-	data->redir = redir;
 	return (true);
 }
 
@@ -87,13 +74,6 @@ bool	init_lst(t_data *data)
 		return (false);
 	else if (init_cmd(data) == false)
 	{
-		clear_token(data->token_lst->head);
-		free(data->token_lst);
-		return (false);
-	}
-	else if (init_redir(data) == false)
-	{
-		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);
 		free(data->token_lst);
 		return (false);

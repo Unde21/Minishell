@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 20:38:15 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/12 00:32:07 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ typedef enum e_token_type
 	REDIR_IN,
 	REDIR_OUT,
 	HERE_DOC,
-	APPEND
+	APPEND,
+	NOTHING
 }		t_token_type;
 
 typedef struct s_token
@@ -83,7 +84,6 @@ void	print_lst_cmd(t_cmd *cmd);
 
 
 void	clear_token(t_token *lst);
-void	clear_redir(t_redir *redir);
 void	clear_cmd(t_cmd *cmd);
 void	free_all(char **str);
 int		wich_quote(int c);

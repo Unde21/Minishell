@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 18:41:23 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/12 00:43:25 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ static size_t	get_word_size(char *input, int is_quote)
 	while ((ft_isspace(*input) == false && *input != '\0')
 		|| (is_quote != NO_QUOTE && *input != '\0' && count_quote < 2))
 	{
+		if ((*input == '|' && is_quote == NO_QUOTE) 
+			|| (*input == '>' && is_quote == NO_QUOTE)
+			|| (*input == '<' && is_quote == NO_QUOTE))
+			break ;
 		++word_size;
 		if (*input == ASCII_DBLE_QUOTE || *input == ASCII_SNGL_QUOTE)
 		{
