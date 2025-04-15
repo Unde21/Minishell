@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 18:24:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:25:22 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/15 19:27:54 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	clear_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
-	
+
 	while (cmd != NULL)
 	{
 		tmp = cmd->next;
@@ -41,7 +41,7 @@ void	clear_redir(t_redir *redir)
 		tmp = redir->next;
 		free(redir->file);
 		free(redir);
-		redir = tmp;	
+		redir = tmp;
 	}
 	redir = NULL;
 }

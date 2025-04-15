@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:25:24 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/15 18:38:19 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,6 @@ void	print_lst_cmd(t_cmd *cmd)
 	ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 }
 
-
-
-
 int	wich_quote(int c)
 {
 	if (c == ASCII_DBLE_QUOTE)
@@ -150,4 +147,12 @@ int	wich_quote(int c)
 	else if (c == ASCII_SNGL_QUOTE)
 		return (ASCII_SNGL_QUOTE);
 	return (0);
+}
+
+bool is_redir_type(t_token_type type)
+{
+	if (type == REDIR_IN || type == REDIR_OUT
+		|| type == HERE_DOC || type == APPEND)
+		return (true);
+	return (false);
 }

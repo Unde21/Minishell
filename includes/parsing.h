@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:32:37 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/15 19:27:20 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		parsing(t_data *data);
 
 // handle_token.c
 t_token		*new_token(char *content, t_token_type type);
-bool	handle_token(char *input, t_token_lst *tokens, t_token *current);
+bool		handle_token(char *input, t_token_lst *tokens, t_token *current);
 
 // handle_word.c
 size_t		handle_word(char *input, t_token **new, bool *error);
@@ -56,14 +56,16 @@ size_t		new_node_here_doc(t_token **new);
 size_t		new_node_append(t_token **new);
 
 //fill_cmd_lst.c
-bool get_cmd_args(t_token *current, t_cmd *cmd);
+bool		get_cmd_args(t_token *current, t_cmd *cmd);
+
+//utils.c
+bool		is_redir_type(t_token_type type);
 
 //parser.c
-void	parser(t_data *data, t_cmd *cmd);
+bool		parser(t_data *data, t_cmd *cmd);
 
 //fill_special_operator_cmd.c
-bool add_special_operator_to_cmd(t_token *current, t_cmd *cmd);
-bool fill_cmd_special_operator(t_token **current, t_cmd *current_cmd);
-
+bool		add_special_operator_to_cmd(t_token *current, t_cmd *cmd);
+bool		fill_cmd_special_operator(t_token **current, t_cmd *current_cmd);
 
 #endif

@@ -6,13 +6,22 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/12 00:43:25 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/15 19:31:50 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
+static bool is_special_operator(char input, int is_quote)
+{
+	if ((input == '|' && is_quote == NO_QUOTE) || (input == '>'
+		&& is_quote == NO_QUOTE) || (input == '<'
+		&& is_quote == NO_QUOTE))
+		return (true);
+	
+	return (false);
+}
 static size_t	get_word_size(char *input, int is_quote)
 {
 	size_t	word_size;
@@ -29,9 +38,7 @@ static size_t	get_word_size(char *input, int is_quote)
 	while ((ft_isspace(*input) == false && *input != '\0')
 		|| (is_quote != NO_QUOTE && *input != '\0' && count_quote < 2))
 	{
-		if ((*input == '|' && is_quote == NO_QUOTE) 
-			|| (*input == '>' && is_quote == NO_QUOTE)
-			|| (*input == '<' && is_quote == NO_QUOTE))
+		if (is_special_operator(*input, is_quote) == true)
 			break ;
 		++word_size;
 		if (*input == ASCII_DBLE_QUOTE || *input == ASCII_SNGL_QUOTE)
@@ -68,21 +75,20 @@ static char	*extract_word(char *input, size_t word_size)
 static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 {
 	if ((word[word_size - 1] != ASCII_DBLE_QUOTE
-			&& check_quote == ASCII_DBLE_QUOTE)
-		|| (check_quote == NO_QUOTE && word[word_size - 1] == ASCII_DBLE_QUOTE))
+			&& check_quote == ASCII_DBLE_QUOTE) || (check_quote == NO_QUOTE
+			&& word[word_size - 1] == ASCII_DBLE_QUOTE))
 	{
 		ft_dprintf(2, MISS_DBLE_QUOTE);
 		return (true);
 	}
 	else if ((word[word_size - 1] != ASCII_SNGL_QUOTE
-			&& check_quote == ASCII_SNGL_QUOTE)
-		|| (check_quote == NO_QUOTE && word[word_size - 1] == ASCII_SNGL_QUOTE))
+			&& check_quote == ASCII_SNGL_QUOTE) || (check_quote == NO_QUOTE
+			&& word[word_size - 1] == ASCII_SNGL_QUOTE))
 	{
 		ft_dprintf(2, MISS_SNGL_QUOTE);
 		return (true);
 	}
-	else if (word[word_size - 1] == ASCII_DBLE_QUOTE
-		&& check_quote == NO_QUOTE)
+	else if (word[word_size - 1] == ASCII_DBLE_QUOTE && check_quote == NO_QUOTE)
 	{
 		ft_dprintf(2, MISS_DBLE_QUOTE);
 		return (true);
