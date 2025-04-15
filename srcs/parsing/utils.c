@@ -6,12 +6,11 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/12 00:45:06 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/15 18:25:24 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 
 // TODO delete print_lst
 #include <stdio.h>
@@ -70,7 +69,8 @@ void	print_lst(t_token *token)
 void	print_lst_cmd(t_cmd *cmd)
 {
 	size_t	i;
-
+	t_redir	*current_redir;
+	
 	if (cmd == NULL)
 		return ;
 	printf("\n\n\n\033[31;44mPRINT PARSER:\033[0m\n\n");
@@ -78,25 +78,30 @@ void	print_lst_cmd(t_cmd *cmd)
 	{
 		i = 0;
 		ft_printf("\033[34m--------------------------------------------------------------------\033[0m\n");
-		while (cmd->args[i])
+		if (cmd->args != NULL)
 		{
-			if (i == 0)
-				ft_printf("\033[32m%s\033[0m", cmd->args[i]);
-			else
-				ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
-			++i;
-		}
-		if (cmd->redir != NULL)
-		{	
-		 	if (cmd->redir->type == 4)
-				ft_printf("\033[32m		REDIR: REDIR_IN\033[0m");
-			else if (cmd->redir->type == 5)
-				ft_printf("\033[32m		REDIR: REDIR_OUT\033[0m");
-			else if (cmd->redir->type == 6)
-				ft_printf("\033[32m		REDIR: HERE_DOC\033[0m");
-			else if (cmd->redir->type == 7)
-				ft_printf("\033[32m		REDIR: APPEND\033[0m");
-			ft_printf("		\033[32mFILE: %s\n\033[0m", cmd->redir->file);
+			while (cmd->args[i])
+			{
+				if (i == 0)
+					ft_printf("\033[32m%s\033[0m", cmd->args[i]);
+				else
+					ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
+				++i;
+			}
+			current_redir = cmd->redir;
+			while (current_redir != NULL)
+			{	
+				if (current_redir->type == 4)
+					ft_printf("\033[32m		REDIR: REDIR_IN	\033[0m");
+				else if (current_redir->type == 5)
+					ft_printf("\033[32m		REDIR: REDIR_OUT\033[0m");
+				else if (current_redir->type == 6)
+					ft_printf("\033[32m		REDIR: HERE_DOC	\033[0m");
+				else if (current_redir->type == 7)
+					ft_printf("\033[32m		REDIR: APPEND\033[0m");
+				ft_printf("		\033[32mFILE: %s\n\033[0m", current_redir->file);
+				current_redir = current_redir->next;
+			}
 		}
 		ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 		ft_printf("       				|\n      				v\n");
@@ -104,25 +109,30 @@ void	print_lst_cmd(t_cmd *cmd)
 	}
 	ft_printf("\033[34m--------------------------------------------------------------------\033[0m\n");
 	i = 0;
-	while (cmd->args[i])
+	if (cmd->args != NULL)
 	{
-		if (i == 0)
+		while (cmd->args[i])
+		{
+			if (i == 0)
 			ft_printf("\033[32m%s\033[0m", cmd->args[i]);
-		else
+			else
 			ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
-		++i;
-	}
-	if (cmd->redir != NULL)
-	{	
-		if (cmd->redir->type == 4)
-			ft_printf("\033[32m		REDIR: REDIR_IN\033[0m");
-		else if (cmd->redir->type == 5)
-			ft_printf("\033[32m		REDIR: REDIR_OUT\033[0m");
-		else if (cmd->redir->type == 6)
-			ft_printf("\033[32m		REDIR: HERE_DOC\033[0m");
-		else if (cmd->redir->type == 7)
-			ft_printf("\033[32m		REDIR: APPEND\033[0m");
-		ft_printf("	\033[32mFILE: %s\n\033[0m", cmd->redir->file);
+			++i;
+		}
+		current_redir = cmd->redir;
+		while (current_redir != NULL)
+		{
+			if (current_redir->type == 4)
+				ft_printf("\033[32m		REDIR: REDIR_IN	\033[0m");
+			else if (current_redir->type == 5)
+				ft_printf("\033[32m		REDIR: REDIR_OUT\033[0m");
+			else if (current_redir->type == 6)
+				ft_printf("\033[32m		REDIR: HERE_DOC	\033[0m");
+			else if (current_redir->type == 7)
+				ft_printf("\033[32m		REDIR: APPEND\033[0m");
+			ft_printf("	\033[32mFILE: %s\n\033[0m", current_redir->file);
+			current_redir = current_redir->next;
+		}
 	}
 	ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 	ft_printf("       				|\n       				v\n");
@@ -131,20 +141,7 @@ void	print_lst_cmd(t_cmd *cmd)
 }
 
 
-void	free_all(char **str)
-{
-	size_t	i;
 
-	i = 0;
-	if (str == NULL)
-		return ;
-	while (str[i])
-	{
-		free(str[i]);
-		++i;
-	}
-	free(str);
-}
 
 int	wich_quote(int c)
 {
@@ -153,51 +150,4 @@ int	wich_quote(int c)
 	else if (c == ASCII_SNGL_QUOTE)
 		return (ASCII_SNGL_QUOTE);
 	return (0);
-}
-
-void	clear_cmd(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	
-	while (cmd != NULL)
-	{
-		tmp = cmd->next;
-		if (cmd->redir != NULL)
-		{
-			free(cmd->redir->file);
-			free(cmd->redir);
-		}
-		free_all(cmd->args);
-		free(cmd);
-		cmd = tmp;
-	}
-	cmd = NULL;
-}
-
-void	clear_redir(t_redir *redir)
-{
-	t_redir	*tmp;
-
-	while (redir != NULL)
-	{
-		tmp = redir->next;
-		free(redir->file);
-		free(redir);
-		redir = tmp;	
-	}
-	redir = NULL;
-}
-
-void	clear_token(t_token *lst)
-{
-	t_token	*tmp;
-
-	while (lst != NULL)
-	{
-		tmp = lst->next;
-		free(lst->content);
-		free(lst);
-		lst = tmp;
-	}
-	lst = NULL;
 }

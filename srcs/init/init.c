@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/12 00:31:48 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/15 18:32:32 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ bool	init_cmd_args(t_cmd *cmd)
 		ft_dprintf(2, ERR_MALLOC);
 		return (false);
 	}
+	if (cmd->nb_args == 0)
+		cmd->args[0] = NULL;
 	return (true);
 }
 
@@ -46,6 +48,8 @@ static bool	init_cmd(t_data *data)
 	}
 	cmd->nb_args = 0;
 	cmd->redir = NULL;
+	cmd->args = NULL;
+	cmd->next = NULL;
 	data->cmd = cmd;
 	return (true);
 }

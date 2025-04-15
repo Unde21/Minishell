@@ -11,6 +11,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/parser_srcs/parser.c \
 	srcs/parsing/parser_srcs/fill_cmd_lst.c \
 	srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
+	srcs/parsing/clear_data.c \
 	
 HEADER := includes/minishell.h \
 		includes/parsing.h \
