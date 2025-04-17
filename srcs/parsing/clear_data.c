@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 18:24:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 19:27:54 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:18:20 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	clear_cmd(t_cmd *cmd)
 			free(cmd->redir->file);
 			free(cmd->redir);
 		}
-		free_all(cmd->args);
+		free_all(cmd->args); //BUG Conditional jump or move depends on unintialised value(s)
 		free(cmd);
 		cmd = tmp;
 	}

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 22:51:01 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 12:57:43 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:20:31 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	get_cmd_nb_arg(t_token *current, t_cmd *cmd)
 	while (current != NULL && current->type != PIPE)
 	{
 		if (current->type == REDIR_IN || current->type == REDIR_OUT
-				|| current->type == HERE_DOC || current->type == APPEND)
+			|| current->type == HERE_DOC || current->type == APPEND)
 		{
 			current = current->next;
 			if (current != NULL)
@@ -31,10 +31,9 @@ static void	get_cmd_nb_arg(t_token *current, t_cmd *cmd)
 	}
 }
 
-
-static bool fill_cmd_args(t_token **current, t_cmd *current_cmd)
+static bool	fill_cmd_args(t_token **current, t_cmd *current_cmd)
 {
-	t_token  *tmp;
+	t_token	*tmp;
 	size_t	i;
 
 	tmp = *current;
@@ -61,7 +60,7 @@ static bool fill_cmd_args(t_token **current, t_cmd *current_cmd)
 	return (true);
 }
 
-static bool new_node_cmd(t_cmd **current_cmd)
+static bool	new_node_cmd(t_cmd **current_cmd)
 {
 	(*current_cmd)->next = malloc(sizeof(t_cmd));
 	if ((*current_cmd)->next == NULL)
@@ -77,9 +76,9 @@ static bool new_node_cmd(t_cmd **current_cmd)
 	return (true);
 }
 
-bool get_cmd_args(t_token *current, t_cmd *cmd)
+bool	get_cmd_args(t_token *current, t_cmd *cmd)
 {
-	t_cmd *current_cmd;
+	t_cmd	*current_cmd;
 
 	current_cmd = cmd;
 	while (current != NULL)

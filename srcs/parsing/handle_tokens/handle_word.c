@@ -6,22 +6,22 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 19:31:50 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:03:31 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-static bool is_special_operator(char input, int is_quote)
+static bool	is_special_operator(char input, int is_quote)
 {
 	if ((input == '|' && is_quote == NO_QUOTE) || (input == '>'
-		&& is_quote == NO_QUOTE) || (input == '<'
-		&& is_quote == NO_QUOTE))
+			&& is_quote == NO_QUOTE) || (input == '<'
+			&& is_quote == NO_QUOTE))
 		return (true);
-	
 	return (false);
 }
+
 static size_t	get_word_size(char *input, int is_quote)
 {
 	size_t	word_size;

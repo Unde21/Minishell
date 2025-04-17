@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:38:19 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:13:21 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,10 +149,16 @@ int	wich_quote(int c)
 	return (0);
 }
 
-bool is_redir_type(t_token_type type)
+bool	is_redir_type(t_token_type type)
 {
 	if (type == REDIR_IN || type == REDIR_OUT
 		|| type == HERE_DOC || type == APPEND)
 		return (true);
+	return (false);
+}
+
+bool	print_err(char *str_error)
+{
+	ft_dprintf(2, "%s", str_error);
 	return (false);
 }

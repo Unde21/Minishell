@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:34:57 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 22:46:27 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:03:39 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,3 @@ size_t	new_node_append(t_token **new)
 	*new = new_token(">>", APPEND);
 	return (2);
 }
-
