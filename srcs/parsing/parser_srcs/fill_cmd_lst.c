@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 22:51:01 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 19:21:16 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 12:57:43 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,17 @@ bool get_cmd_args(t_token *current, t_cmd *cmd)
 	while (current != NULL)
 	{
 		get_cmd_nb_arg(current, current_cmd);
-		if (init_cmd_args(current_cmd) == false)
-			return (false);
-		if (fill_cmd_args(&current, current_cmd) == false)
+		if (init_cmd_args(current_cmd) == false
+			|| fill_cmd_args(&current, current_cmd) == false)
 			return (false);
 		if (current != NULL && current->type == PIPE)
 		{
 			current = current->next;
+			if (current->type == PIPE)
+			{
+				ft_dprintf(2, ERR_MULTIPLE_PIPE);
+				return (false);
+			}
 			if (current != NULL)
 			{
 				if (new_node_cmd(&current_cmd) == false)
