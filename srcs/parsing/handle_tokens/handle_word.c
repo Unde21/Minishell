@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:03:31 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:30:20 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*extract_word(char *input, size_t word_size)
 	word = malloc(sizeof(char) * (word_size + 1));
 	if (word == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		print_err(ERR_MALLOC);
 		return (NULL);
 	}
 	while (*input != '\0' && i < word_size)
@@ -78,19 +78,19 @@ static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 			&& check_quote == ASCII_DBLE_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_DBLE_QUOTE))
 	{
-		ft_dprintf(2, MISS_DBLE_QUOTE);
+		print_err(MISS_DBLE_QUOTE);
 		return (true);
 	}
 	else if ((word[word_size - 1] != ASCII_SNGL_QUOTE
 			&& check_quote == ASCII_SNGL_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_SNGL_QUOTE))
 	{
-		ft_dprintf(2, MISS_SNGL_QUOTE);
+		print_err(MISS_SNGL_QUOTE);
 		return (true);
 	}
 	else if (word[word_size - 1] == ASCII_DBLE_QUOTE && check_quote == NO_QUOTE)
 	{
-		ft_dprintf(2, MISS_DBLE_QUOTE);
+		print_err(MISS_DBLE_QUOTE);
 		return (true);
 	}
 	return (false);

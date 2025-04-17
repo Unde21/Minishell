@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 22:51:01 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:20:31 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:42:08 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static bool	fill_cmd_args(t_token **current, t_cmd *current_cmd)
 		current_cmd->args[i++] = ft_strdup((*current)->content);
 		if (current_cmd->args[i - 1] == NULL)
 		{
-			ft_dprintf(2, ERR_MALLOC);
+			print_err(ERR_MALLOC);
 			return (false);
 		}
 		*current = (*current)->next;
@@ -65,7 +65,7 @@ static bool	new_node_cmd(t_cmd **current_cmd)
 	(*current_cmd)->next = malloc(sizeof(t_cmd));
 	if ((*current_cmd)->next == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		print_err(ERR_MALLOC);
 		return (false);
 	}
 	(*current_cmd) = (*current_cmd)->next;
@@ -81,6 +81,8 @@ bool	get_cmd_args(t_token *current, t_cmd *cmd)
 	t_cmd	*current_cmd;
 
 	current_cmd = cmd;
+	if (current->type == PIPE)
+		return (print_err(ERR_PIPE_FIRST));
 	while (current != NULL)
 	{
 		get_cmd_nb_arg(current, current_cmd);
@@ -91,10 +93,7 @@ bool	get_cmd_args(t_token *current, t_cmd *cmd)
 		{
 			current = current->next;
 			if (current->type == PIPE)
-			{
-				ft_dprintf(2, ERR_MULTIPLE_PIPE);
-				return (false);
-			}
+				return (print_err(ERR_MULTIPLE_PIPE));
 			if (current != NULL)
 			{
 				if (new_node_cmd(&current_cmd) == false)

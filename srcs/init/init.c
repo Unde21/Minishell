@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:43:21 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/17 13:31:08 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	cmd->args = malloc(sizeof(char *) * (cmd->nb_args + 1));
 	if (cmd->args == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		print_err(ERR_MALLOC);
 		return (false);
 	}
 	if (cmd->nb_args == 0)
@@ -43,7 +43,7 @@ static bool	init_cmd(t_data *data)
 	cmd = malloc(sizeof(t_cmd));
 	if (cmd == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		print_err(ERR_MALLOC);
 		return (false);
 	}
 	cmd->nb_args = 0;
@@ -62,7 +62,7 @@ static bool	init_token(t_data *data)
 	tokens = malloc(sizeof(t_token_lst));
 	if (tokens == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		print_err(ERR_MALLOC);
 		return (false);
 	}
 	tokens->head = NULL;
