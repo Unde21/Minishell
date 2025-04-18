@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 10:29:53 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 18:42:02 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,3 +85,4 @@ bool	init_lst(t_data *data)
 	}
 	return (true);
 }
+

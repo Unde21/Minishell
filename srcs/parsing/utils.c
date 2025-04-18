@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 15:46:44 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 18:23:00 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,12 +153,16 @@ int	wich_quote(char *input)
 	size_t	i;
 
 	i = 0;
-	if (*input == ASCII_DOLLAR)
-		++input;
-	if (*input == (char)ASCII_DBLE_QUOTE)
-		return (ASCII_DBLE_QUOTE);
-	else if (*input == (char)ASCII_SNGL_QUOTE)
-		return (ASCII_SNGL_QUOTE);
+	while(input[i])
+	{
+		if (input[i] == ASCII_DOLLAR)	
+			++i;
+		else if (input[i] == (char)ASCII_DBLE_QUOTE)
+			return (ASCII_DBLE_QUOTE);
+		else if (input[i] == (char)ASCII_SNGL_QUOTE)
+			return (ASCII_SNGL_QUOTE);
+		++i;
+	}
 	return (0);
 }
 
@@ -180,12 +184,9 @@ void	skip_quote_dollar(char **input, int is_quote, size_t *word_size, int *count
 {
 	if (**input == ASCII_DOLLAR)
 	{
-		ft_printf("yes\n");
 		++(*word_size);
 		++(*input);
 	}
-	else
-		ft_printf("no]\n");
 	if (is_quote != NO_QUOTE)
 	{
 		++(*count_quote);
