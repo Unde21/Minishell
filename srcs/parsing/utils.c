@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 09:04:23 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 11:03:51 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ void	print_lst_cmd(t_cmd *cmd)
 					ft_printf("\033[32m%s\033[0m", cmd->args[i].content);
 				else
 					ft_printf("\n\033[32m%s\033[0m", cmd->args[i].content);
+				if (cmd->args[i].need_expand == true)
+					ft_printf("	\033[32mneed_expend: Yes\033[0m");
+				else
+					ft_printf("	\033[32mneed_expend: No\033[0m");
 				++i;
 			}
 			current_redir = cmd->redir;
@@ -114,9 +118,13 @@ void	print_lst_cmd(t_cmd *cmd)
 		while (cmd->args[i].content)
 		{
 			if (i == 0)
-			ft_printf("\033[32m%s\033[0m", cmd->args[i].content);
+				ft_printf("\033[32m%s\033[0m", cmd->args[i].content);
 			else
-			ft_printf("\n\033[32m%s\033[0m", cmd->args[i].content);
+				ft_printf("\n\033[32m%s\033[0m", cmd->args[i].content);
+			if (cmd->args[i].need_expand == true)
+				ft_printf("	\033[32mneed_expend: Yes\033[0m");
+			else
+				ft_printf("	\033[32mneed_expend: No\033[0m");
 			++i;
 		}
 		current_redir = cmd->redir;
@@ -140,11 +148,16 @@ void	print_lst_cmd(t_cmd *cmd)
 	ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
 }
 
-int	wich_quote(int c)
+int	wich_quote(char *input)
 {
-	if (c == ASCII_DBLE_QUOTE)
+	size_t	i;
+
+	i = 0;
+	if (*input == ASCII_DOLLAR)
+		++input;
+	if (*input == (char)ASCII_DBLE_QUOTE)
 		return (ASCII_DBLE_QUOTE);
-	else if (c == ASCII_SNGL_QUOTE)
+	else if (*input == (char)ASCII_SNGL_QUOTE)
 		return (ASCII_SNGL_QUOTE);
 	return (0);
 }
@@ -161,4 +174,22 @@ bool	print_err(char *str_error)
 {
 	ft_dprintf(2, "%s", str_error);
 	return (false);
+}
+
+void	skip_quote_dollar(char **input, int is_quote, size_t *word_size, int *count_quote)
+{
+	if (**input == ASCII_DOLLAR)
+	{
+		ft_printf("yes\n");
+		++(*word_size);
+		++(*input);
+	}
+	else
+		ft_printf("no]\n");
+	if (is_quote != NO_QUOTE)
+	{
+		++(*count_quote);
+		++(*input);
+		++(*word_size);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 08:25:04 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 10:58:16 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"//TODO make better
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
+# define ASCII_DOLLAR 36
 # define NO_QUOTE 0
 
 struct						s_cmd;
@@ -62,6 +63,8 @@ bool		get_cmd_args(t_token *current, t_cmd *cmd);
 
 //utils.c
 bool		is_redir_type(t_token_type type);
+void		skip_quote_dollar(char **input, int is_quote, size_t *word_size,
+		int *count_quote);
 
 //parser.c
 bool		parser(t_data *data, t_cmd *cmd);
