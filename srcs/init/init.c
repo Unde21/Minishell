@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:31:08 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 09:03:55 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 
 bool	init_cmd_args(t_cmd *cmd)
 {
-	cmd->args = malloc(sizeof(char *) * (cmd->nb_args + 1));
+	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));
 	if (cmd->args == NULL)
 	{
 		print_err(ERR_MALLOC);
 		return (false);
 	}
 	if (cmd->nb_args == 0)
-		cmd->args[0] = NULL;
+		cmd->args = NULL;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 22:51:01 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:42:08 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 09:12:57 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static bool	fill_cmd_args(t_token **current, t_cmd *current_cmd)
 				return (false);
 			continue ;
 		}
-		current_cmd->args[i++] = ft_strdup((*current)->content);
-		if (current_cmd->args[i - 1] == NULL)
+		current_cmd->args[i++].content = ft_strdup((*current)->content);
+		if (current_cmd->args[i - 1].content == NULL)
 		{
 			print_err(ERR_MALLOC);
 			return (false);
@@ -56,7 +56,7 @@ static bool	fill_cmd_args(t_token **current, t_cmd *current_cmd)
 		*current = (*current)->next;
 	}
 	if (current_cmd->nb_args != 0)
-		current_cmd->args[i] = NULL;
+		current_cmd->args[i].content = NULL;
 	return (true);
 }
 

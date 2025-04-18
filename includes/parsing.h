@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:41:22 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 08:25:04 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,9 @@ bool		parser(t_data *data, t_cmd *cmd);
 //fill_special_operator_cmd.c
 bool		add_special_operator_to_cmd(t_token *current, t_cmd *cmd);
 bool		fill_cmd_special_operator(t_token **current, t_cmd *current_cmd);
+
+
+//expand.c
+bool		expand_tokens(t_cmd *current);
 
 #endif

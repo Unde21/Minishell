@@ -6,13 +6,25 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 18:24:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:35:32 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 09:12:14 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
+static void	clear_args(t_cmd *cmd)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < cmd->nb_args)
+	{
+		free(cmd->args[i].content);
+		++i;
+	}
+	free(cmd->args);
+}
 void	clear_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
@@ -25,7 +37,7 @@ void	clear_cmd(t_cmd *cmd)
 			free(cmd->redir->file);
 			free(cmd->redir);
 		}
-		free_all(cmd->args); //BUG Conditional jump or move depends on unintialised value(s)
+		clear_args(cmd);
 		free(cmd);
 		cmd = tmp;
 	}

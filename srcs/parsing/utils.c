@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:13:21 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 09:04:23 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ void	print_lst_cmd(t_cmd *cmd)
 		ft_printf("\033[34m--------------------------------------------------------------------\033[0m\n");
 		if (cmd->args != NULL)
 		{
-			while (cmd->args[i])
+			while (cmd->args[i].content)
 			{
 				if (i == 0)
-					ft_printf("\033[32m%s\033[0m", cmd->args[i]);
+					ft_printf("\033[32m%s\033[0m", cmd->args[i].content);
 				else
-					ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
+					ft_printf("\n\033[32m%s\033[0m", cmd->args[i].content);
 				++i;
 			}
 			current_redir = cmd->redir;
@@ -111,12 +111,12 @@ void	print_lst_cmd(t_cmd *cmd)
 	i = 0;
 	if (cmd->args != NULL)
 	{
-		while (cmd->args[i])
+		while (cmd->args[i].content)
 		{
 			if (i == 0)
-			ft_printf("\033[32m%s\033[0m", cmd->args[i]);
+			ft_printf("\033[32m%s\033[0m", cmd->args[i].content);
 			else
-			ft_printf("\n\033[32m%s\033[0m", cmd->args[i]);
+			ft_printf("\n\033[32m%s\033[0m", cmd->args[i].content);
 			++i;
 		}
 		current_redir = cmd->redir;
