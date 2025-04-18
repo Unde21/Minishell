@@ -13,6 +13,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
 	srcs/parsing/clear_data.c \
 	srcs/parsing/expand/expand_tokens.c \
+	srcs/parsing/expand/handle_expansion.c \
 	
 HEADER := includes/minishell.h \
 		includes/parsing.h \

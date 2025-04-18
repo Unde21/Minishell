@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 08:26:15 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 10:32:48 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 12:59:54 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	is_expand(t_args *args)
 	}
 }
 
-bool	expand_tokens(t_cmd *cmd)
+void	expand_tokens(t_cmd *cmd)
 {
 	t_cmd	*current_cmd;
 
@@ -46,5 +46,4 @@ bool	expand_tokens(t_cmd *cmd)
 		is_expand(current_cmd->args);
 		current_cmd = current_cmd->next;
 	}
-	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 10:58:16 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 16:08:40 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36
+# define ASCII_UNDERSCORE 95
 # define NO_QUOTE 0
 
 struct						s_cmd;
@@ -73,8 +74,10 @@ bool		parser(t_data *data, t_cmd *cmd);
 bool		add_special_operator_to_cmd(t_token *current, t_cmd *cmd);
 bool		fill_cmd_special_operator(t_token **current, t_cmd *current_cmd);
 
+//handle_expansion.c
+bool	handle_expansion(t_data *data, t_cmd *cmd);
 
 //expand.c
-bool		expand_tokens(t_cmd *current);
+void		expand_tokens(t_cmd *current);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 11:03:51 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/18 15:46:44 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO delete print_lst
+// TODO print_lst en debug
 #include <stdio.h>
 void	print_lst(t_token *token)
 {
