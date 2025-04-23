@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 10:51:23 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 14:21:03 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ bool	print_err(char *str_error);
 // TODO delete
 void	print_lst(t_token *token);
 void	print_lst_cmd(t_cmd *cmd);
+void	print_lst_cmd_expand(t_cmd *cmd);
 
 void	clear_token(t_token *lst);
 void	clear_cmd(t_cmd *cmd);

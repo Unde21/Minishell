@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 18:23:00 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 14:25:21 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,88 @@ void	print_lst_cmd(t_cmd *cmd)
 	ft_printf("       				|\n       				v\n");
 	ft_printf("\033[34m--------------------------------------------------------------------\033[0m\n\033[32mNULL\033[0m");
 	ft_printf("\n\033[34m--------------------------------------------------------------------\033[0m\n");
+}
+
+void	print_lst_cmd_expand(t_cmd *cmd)
+{
+	size_t	i;
+	t_redir	*current_redir;
+	
+	if (cmd == NULL)
+		return ;
+	printf("\n\n\n\033[35;43mPRINT PARSER WITH EXPAND:\033[0m\n\n");
+	while (cmd->next != NULL)
+	{
+		i = 0;
+		ft_printf("\033[33m--------------------------------------------------------------------\033[0m\n");
+		if (cmd->args != NULL)
+		{
+			while (cmd->args[i].content)
+			{
+				if (i == 0)
+					ft_printf("\033[35m%s\033[0m", cmd->args[i].content);
+				else
+					ft_printf("\n\033[35m%s\033[0m", cmd->args[i].content);
+				if (cmd->args[i].need_expand == true)
+					ft_printf("	\033[35mneed_expend: Yes\033[0m");
+				else
+					ft_printf("	\033[35mneed_expend: No\033[0m");
+				++i;
+			}
+			current_redir = cmd->redir;
+			while (current_redir != NULL)
+			{	
+				if (current_redir->type == 4)
+					ft_printf("\033[35m		REDIR: REDIR_IN	\033[0m");
+				else if (current_redir->type == 5)
+					ft_printf("\033[35m		REDIR: REDIR_OUT\033[0m");
+				else if (current_redir->type == 6)
+					ft_printf("\033[35m		REDIR: HERE_DOC	\033[0m");
+				else if (current_redir->type == 7)
+					ft_printf("\033[35m		REDIR: APPEND\033[0m");
+				ft_printf("		\033[35mFILE: %s\n\033[0m", current_redir->file);
+				current_redir = current_redir->next;
+			}
+		}
+		ft_printf("\n\033[33m--------------------------------------------------------------------\033[0m\n");
+		ft_printf("       				|\n      				v\n");
+		cmd = cmd->next;
+	}
+	ft_printf("\033[33m--------------------------------------------------------------------\033[0m\n");
+	i = 0;
+	if (cmd->args != NULL)
+	{
+		while (cmd->args[i].content)
+		{
+			if (i == 0)
+				ft_printf("\033[35m%s\033[0m", cmd->args[i].content);
+			else
+				ft_printf("\n\033[35m%s\033[0m", cmd->args[i].content);
+			if (cmd->args[i].need_expand == true)
+				ft_printf("	\033[35mneed_expend: Yes\033[0m");
+			else
+				ft_printf("	\033[35mneed_expend: No\033[0m");
+			++i;
+		}
+		current_redir = cmd->redir;
+		while (current_redir != NULL)
+		{
+			if (current_redir->type == 4)
+				ft_printf("\033[35m		REDIR: REDIR_IN	\033[0m");
+			else if (current_redir->type == 5)
+				ft_printf("\033[35m		REDIR: REDIR_OUT\033[0m");
+			else if (current_redir->type == 6)
+				ft_printf("\033[35m		REDIR: HERE_DOC	\033[0m");
+			else if (current_redir->type == 7)
+				ft_printf("\033[35m		REDIR: APPEND\033[0m");
+			ft_printf("	\033[35mFILE: %s\n\033[0m", current_redir->file);
+			current_redir = current_redir->next;
+		}
+	}
+	ft_printf("\n\033[33m--------------------------------------------------------------------\033[0m\n");
+	ft_printf("       				|\n       				v\n");
+	ft_printf("\033[33m--------------------------------------------------------------------\033[0m\n\033[35mNULL\033[0m");
+	ft_printf("\n\033[33m--------------------------------------------------------------------\033[0m\n");
 }
 
 int	wich_quote(char *input)

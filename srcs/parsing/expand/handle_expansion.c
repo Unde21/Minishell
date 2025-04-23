@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:08:21 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 18:42:12 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 14:16:20 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,15 @@ static int	get_len_content_expanded(char **env_value, char *str, char **env)
 	len_content = 0;
 	var_name = NULL;
 	i = 0;
+	ft_printf("str : %s\n", str);
 	while (str[i] && str[i] != ASCII_DOLLAR)
 		++i;
-	if (str[i] == '\0')
-		return (-1);
+	// if (str[i] == '\0')
+	// 	return (-1);
 	++i;
 	//TODO handle $? here if str[i + 1] == ? / else .... 
 	check_error = get_var_name(&str[i], &var_name);
-	ft_printf("len: %d\n", len_content);
+	// ft_printf("len: %d\n", len_content);
 	if (check_error != 0)
 		return (check_error);
 	j = 0;
@@ -153,9 +154,8 @@ static bool	replace_env_variables(t_data *data, t_args *args)
 		len_content = get_len_content_expanded(&env_value, args[i].content, data->env);
 		if (len_content == -1)
 		{
-			ft_printf("yes\n");
 			args->need_expand = false;
-			return (false);
+			return (true);
 		}
 		else if (len_content == -2)
 			return (false);
@@ -177,14 +177,12 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 
 	i = 0;
 	current_cmd = cmd;
-	(void)data;
 	while (current_cmd != NULL)
 	{
-		ft_printf("handle_expansion\n");
 		while (i < current_cmd->nb_args)
 		{
 			if (current_cmd->args[i].need_expand == true)
-				if (replace_env_variables(data, current_cmd->args) == false
+				if (replace_env_variables(data, &current_cmd->args[i]) == false
 					&& current_cmd->args[i].need_expand == true)
 						return (false);
 			++i;
