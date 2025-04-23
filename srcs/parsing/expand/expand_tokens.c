@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 08:26:15 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 12:59:54 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 16:12:28 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	is_expand(t_args *args)
 	size_t	j;
 
 	i = 0;
+	if (args == NULL)
+		return ;
 	while (args[i].content)
 	{
 		j = 0;

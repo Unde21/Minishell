@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 14:21:03 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 19:17:25 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
-	bool			need_expand;
+	// bool			need_expand; // a voir
 	struct s_redir	*next;
 }	t_redir;
 

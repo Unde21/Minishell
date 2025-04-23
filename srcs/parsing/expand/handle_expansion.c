@@ -6,165 +6,173 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:08:21 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 14:16:20 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/23 19:29:34 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-static	int	get_var_name(char *str, char **var_name)
+static char	*ft_strjoin_and_free(char *s1, char *s2)
+{
+	char	*join;
+	size_t	i;
+	size_t	len;
+	size_t	j;
+
+	i = 0;
+	len = ft_strlen(s1) + ft_strlen(s2);
+	join = malloc(sizeof(char) * (len + 1));
+	if (!join)
+		return (NULL);
+	while (s1[i])
+	{
+		join[i] = s1[i];
+		++i;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		join[i + j] = s2[j];
+		++j;
+	}
+	join[i + j] = '\0';
+	free(s1);
+	return (join);
+}
+
+static	char	*get_var_name(char *s)
 {
 	size_t	i;
 	size_t	len_var;
+	char	*var_name;
 
 	len_var = 0;
 	i = 0;
-	ft_printf("str: %s\n", str);
-	if (ft_isalpha(str[len_var]) == 0 && str[len_var] != ASCII_UNDERSCORE)
-		return (-1);
-	while (str[len_var])
+	while (s[len_var])
 	{ 
-		if (ft_isalpha(str[len_var]) == 0 && ft_isdigit(str[len_var]) == 0
-			&& str[len_var] != ASCII_UNDERSCORE)
+		if (ft_isalpha(s[len_var]) == 0 && ft_isdigit(s[len_var]) == 0
+			&& s[len_var] != ASCII_UNDERSCORE)
 			break ;
 		++len_var;
 	}
-	*var_name = malloc(sizeof(char) * (len_var + 1));
-	if (*var_name == NULL)
+	var_name = malloc(sizeof(char) * (len_var + 1));
+	if (var_name == NULL)
 	{
 		ft_dprintf(2, ERR_MALLOC);
-		return (-2);
+		return (NULL);
 	}
-	while (str[i] && i < len_var)
+	while (s[i] && i < len_var)
 	{
-		(*var_name)[i] = str[i];
+		var_name[i] = s[i];
 		++i;
 	}
-	ft_printf("var_name %s\n", *var_name);
-	return (0);
+	var_name[i] = '\0';
+	return (var_name);
 }
 
-static int	get_len_content_expanded(char **env_value, char *str, char **env)
+
+static	char	*get_env_value(char *var_name, char **env)
 {
+	char	*env_value;
 	size_t	i;
-	size_t	j;
-	int		len_content;
-	int		check_error;
-	char	*var_name;
-	char	*equal_sign;
 	
-	len_content = 0;
-	var_name = NULL;
 	i = 0;
-	ft_printf("str : %s\n", str);
-	while (str[i] && str[i] != ASCII_DOLLAR)
-		++i;
-	// if (str[i] == '\0')
-	// 	return (-1);
-	++i;
-	//TODO handle $? here if str[i + 1] == ? / else .... 
-	check_error = get_var_name(&str[i], &var_name);
-	// ft_printf("len: %d\n", len_content);
-	if (check_error != 0)
-		return (check_error);
-	j = 0;
-	// ft_printf("%s\n", env[j]);
-	// ft_printf("var_name : %s\n", var_name);
-	ft_printf("len _var %d\n", (int)ft_strlen(var_name));
-	while (env[j])
+	env_value = NULL;
+	while (env[i])
 	{
-		if (ft_strncmp(env[j], var_name, ft_strlen(var_name)) == 0
-			&& env[j][ft_strlen(var_name)] == '=')
+		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0
+			&& env[i][ft_strlen(var_name)] == '=')
 			break ;
-		++j;
-	}
-	if (env[j] == NULL)
-	{
-		free(var_name);
-		*env_value = ft_strdup("");
-		return (ft_strlen(str));
-	}
-	equal_sign = ft_strchr(env[j], '=');
-	if (equal_sign == NULL)
-	{
-		free(var_name);
-		return (-1);
-	}
-	++equal_sign;
-	*env_value = ft_strdup(equal_sign);
-	if (*env_value == NULL)
-	{
-		free(var_name);
-		ft_dprintf(2, ERR_MALLOC);
-		return (-1);
-	}
-	while (str[i])
 		++i;
-	len_content = ft_strlen(str) - ft_strlen(var_name) - 1 + ft_strlen(*env_value);
-	free(var_name);
-	return (len_content);
+	}
+	if (env[i] == NULL)
+		return (ft_strdup(""));
+	env_value = ft_strdup(ft_strchr(env[i], '=') + 1);
+	return (env_value);
 }
 
-static bool	expand(char *env_value, char *str, int len_content)
+static char	*expand(char *s, char **env)
 {
-	char	*str_cpy;
+	char	*expanded;
+	char	*var_name;
+	char	*env_value;
+	char	tmp[2];
 	size_t	i;
-	size_t	len_env;
 
-	len_env = 0;
+	expanded = ft_calloc(sizeof(char), 1);
+	if (expanded == NULL)
+	{
+		ft_dprintf(2, ERR_MALLOC);
+		return (NULL);
+	}
 	i = 0;
-	str_cpy = ft_strdup(str);
-	if (str_cpy == NULL)
+	while (s[i])
 	{
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
-	}
-	free(str);
-	str = malloc(sizeof(char) * (len_content + 1));
-	if (str == NULL)
-	{
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
-	}
-	while (str_cpy[i])
-	{
-		if (str_cpy[i] == ASCII_DOLLAR)
+		if (s[i] == ASCII_DOLLAR && wich_quote(&s[i]) != ASCII_SNGL_QUOTE)
 		{
-			len_env = ft_strlcpy(&str[i], env_value, ft_strlen(env_value));
+			++i;
+			var_name = get_var_name(&s[i]);
+			if (var_name == NULL)
+			{
+				free(expanded);
+				free(var_name);
+				ft_dprintf(2, ERR_MALLOC);
+				return (NULL);
+			}
+			env_value = get_env_value(var_name, env);
+			if (env_value == NULL)
+			{
+				free(var_name);
+				free(env_value);
+				ft_dprintf(2, ERR_MALLOC);
+				return (NULL);
+			}
+			expanded = ft_strjoin_and_free(expanded,  env_value);
+			if (expanded == NULL)
+			{
+				free(var_name);
+				free(env_value);
+				ft_dprintf(2, ERR_MALLOC);
+				return (NULL);
+			}
+			i += ft_strlen(var_name);
+			free(var_name);
+			free(env_value);
 		}
-		else if (str_cpy[i] != ASCII_DBLE_QUOTE)
-			str[i + len_env] = str_cpy[i];
-		++i;
+		else
+		{
+			tmp[0] = s[i];
+			tmp[1] = '\0';
+			expanded = ft_strjoin_and_free(expanded, tmp);
+			if (expanded == NULL)
+			{
+				free(var_name);
+				free(env_value);
+				ft_dprintf(2, ERR_MALLOC);
+				return (NULL);
+			}
+			++i;
+		}
 	}
-	return (true);
+	free(s);
+	return (expanded);
 }
 
 static bool	replace_env_variables(t_data *data, t_args *args)
 {
 	size_t	i;
 	int		len_content;
-	char	*env_value;
 	
-	env_value = NULL;
 	len_content = 0;
 	i = 0;
 	while (args[i].content)
 	{
-		len_content = get_len_content_expanded(&env_value, args[i].content, data->env);
-		if (len_content == -1)
+		args[i].content = expand(args[i].content, data->env);
+		if (args[i].content == NULL)
 		{
-			args->need_expand = false;
-			return (true);
-		}
-		else if (len_content == -2)
-			return (false);
-		if (expand(env_value, args[i].content, len_content) == false)
-		{
-			free(env_value);
 			return (false);
 		}
-		free(env_value);
 		++i;
 	}
 	return (true);
