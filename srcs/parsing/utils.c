@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 17:42:01 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 16:37:25 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,7 @@ int	wich_quote(char *input)
 	i = 0;
 	while(input[i])
 	{
-		if (input[i] == ASCII_DOLLAR)	
-			++i;
-		else if (input[i] == (char)ASCII_DBLE_QUOTE)
+		if (input[i] == (char)ASCII_DBLE_QUOTE)
 			return (ASCII_DBLE_QUOTE);
 		else if (input[i] == (char)ASCII_SNGL_QUOTE)
 			return (ASCII_SNGL_QUOTE);

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:17:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 19:55:28 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 21:39:04 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static bool	is_special_operator(char input, int is_quote)
 
 static int	save_quote(char input)
 {
-	int	is_quote; 
-	
+	int	is_quote;
+
 	is_quote = NO_QUOTE;
 	if (input == ASCII_DBLE_QUOTE)
 		is_quote = ASCII_DBLE_QUOTE;
@@ -42,12 +42,14 @@ static size_t	get_word_size(char *input, int is_quote)
 	count_quote = 0;
 	word_size = 0;
 	skip_quote_dollar(&input, is_quote, &word_size, &count_quote);
-	while ((ft_isspace(*input) == false && *input != '\0' && save_quote(*input) == NO_QUOTE && is_quote == NO_QUOTE) || (is_quote != NO_QUOTE && *input != '\0' && count_quote < 2))
+	while ((ft_isspace(*input) == false && *input != '\0'
+			&& save_quote(*input) == NO_QUOTE && is_quote == NO_QUOTE)
+		|| (is_quote != NO_QUOTE && *input != '\0' && count_quote < 2))
 	{
 		if (is_special_operator(*input, is_quote) == true)
 			break ;
 		++word_size;
-		if (*input == ASCII_DBLE_QUOTE || *input == ASCII_SNGL_QUOTE)
+		if (*input == is_quote)
 			++count_quote;
 		++input;
 	}
@@ -77,6 +79,17 @@ static char	*extract_word(char *input, size_t word_size)
 
 static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 {
+	// invalid read of size 1 si input = \t 
+	if (word_size == 1 && check_quote != NO_QUOTE)
+	{
+		print_err(MISS_DBLE_QUOTE);
+		return (true);
+	}
+	else if (word_size == 1 && check_quote != NO_QUOTE)
+	{
+		print_err(MISS_SNGL_QUOTE);
+		return (true);
+	}
 	if ((word[word_size - 1] != ASCII_DBLE_QUOTE
 			&& check_quote == ASCII_DBLE_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_DBLE_QUOTE))
@@ -91,27 +104,16 @@ static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 		print_err(MISS_SNGL_QUOTE);
 		return (true);
 	}
-	if (word_size == 1 && check_quote != NO_QUOTE)
-	{
-		print_err(MISS_DBLE_QUOTE);
-		return (true);
-	}
-	else if (word_size == 1 && check_quote != NO_QUOTE)
-	{
-		print_err(MISS_SNGL_QUOTE);
-		return (true);
-	}
 	return (false);
 }
-
 
 size_t	handle_word(char *input, t_token **new, bool *error)
 {
 	size_t	word_size;
 	char	*word;
-	int		is_quote = 0;
+	int		is_quote;
 
-	// is_quote = wich_quote(input);
+	is_quote = 0;
 	is_quote = save_quote(*input);
 	word_size = get_word_size(input, is_quote);
 	word = extract_word(input, word_size);
@@ -121,7 +123,6 @@ size_t	handle_word(char *input, t_token **new, bool *error)
 		free(word);
 		return (ft_strlen(input));
 	}
-	error = false; // nop
 	if (is_quote == ASCII_DBLE_QUOTE)
 		*new = new_token(word, DBLE_QUOTE);
 	else if (is_quote == ASCII_SNGL_QUOTE)

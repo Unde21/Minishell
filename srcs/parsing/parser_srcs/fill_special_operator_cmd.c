@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 23:01:49 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/17 13:27:53 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 18:23:07 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	fill_cmd_special_operator(t_token **current, t_cmd *current_cmd)
 		if (new_redir == NULL)
 			return (print_err(ERR_MALLOC));
 		new_redir->type = type;
-		new_redir->file = ft_strdup((*current)->content); //BUG if malloc set NULL
+		new_redir->file = ft_strdup((*current)->content);
 		if (new_redir->file == NULL)
 		{
 			free(new_redir);

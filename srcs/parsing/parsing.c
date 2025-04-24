@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 08:46:37 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 18:25:53 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 18:19:43 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,3 @@ void	parsing(t_data *data)
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
 }
-

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:10:18 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/11 23:50:28 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 19:58:22 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	get_input(t_data *data)
 	char	*str;
 	char	*path;
 
-	//TODO Voir ce qu on met ! 
+	//TODO Voir ce qu on met !
 	path = getcwd(NULL, 0);
 	str = ft_strjoin(path, "$ ");
 	free(path);

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 16:12:53 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 18:25:30 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@ bool	init_cmd_args(t_cmd *cmd)
 		print_err(ERR_MALLOC);
 		return (false);
 	}
-	// cmd->args->need_expand = malloc(sizeof(bool) * (cmd->nb_args + 1));
-	// if (cmd->args->need_expand == NULL)
-	// {
-	// 	print_err(ERR_MALLOC);
-	// 	return (false);
-	// }
 	cmd->args->need_expand = false;
 	if (cmd->nb_args == 0)
 		cmd->args = NULL;

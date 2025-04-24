@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 08:26:15 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 16:12:28 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 20:06:22 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ static void	is_expand(t_args *args)
 	while (args[i].content)
 	{
 		j = 0;
+		args[i].need_expand = false;
 		if (args[i].content[j] == ASCII_SNGL_QUOTE)
-				args[i].is_quote = false;
+			args[i].is_quote = false;
 		else
 			args[i].is_quote = true;
 		while (args[i].content[j])
 		{
-			if (args[i].content[j] == ASCII_DOLLAR
-				&& args[i].is_quote == true)
+			if (args[i].content[j] == ASCII_DOLLAR && args[i].is_quote == true)
 				args[i].need_expand = true;
 			++j;
 		}

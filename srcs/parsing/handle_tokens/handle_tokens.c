@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 10:19:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:32:07 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 19:59:33 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ bool	handle_token(char *input, t_token_lst *tokens, t_token *current)
 			input += handle_word(input, &current, &error);
 		if (error != true)
 			save_head_and_tail_lst(tokens, current);
-		while (*input == ' ')
+		while (ft_isspace(*input) == true)
 			++input;
 	}
 	if (error == true)

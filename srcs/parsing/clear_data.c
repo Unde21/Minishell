@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 18:24:52 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/18 09:12:14 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 18:20:28 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	clear_args(t_cmd *cmd)
 	}
 	free(cmd->args);
 }
+
 void	clear_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;

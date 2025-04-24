@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:08:21 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 19:29:34 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/24 18:26:44 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,19 @@ static char	*ft_strjoin_and_free(char *s1, char *s2)
 	return (join);
 }
 
-static	char	*get_var_name(char *s)
+static char	*get_var_name(char *s)
 {
 	size_t	i;
-	size_t	len_var;
+	int		len_var;
 	char	*var_name;
 
-	len_var = 0;
+	len_var = -1;
 	i = 0;
-	while (s[len_var])
-	{ 
+	while (s[++len_var])
+	{
 		if (ft_isalpha(s[len_var]) == 0 && ft_isdigit(s[len_var]) == 0
 			&& s[len_var] != ASCII_UNDERSCORE)
 			break ;
-		++len_var;
 	}
 	var_name = malloc(sizeof(char) * (len_var + 1));
 	if (var_name == NULL)
@@ -62,7 +61,7 @@ static	char	*get_var_name(char *s)
 		ft_dprintf(2, ERR_MALLOC);
 		return (NULL);
 	}
-	while (s[i] && i < len_var)
+	while (s[i] && (int)i < len_var)
 	{
 		var_name[i] = s[i];
 		++i;
@@ -71,12 +70,11 @@ static	char	*get_var_name(char *s)
 	return (var_name);
 }
 
-
-static	char	*get_env_value(char *var_name, char **env)
+static char	*get_env_value(char *var_name, char **env)
 {
 	char	*env_value;
 	size_t	i;
-	
+
 	i = 0;
 	env_value = NULL;
 	while (env[i])
@@ -92,67 +90,62 @@ static	char	*get_env_value(char *var_name, char **env)
 	return (env_value);
 }
 
-static char	*expand(char *s, char **env)
+static void	join_with_expand(char **env, char **expanded, char *s, size_t *i)
 {
-	char	*expanded;
 	char	*var_name;
 	char	*env_value;
+
+	++(*i);
+	var_name = get_var_name(&s[*i]);
+	if (var_name == NULL)
+	{
+		free(*expanded);
+		free(var_name);
+		ft_dprintf(2, ERR_MALLOC);
+		return ;
+	}
+	env_value = get_env_value(var_name, env);
+	if (env_value == NULL)
+	{
+		free(var_name);
+		free(env_value);
+		ft_dprintf(2, ERR_MALLOC);
+		return ;
+	}
+	*expanded = ft_strjoin_and_free(*expanded, env_value);
+	*i += ft_strlen(var_name);
+	free(var_name);
+	free(env_value);
+}
+
+static void	join_without_expand(char **expanded, char c, size_t *i)
+{
 	char	tmp[2];
+
+	tmp[0] = c;
+	tmp[1] = '\0';
+	*expanded = ft_strjoin_and_free(*expanded, tmp);
+	++(*i);
+}
+
+static char	*expand(char *s, char **env, char *expanded)
+{
 	size_t	i;
 
-	expanded = ft_calloc(sizeof(char), 1);
-	if (expanded == NULL)
-	{
-		ft_dprintf(2, ERR_MALLOC);
-		return (NULL);
-	}
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == ASCII_DOLLAR && wich_quote(&s[i]) != ASCII_SNGL_QUOTE)
+		if (s[i] == ASCII_DOLLAR && wich_quote(&s[i]) != ASCII_SNGL_QUOTE
+			&& s[i + 1] != ASCII_DOLLAR)
 		{
-			++i;
-			var_name = get_var_name(&s[i]);
-			if (var_name == NULL)
-			{
-				free(expanded);
-				free(var_name);
-				ft_dprintf(2, ERR_MALLOC);
-				return (NULL);
-			}
-			env_value = get_env_value(var_name, env);
-			if (env_value == NULL)
-			{
-				free(var_name);
-				free(env_value);
-				ft_dprintf(2, ERR_MALLOC);
-				return (NULL);
-			}
-			expanded = ft_strjoin_and_free(expanded,  env_value);
-			if (expanded == NULL)
-			{
-				free(var_name);
-				free(env_value);
-				ft_dprintf(2, ERR_MALLOC);
-				return (NULL);
-			}
-			i += ft_strlen(var_name);
-			free(var_name);
-			free(env_value);
+			join_with_expand(env, &expanded, s, &i);
 		}
 		else
+			join_without_expand(&expanded, s[i], &i);
+		if (expanded == NULL)
 		{
-			tmp[0] = s[i];
-			tmp[1] = '\0';
-			expanded = ft_strjoin_and_free(expanded, tmp);
-			if (expanded == NULL)
-			{
-				free(var_name);
-				free(env_value);
-				ft_dprintf(2, ERR_MALLOC);
-				return (NULL);
-			}
-			++i;
+			ft_dprintf(2, ERR_MALLOC);
+			return (NULL);
 		}
 	}
 	free(s);
@@ -161,19 +154,18 @@ static char	*expand(char *s, char **env)
 
 static bool	replace_env_variables(t_data *data, t_args *args)
 {
-	size_t	i;
-	int		len_content;
-	
-	len_content = 0;
-	i = 0;
-	while (args[i].content)
+	char	*expanded;
+
+	expanded = ft_calloc(sizeof(char), 1);
+	if (expanded == NULL)
 	{
-		args[i].content = expand(args[i].content, data->env);
-		if (args[i].content == NULL)
-		{
-			return (false);
-		}
-		++i;
+		ft_dprintf(2, ERR_MALLOC);
+		return (NULL);
+	}
+	args->content = expand(args->content, data->env, expanded);
+	if (args->content == NULL)
+	{
+		return (false);
 	}
 	return (true);
 }
@@ -187,12 +179,13 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 	current_cmd = cmd;
 	while (current_cmd != NULL)
 	{
+		i = 0;
 		while (i < current_cmd->nb_args)
 		{
 			if (current_cmd->args[i].need_expand == true)
 				if (replace_env_variables(data, &current_cmd->args[i]) == false
 					&& current_cmd->args[i].need_expand == true)
-						return (false);
+					return (false);
 			++i;
 		}
 		current_cmd = current_cmd->next;
