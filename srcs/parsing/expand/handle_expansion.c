@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:08:21 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 18:26:44 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/29 16:43:19 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ static char	*expand(char *s, char **env, char *expanded)
 	while (s[i])
 	{
 		if (s[i] == ASCII_DOLLAR && wich_quote(&s[i]) != ASCII_SNGL_QUOTE
-			&& s[i + 1] != ASCII_DOLLAR)
+			&& s[i + 1] != ASCII_DOLLAR && s[i + 1] != '\0')
 		{
 			join_with_expand(env, &expanded, s, &i);
 		}
