@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 08:26:15 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 20:06:22 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/29 15:20:24 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,3 +49,4 @@ void	expand_tokens(t_cmd *cmd)
 		current_cmd = current_cmd->next;
 	}
 }
+
