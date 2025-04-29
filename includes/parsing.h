@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 18:26:05 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/29 18:35:35 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ bool		get_cmd_args(t_token *current, t_cmd *cmd);
 bool		is_redir_type(t_token_type type);
 void		skip_quote_dollar(char **input, int is_quote, size_t *word_size,
 				int *count_quote);
+char		*ft_strjoin_and_free(char *s1, char *s2);
 
 //parser.c
 bool		parser(t_data *data, t_cmd *cmd);
@@ -79,5 +80,9 @@ bool		handle_expansion(t_data *data, t_cmd *cmd);
 
 //expand.c
 void		expand_tokens(t_cmd *current);
+
+//expand_utils.c 
+char		*get_var_name(char *s);
+char		*get_env_value(char *var_name, char **env);
 
 #endif

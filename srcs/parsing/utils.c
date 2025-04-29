@@ -6,11 +6,12 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 09:34:25 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 16:37:25 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/29 17:03:33 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 // TODO print_lst en debug
 #include <stdio.h>
@@ -180,4 +181,32 @@ void	skip_quote_dollar(char **input, int is_quote, size_t *word_size, int *count
 		++(*input);
 		++(*word_size);
 	}
+}
+
+char	*ft_strjoin_and_free(char *s1, char *s2)
+{
+	char	*join;
+	size_t	i;
+	size_t	len;
+	size_t	j;
+
+	i = 0;
+	len = ft_strlen(s1) + ft_strlen(s2);
+	join = malloc(sizeof(char) * (len + 1));
+	if (!join)
+		return (NULL);
+	while (s1[i])
+	{
+		join[i] = s1[i];
+		++i;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		join[i + j] = s2[j];
+		++j;
+	}
+	join[i + j] = '\0';
+	free(s1);
+	return (join);
 }

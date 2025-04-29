@@ -14,6 +14,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/clear_data.c \
 	srcs/parsing/expand/expand_tokens.c \
 	srcs/parsing/expand/handle_expansion.c \
+	srcs/parsing/expand/expand_utils.c \
 	
 HEADER := includes/minishell.h \
 		includes/parsing.h \
