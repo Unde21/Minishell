@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 23:01:49 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 18:23:07 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/30 16:41:47 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	fill_cmd_special_operator(t_token **current, t_cmd *current_cmd)
 		type = (*current)->type;
 		*current = (*current)->next;
 		if (*current == NULL)
-			return (print_err(ERR_MALLOC));
+			return (print_err(ERR_NO_FILE));
 		new_redir = malloc(sizeof(t_redir));
 		if (new_redir == NULL)
 			return (print_err(ERR_MALLOC));

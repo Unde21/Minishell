@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/29 18:35:35 by samaouch         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -21,7 +9,7 @@
 # define MISS_DBLE_QUOTE "syntax error: missing closing double quote\n"
 # define MISS_SNGL_QUOTE "syntax error: missing closing single quote\n"
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"
-# define ERR_PIPE_FIRST "syntax error near unexpected token `|'\n"
+# define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39

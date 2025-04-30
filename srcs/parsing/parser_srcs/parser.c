@@ -1,22 +1,31 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 22:49:38 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/15 18:57:54 by samaouch         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+static bool	check_error(t_token *current)
+{
+	t_token *tmp;
+
+	tmp = current->next;
+	while (current->next != NULL)
+	{
+		if ((is_redir_type(current->type) && is_redir_type(tmp->type))
+			|| (is_redir_type(current->type) && tmp->type == PIPE))
+			return (false);
+		current = current->next;
+		tmp = tmp->next;
+	}
+	return (true);
+}
 
 //TODO -> handle free if error... mb change this function to booleen function
 bool	parser(t_data *data, t_cmd *cmd)
 {
 	if (data->token_lst == NULL || data->token_lst->head == NULL)
 		return (false);
+	if (check_error(data->token_lst->head) == false)
+	{
+		ft_dprintf(2, ERR_NO_FILE);
+		return (false);
+	}
 	if (get_cmd_args(data->token_lst->head, cmd) == false)
 		return (false);
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 22:51:01 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/23 17:36:15 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/04/30 16:53:55 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ bool	get_cmd_args(t_token *current, t_cmd *cmd)
 
 	current_cmd = cmd;
 	if (current->type == PIPE)
-		return (print_err(ERR_PIPE_FIRST));
+		return (print_err(ERR_PIPE));
 	while (current != NULL)
 	{
 		get_cmd_nb_arg(current, current_cmd);
@@ -92,6 +92,8 @@ bool	get_cmd_args(t_token *current, t_cmd *cmd)
 		if (current != NULL && current->type == PIPE)
 		{
 			current = current->next;
+			if (current == NULL)
+				return (print_err(ERR_PIPE));
 			if (current->type == PIPE)
 				return (print_err(ERR_MULTIPLE_PIPE));
 			if (current != NULL)
