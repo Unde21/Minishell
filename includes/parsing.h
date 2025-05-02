@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 18:26:05 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/02 13:18:27 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
+# include "exec.h"
 # include "minishell.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <stdbool.h>
 
 # define ERR_MALLOC "malloc failed\n"
 # define MISS_DBLE_QUOTE "syntax error: missing closing double quote\n"
@@ -29,11 +31,11 @@
 # define ASCII_UNDERSCORE 95
 # define NO_QUOTE 0
 
-struct						s_cmd;
-struct						s_data;
-struct						s_token;
-struct						s_token_lst;
-enum						e_token_type;
+struct s_cmd;
+struct s_data;
+struct s_token;
+struct s_token_lst;
+enum e_token_type;
 
 typedef struct s_cmd		t_cmd;
 typedef struct s_data		t_data;
@@ -42,42 +44,46 @@ typedef struct s_token_lst	t_token_lst;
 typedef enum e_token_type	t_token_type;
 
 // parsing.c
-void		get_input(t_data *data);
-void		parsing(t_data *data);
+void						get_input(t_data *data);
+void						parsing(t_data *data);
 
 // handle_token.c
-t_token		*new_token(char *content, t_token_type type);
-bool		handle_token(char *input, t_token_lst *tokens, t_token *current);
+t_token						*new_token(char *content, t_token_type type);
+bool						handle_token(char *input, t_token_lst *tokens,
+								t_token *current);
 
 // handle_word.c
-size_t		handle_word(char *input, t_token **new, bool *error);
+size_t						handle_word(char *input, t_token **new,
+								bool *error);
 
 // create_node_for_token.c
-size_t		new_node_pipes(t_token **new);
-size_t		new_node_redir_out(t_token **new);
-size_t		new_node_redir_in(t_token **new);
-size_t		new_node_here_doc(t_token **new);
-size_t		new_node_append(t_token **new);
+size_t						new_node_pipes(t_token **new);
+size_t						new_node_redir_out(t_token **new);
+size_t						new_node_redir_in(t_token **new);
+size_t						new_node_here_doc(t_token **new);
+size_t						new_node_append(t_token **new);
 
-//fill_cmd_lst.c
-bool		get_cmd_args(t_token *current, t_cmd *cmd);
+// fill_cmd_lst.c
+bool						get_cmd_args(t_token *current, t_cmd *cmd);
 
-//utils.c
-bool		is_redir_type(t_token_type type);
-void		skip_quote_dollar(char **input, int is_quote, size_t *word_size,
-				int *count_quote);
+// utils.c
+bool						is_redir_type(t_token_type type);
+void						skip_quote_dollar(char **input, int is_quote,
+								size_t *word_size, int *count_quote);
 
-//parser.c
-bool		parser(t_data *data, t_cmd *cmd);
+// parser.c
+bool						parser(t_data *data, t_cmd *cmd);
 
-//fill_special_operator_cmd.c
-bool		add_special_operator_to_cmd(t_token *current, t_cmd *cmd);
-bool		fill_cmd_special_operator(t_token **current, t_cmd *current_cmd);
+// fill_special_operator_cmd.c
+bool						add_special_operator_to_cmd(t_token *current,
+								t_cmd *cmd);
+bool						fill_cmd_special_operator(t_token **current,
+								t_cmd *current_cmd);
 
-//handle_expansion.c
-bool		handle_expansion(t_data *data, t_cmd *cmd);
+// handle_expansion.c
+bool						handle_expansion(t_data *data, t_cmd *cmd);
 
-//expand.c
-void		expand_tokens(t_cmd *current);
+// expand.c
+void						expand_tokens(t_cmd *current);
 
 #endif

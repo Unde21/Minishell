@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 08:46:37 by samaouch          #+#    #+#             */
-/*   Updated: 2025/04/24 18:19:43 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/02 18:53:05 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	parsing(t_data *data)
 		free(data->token_lst);
 		return ;
 	}
-	print_lst(data->token_lst->head);
+	// print_lst(data->token_lst->head);
 	if (parser(data, data->cmd) == false)
 	{
 		clear_cmd(data->cmd);
@@ -31,14 +31,17 @@ void	parsing(t_data *data)
 		return ;
 	}
 	expand_tokens(data->cmd);
-	print_lst_cmd(data->cmd);
+	// print_lst_cmd(data->cmd);
 	if (handle_expansion(data, data->cmd) == false)
 	{
 		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);
 		return ;
 	}
-	print_lst_cmd_expand(data->cmd);
+	// print_lst_cmd_expand(data->cmd);
+	init_listed_env(data);
+	// print_list(data);
+	free_listed_env(data);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
