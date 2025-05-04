@@ -12,7 +12,7 @@ void	free_listed_env(t_data *data)
 		if (data->listed_env->key != NULL || data->listed_env->value != NULL)
 		{
 			free(data->listed_env->key);
-			free(data->listed_env->value);
+			// free(data->listed_env->value);
 		}
 		free(data->listed_env);
 		data->listed_env = tmp;
@@ -45,7 +45,7 @@ t_env	*create_node(t_data *data, int i)
 	if (!next_node)
 		return (next_node);
 	next_node->key = get_key(data->env[i]);
-	next_node->value = get_value(data->env[i]);
+	next_node->value = getenv(next_node->key); // get_value(data->env[i]);
 	next_node->full_line = data->env[i];
 	next_node->next = NULL;
 	return (next_node);

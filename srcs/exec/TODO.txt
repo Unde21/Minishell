@@ -1,0 +1,10 @@
+#TODO :
+    -04/05/2025 :
+        -gestion des childs / parents.
+
+#DONE :
+    -02/045/2025 :
+        -mise en liste chainer de l'environement(**envp)
+            | key = entete ( ex : "PATH=" "USER=") value = contenue de l'entete ( ex : "/home/erbuffet/bin:" "erbuffet")
+    -04/05/2025 :
+        -

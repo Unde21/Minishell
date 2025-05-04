@@ -37,9 +37,6 @@ char	*get_value(char *env)
 	while (env[i++])
 		end++;
 	start += 1;
-	// printf("%s\n", env);
-	// printf("%d || %d \n", start, end);
-	// printf("%c\n", env[start]);
 	i = 0;
 	value = malloc(end + 1);
 	if (!value)

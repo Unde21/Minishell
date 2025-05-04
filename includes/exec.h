@@ -6,6 +6,8 @@ typedef struct s_env	t_env;
 # include "minishell.h"
 # include "parsing.h"
 # include <stdlib.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 //// init ////
 void					init_listed_env(t_data *data);
