@@ -67,7 +67,7 @@ DONE := "🏁"
 
 all: $(NAME)
 
-$(NAME): libft/libft.a $(OBJS) Makefile
+$(NAME): libft/libft.a $(OBJS) Makefile reset_debug
 	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) -DDEBUG_VALUE=$(DEBUG_VALUE) ./libft/libft.a -o $@
 	@echo -e "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
 
@@ -105,9 +105,9 @@ debug:
 	echo -e "$(CYAN)$(BOLD)DEBUG_VALUE = $$value$(END)"
 	$(DEBUGFLAGS) ./$(NAME)
 
-reset:
+reset_debug:
 	@-DDEBUG_VALUE=0
-	@echo -e "$(YELLOW)$(BOLD) $(CHECKMARK) Reset DEBUG_VALUE successful ! $(CHECKMARK)$(END)"
+	@echo -e "$(CYAN)$(BOLD)DEBUG_VALUE = $(DEBUG_VALUE) !$(END)"
 	@touch includes/debug.h;\
 
 $(OBJ_DIR):
