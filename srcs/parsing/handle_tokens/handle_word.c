@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 static bool	is_special_operator(char input, int is_quote)

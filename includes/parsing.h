@@ -30,7 +30,6 @@ typedef struct s_token_lst	t_token_lst;
 typedef enum e_token_type	t_token_type;
 
 // parsing.c
-void		get_input(t_data *data);
 void		parsing(t_data *data);
 
 // handle_token.c

@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 static void	add_new_redir_back(t_cmd *current_cmd, t_redir *new_redir)

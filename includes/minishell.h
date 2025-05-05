@@ -2,8 +2,6 @@
 # define MINISHELL_H
 
 # include "libft.h"
-# include "parsing.h"
-# include "debug.h"
 # include <stdio.h>
 
 typedef enum e_token_type
@@ -81,4 +79,5 @@ void	clear_cmd(t_cmd *cmd);
 void	free_all(char **str);
 int		wich_quote(char *input);
 
+void		get_input(t_data *data);
 #endif

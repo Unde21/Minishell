@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 static void	join_with_expand(char **env, char **expanded, char *s, size_t *i)

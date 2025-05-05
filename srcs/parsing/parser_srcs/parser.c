@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 
 static bool	check_error(t_token *current)
 {
@@ -16,7 +17,6 @@ static bool	check_error(t_token *current)
 	return (true);
 }
 
-//TODO -> handle free if error... mb change this function to booleen function
 bool	parser(t_data *data, t_cmd *cmd)
 {
 	if (data->token_lst == NULL || data->token_lst->head == NULL)

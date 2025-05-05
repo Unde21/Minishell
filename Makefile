@@ -26,6 +26,10 @@ HEADER := includes/minishell.h \
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g3
 CPPFFLAGS := -MMD -MP
+DEBUGFLAGS := valgrind --leak-check=full  --trace-children=yes --track-fds=yes
+DEBUG_VALUE ?= 0
+CFLAGS += -DDEBUG_VALUE=$(DEBUG_VALUE)
+SHELL = /bin/bash
 
 RM := rm -rf
 
@@ -35,6 +39,7 @@ DEPS := $(OBJS:.o=.d)
 INCS := -I./includes -I./libft
 
 OBJS := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
+DEPS:= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.d,$(SRCS))
 
 BOLD := \033[1m
 GREEN := \033[0;32m
@@ -52,26 +57,58 @@ OK := "✅"
 CLEAN := "🧹"
 BUILD := "🛠️"
 SUCCESS := "🎉"
+FINGER := "👉​"
+FINGER_LEFT := "👈​"
 DONE := "🏁"
+
+.DEFAULT_GOAL=all
 
 -include $(DEPS)
 
 all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJS) Makefile
-	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) ./libft/libft.a -o $@
-	@echo "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
+	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) -DDEBUG_VALUE=$(DEBUG_VALUE) ./libft/libft.a -o $@
+	@echo -e "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
 
-
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(dir $@)
-	@echo "$(BUILD)$(GREEN)$(BOLD) [Compiling]$(END) $<"
+	@echo -e "$(BUILD)$(GREEN)$(BOLD) [Compiling]$(END) $<"
 	@$(CC) $(CFLAGS) $(INCS) $(CPPFFLAGS) -c -o $@ $<
 
 libft/libft.a : FORCE
 	@$(MAKE) --no-print-directory -C libft
 
-FORCE: 
+FORCE:
+
+debug:
+	@echo -e "$(YELLOW)$(BOLD)$(FINGER) Wich debug level ? $(FINGER_LEFT)$(END)\
+	\n\n $(CYAN)$(BOLD)1- $(END)Tokenizer\n \
+	$(CYAN)$(BOLD)2- $(END)Parser\n \
+	$(CYAN)$(BOLD)3- $(END)Expand\n \
+	$(CYAN)$(BOLD)4- $(END)???????\n \
+	$(CYAN)$(BOLD)5- $(END)All\n"
+	@read -n 1 value; \
+	echo -e ""; \
+	while ! echo "$$value" | grep -Eq '^[0-9]+$$'; do \
+		echo -e "$(RED)$(BOLD)$(WARNING) Input must be a number [0-9] $(WARNING)$(END)\
+		\n\n $(CYAN)$(BOLD)1- $(END)Tokenizer\n \
+	$(CYAN)$(BOLD)2- $(END)Parser\n \
+	$(CYAN)$(BOLD)3- $(END)Expand\n \
+	$(CYAN)$(BOLD)4- $(END)???????\n \
+	$(CYAN)$(BOLD)5- $(END)All\n"; \
+		read -n 1 value; \
+		echo -e ""; \
+	done;\
+	touch includes/debug.h; \
+	$(MAKE) --no-print-directory DEBUG_VALUE=$$value; \
+	echo -e "$(CYAN)$(BOLD)DEBUG_VALUE = $$value$(END)"
+	$(DEBUGFLAGS) ./$(NAME)
+
+reset:
+	@-DDEBUG_VALUE=0
+	@echo -e "$(YELLOW)$(BOLD) $(CHECKMARK) Reset DEBUG_VALUE successful ! $(CHECKMARK)$(END)"
+	@touch includes/debug.h;\
 
 $(OBJ_DIR):
 	@mkdir -p $@
@@ -79,12 +116,12 @@ $(OBJ_DIR):
 clean:
 	@$(RM) $(OBJ_DIR)
 	@$(MAKE) --no-print-directory -C libft clean
-	@echo "$(YELLOW)$(BOLD)$(CLEAN)Clean up...$(END)"
+	@echo -e "$(YELLOW)$(BOLD)$(CLEAN)Clean up...$(END)"
 
 fclean: clean
 	@$(RM) $(NAME)
 	@$(MAKE) --no-print-directory -C libft fclean
-	@echo "$(YELLOW)$(BOLD)$(CLEAN)Everything is clean !$(DONE)$(END)"
+	@echo -e "$(YELLOW)$(BOLD)$(CLEAN)Everything is clean !$(DONE)$(END)"
 
 re: fclean all
 

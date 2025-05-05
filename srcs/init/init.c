@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 void	init_data(t_data *data, int ac, char **av, char **env)

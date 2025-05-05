@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 int	wich_quote(char *input)

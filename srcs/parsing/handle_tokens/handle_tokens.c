@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 t_token	*new_token(char *content, t_token_type type)

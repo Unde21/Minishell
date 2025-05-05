@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 static void	get_cmd_nb_arg(t_token *current, t_cmd *cmd)
