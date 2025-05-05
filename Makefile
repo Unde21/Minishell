@@ -15,9 +15,13 @@ SRCS := srcs/main.c \
 	srcs/parsing/expand/expand_tokens.c \
 	srcs/parsing/expand/handle_expansion.c \
 	srcs/parsing/expand/expand_utils.c \
+	srcs/debug/print_tokenizer.c \
+	srcs/debug/print_parser.c \
+	srcs/debug/print_expand.c \
 	
 HEADER := includes/minishell.h \
 		includes/parsing.h \
+		includes/debug.h \
 		libft/libft.h
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g3

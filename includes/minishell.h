@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include "parsing.h"
+# include "debug.h"
 # include <stdio.h>
 
 typedef enum e_token_type
@@ -35,7 +36,6 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
-	// bool			need_expand; // a voir
 	struct s_redir	*next;
 }	t_redir;
 
@@ -75,11 +75,6 @@ bool	init_cmd_args(t_cmd *cmd);
 
 // utils.c
 bool	print_err(char *str_error);
-
-// TODO delete
-void	print_lst(t_token *token);
-void	print_lst_cmd(t_cmd *cmd);
-void	print_lst_cmd_expand(t_cmd *cmd);
 
 void	clear_token(t_token *lst);
 void	clear_cmd(t_cmd *cmd);
