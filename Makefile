@@ -83,16 +83,18 @@ FORCE:
 
 debug:
 	@echo -e "$(YELLOW)$(BOLD)$(FINGER) Wich debug level ? $(FINGER_LEFT)$(END)\
-	\n\n $(CYAN)$(BOLD)1- $(END)Tokenizer\n \
+	\n\n $(CYAN)$(BOLD)0- $(END)Only Valgrind\n \
+	$(CYAN)$(BOLD)1- $(END)Tokenizer\n \
 	$(CYAN)$(BOLD)2- $(END)Parser\n \
 	$(CYAN)$(BOLD)3- $(END)Expand\n \
 	$(CYAN)$(BOLD)4- $(END)???????\n \
 	$(CYAN)$(BOLD)5- $(END)All\n"
 	@read -n 1 value; \
 	echo -e ""; \
-	while ! echo "$$value" | grep -Eq '^[0-9]+$$'; do \
-		echo -e "$(RED)$(BOLD)$(WARNING) Input must be a number [0-9] $(WARNING)$(END)\
-		\n\n $(CYAN)$(BOLD)1- $(END)Tokenizer\n \
+	while ! echo "$$value" | grep -Eq '^[0-5]+$$'; do \
+		echo -e "$(RED)$(BOLD)$(WARNING) Input must be a number [0-5] $(WARNING)$(END)\
+		\n\n $(CYAN)$(BOLD)0- $(END)Only Valgrind\n \
+	$(CYAN)$(BOLD)1- $(END)Tokenizer\n \
 	$(CYAN)$(BOLD)2- $(END)Parser\n \
 	$(CYAN)$(BOLD)3- $(END)Expand\n \
 	$(CYAN)$(BOLD)4- $(END)???????\n \
