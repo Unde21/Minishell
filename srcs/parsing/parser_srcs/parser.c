@@ -17,7 +17,7 @@ static bool	check_error(t_token *current)
 	return (true);
 }
 
-bool	parser(t_data *data, t_cmd *cmd)
+bool	parser(t_data *data, t_cmd **cmd)
 {
 	if (data->token_lst == NULL || data->token_lst->head == NULL)
 		return (false);

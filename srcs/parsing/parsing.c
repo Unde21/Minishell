@@ -14,7 +14,7 @@ void	parsing(t_data *data)
 	}
 	if (DEBUG_VALUE == 1 || DEBUG_VALUE == 5)
 		print_lst(data->token_lst->head);
-	if (parser(data, data->cmd) == false)
+	if (parser(data, &data->cmd) == false)
 	{
 		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);

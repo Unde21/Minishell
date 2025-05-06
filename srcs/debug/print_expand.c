@@ -5,6 +5,8 @@ static void	print_cmd_args_expanded(t_cmd *cmd)
 	size_t	i;
 
 	i = 0;
+	if (cmd->args == NULL)
+		return ;
 	while (cmd->args[i].content)
 	{
 		if (i == 0)

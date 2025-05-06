@@ -2,32 +2,20 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static void	join_with_expand(char **env, char **expanded, char *s, size_t *i)
+static void join_return_value(char **expanded, size_t *i, int prev_return_value)
 {
-	char	*var_name;
-	char	*env_value;
+	char	*str_return_value;
 
+	str_return_value = ft_itoa(prev_return_value);
+	if (str_return_value == NULL)
+	{
+		*expanded = NULL;
+		return ;
+	}
 	++(*i);
-	var_name = get_var_name(&s[*i]);
-	if (var_name == NULL)
-	{
-		free(*expanded);
-		free(var_name);
-		ft_dprintf(2, ERR_MALLOC);
-		return ;
-	}
-	env_value = get_env_value(var_name, env);
-	if (env_value == NULL)
-	{
-		free(var_name);
-		free(env_value);
-		ft_dprintf(2, ERR_MALLOC);
-		return ;
-	}
-	*expanded = ft_strjoin_and_free(*expanded, env_value);
-	*i += ft_strlen(var_name);
-	free(var_name);
-	free(env_value);
+	*expanded = ft_strjoin_and_free(*expanded, str_return_value);
+	++(*i);
+	free(str_return_value);
 }
 
 static void	join_without_expand(char **expanded, char c, size_t *i)
@@ -40,7 +28,7 @@ static void	join_without_expand(char **expanded, char c, size_t *i)
 	++(*i);
 }
 
-static char	*expand(char *s, char **env, char *expanded)
+static char	*expand(char *s, char **env, char *expanded, t_data *data)
 {
 	size_t	i;
 
@@ -50,7 +38,10 @@ static char	*expand(char *s, char **env, char *expanded)
 		if (s[i] == ASCII_DOLLAR && wich_quote(&s[i]) != ASCII_SNGL_QUOTE
 			&& s[i + 1] != ASCII_DOLLAR && s[i + 1] != '\0')
 		{
-			join_with_expand(env, &expanded, s, &i);
+			if (s[i + 1] == '?')
+				join_return_value(&expanded, &i, data->prev_return_value);
+			else
+				join_with_expand(env, &expanded, s, &i);
 		}
 		else
 			join_without_expand(&expanded, s[i], &i);
@@ -74,7 +65,7 @@ static bool	replace_env_variables(t_data *data, t_args *args)
 		ft_dprintf(2, ERR_MALLOC);
 		return (NULL);
 	}
-	args->content = expand(args->content, data->env, expanded);
+	args->content = expand(args->content, data->env, expanded, data);
 	if (args->content == NULL)
 	{
 		return (false);

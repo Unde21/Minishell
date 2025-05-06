@@ -47,7 +47,7 @@ size_t		new_node_here_doc(t_token **new);
 size_t		new_node_append(t_token **new);
 
 //fill_cmd_lst.c
-bool		get_cmd_args(t_token *current, t_cmd *cmd);
+bool		get_cmd_args(t_token *current, t_cmd **cmd);
 
 //utils.c
 bool		is_redir_type(t_token_type type);
@@ -56,7 +56,7 @@ void		skip_quote_dollar(char **input, int is_quote, size_t *word_size,
 char		*ft_strjoin_and_free(char *s1, char *s2);
 
 //parser.c
-bool		parser(t_data *data, t_cmd *cmd);
+bool		parser(t_data *data, t_cmd **cmd);
 
 //fill_special_operator_cmd.c
 bool		add_special_operator_to_cmd(t_token *current, t_cmd *cmd);
@@ -69,7 +69,6 @@ bool		handle_expansion(t_data *data, t_cmd *cmd);
 void		expand_tokens(t_cmd *current);
 
 //expand_utils.c 
-char		*get_var_name(char *s);
-char		*get_env_value(char *var_name, char **env);
+void	join_with_expand(char **env, char **expanded, char *s, size_t *i);
 
 #endif

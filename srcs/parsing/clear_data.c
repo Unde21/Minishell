@@ -14,26 +14,7 @@ static void	clear_args(t_cmd *cmd)
 	free(cmd->args);
 }
 
-void	clear_cmd(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	while (cmd != NULL)
-	{
-		tmp = cmd->next;
-		if (cmd->redir != NULL)
-		{
-			free(cmd->redir->file);
-			free(cmd->redir);
-		}
-		clear_args(cmd);
-		free(cmd);
-		cmd = tmp;
-	}
-	cmd = NULL;
-}
-
-void	clear_redir(t_redir *redir)
+static void	clear_redir(t_redir *redir)
 {
 	t_redir	*tmp;
 
@@ -45,6 +26,24 @@ void	clear_redir(t_redir *redir)
 		redir = tmp;
 	}
 	redir = NULL;
+}
+
+void	clear_cmd(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	while (cmd != NULL)
+	{
+		tmp = cmd->next;
+		if (cmd->redir != NULL)
+		{
+			clear_redir(cmd->redir);
+		}
+		clear_args(cmd);
+		free(cmd);
+		cmd = tmp;
+	}
+	cmd = NULL;
 }
 
 void	clear_token(t_token *lst)

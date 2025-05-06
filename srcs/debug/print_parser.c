@@ -12,7 +12,10 @@ static void	print_special_operator_parser(t_redir *current_redir)
 			ft_printf("%s", PARSER_HERE_DOC);
 		else if (current_redir->type == 7)
 			ft_printf("%s", PARSER_APPEND);
-		ft_printf(" || \033[32mFILE: %s\033[0m", current_redir->file);
+		if (current_redir->type != 6)
+			ft_printf(" && \033[32mFILE = %s\033[0m", current_redir->file);
+		else
+			ft_printf(" && \033[32mLIMITER = %s\033[0m", current_redir->file);
 		current_redir = current_redir->next;
 	}
 }
@@ -22,6 +25,8 @@ static void	print_cmd_args(t_cmd *cmd)
 	size_t	i;
 
 	i = 0;
+	if (cmd->args == NULL)
+		return ;
 	while (cmd->args[i].content)
 	{
 		if (i == 0)

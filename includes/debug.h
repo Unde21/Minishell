@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:47:49 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/05 20:44:57 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/06 11:58:47 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,19 @@
 # define PRINT_NULL_PARSER "\033[34m=============================\
 ============================================\033[0m\n			       \
 \033[42;42mNULL\033[0m"
-# define PARSER_REDIR_IN "\033[32m		REDIR: REDIR_IN	\033[0m"
-# define PARSER_REDIR_OUT "\033[32m		REDIR: REDIR_OUT\033[0m"
-# define PARSER_HERE_DOC "\033[32m		REDIR: HERE_DOC	\033[0m"
-# define PARSER_APPEND "\033[32m		REDIR: APPEND\033[0m"
+# define PARSER_REDIR_IN "\033[32m	=> REDIR_IN\033[0m"
+# define PARSER_REDIR_OUT "\033[32m	=> REDIR_OUT\033[0m"
+# define PARSER_HERE_DOC "\033[32m	=> HERE_DOC\033[0m"
+# define PARSER_APPEND "\033[32m	=> APPEND\033[0m"
 
 //print_expand
 # define PRINT_EXPAND "\n\n\n\033[35;43mPRINT PARSER WITH EXPAND:\033[0m\n\n"
 # define START_SEP_LINE_EXPAND "\033[33m=============================\
 ============================================\033[0m\n"
-# define EXPAND_REDIR_IN "\033[35m		REDIR: REDIR_IN	\033[0m"
-# define EXPAND_REDIR_OUT "\033[35m		REDIR: REDIR_OUT\033[0m"
-# define EXPAND_HERE_DOC "\033[35m		REDIR: HERE_DOC	\033[0m"
-# define EXPAND_APPEND "\033[35m		REDIR: APPEND\033[0m"
+# define EXPAND_REDIR_IN "\033[35m	=> REDIR_IN\033[0m"
+# define EXPAND_REDIR_OUT "\033[35m	=> REDIR_OUT\033[0m"
+# define EXPAND_HERE_DOC "\033[35m	=> HERE_DOC\033[0m"
+# define EXPAND_APPEND "\033[35m	=> APPEND\033[0m"
 # define END_SEP_LINE_EXPAND "\n\033[33m=============================\
 ============================================\033[0m\n"
 # define PRINT_NULL_EXPAND "\033[33m=============================\

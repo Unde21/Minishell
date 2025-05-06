@@ -5,6 +5,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 {
 	data->ac = ac;
 	data->av = av;
+	data->prev_return_value = 0;
 	data->env = env;
 	data->line_read = NULL;
 	data->name_infile = NULL;
@@ -21,7 +22,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	}
 	cmd->args->need_expand = false;
 	if (cmd->nb_args == 0)
-		cmd->args = NULL;
+		cmd->args[0].content = NULL;
 	return (true);
 }
 

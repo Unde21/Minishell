@@ -56,6 +56,7 @@ typedef struct s_data
 {
 	char		*line_read;
 	int			ac;
+	int			prev_return_value;
 	char		*name_infile;
 	char		*name_outfile;
 	char		**av;
