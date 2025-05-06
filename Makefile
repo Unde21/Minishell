@@ -26,10 +26,14 @@ HEADER := includes/minishell.h \
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g3
 CPPFFLAGS := -MMD -MP
+SHELL = /bin/bash
+
 DEBUGFLAGS := valgrind --leak-check=full  --trace-children=yes --track-fds=yes
 DEBUG_VALUE ?= 0
+DEBUG_FILE := .debug_value
 CFLAGS += -DDEBUG_VALUE=$(DEBUG_VALUE)
-SHELL = /bin/bash
+LAST_DEBUG_VALUE := $(shell if [ -f $(DEBUG_FILE) ]; then cat $(DEBUG_FILE); else echo 0; fi)
+rebuild_needed := $(shell if [ $(DEBUG_VALUE) -ne $(LAST_DEBUG_VALUE) ]; then echo 1; else echo 0; fi)
 
 RM := rm -rf
 
@@ -67,9 +71,10 @@ DONE := "🏁"
 
 all: $(NAME)
 
-$(NAME): libft/libft.a $(OBJS) Makefile reset_debug
+$(NAME): reset_debug libft/libft.a $(OBJS) Makefile
 	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) -DDEBUG_VALUE=$(DEBUG_VALUE) ./libft/libft.a -o $@
 	@echo -e "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
+	@echo $(DEBUG_VALUE) > $(DEBUG_FILE)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(dir $@)
@@ -83,21 +88,21 @@ FORCE:
 
 debug:
 	@echo -e "$(YELLOW)$(BOLD)$(FINGER) Wich debug level ? $(FINGER_LEFT)$(END)\
-	\n\n $(CYAN)$(BOLD)0- $(END)Only Valgrind\n \
-	$(CYAN)$(BOLD)1- $(END)Tokenizer\n \
-	$(CYAN)$(BOLD)2- $(END)Parser\n \
-	$(CYAN)$(BOLD)3- $(END)Expand\n \
-	$(CYAN)$(BOLD)4- $(END)???????\n \
+	\n\n$(CYAN)$(BOLD)0- $(END)Only Valgrind\n\
+	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
+	$(CYAN)$(BOLD)2- $(END)Parser\n\
+	$(CYAN)$(BOLD)3- $(END)Expand\n\
+	$(CYAN)$(BOLD)4- $(END)???????\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"
 	@read -n 1 value; \
 	echo -e ""; \
 	while ! echo "$$value" | grep -Eq '^[0-5]+$$'; do \
 		echo -e "$(RED)$(BOLD)$(WARNING) Input must be a number [0-5] $(WARNING)$(END)\
-		\n\n $(CYAN)$(BOLD)0- $(END)Only Valgrind\n \
-	$(CYAN)$(BOLD)1- $(END)Tokenizer\n \
-	$(CYAN)$(BOLD)2- $(END)Parser\n \
-	$(CYAN)$(BOLD)3- $(END)Expand\n \
-	$(CYAN)$(BOLD)4- $(END)???????\n \
+		\n\n$(CYAN)$(BOLD)0- $(END)Only Valgrind\n\
+	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
+	$(CYAN)$(BOLD)2- $(END)Parser\n\
+	$(CYAN)$(BOLD)3- $(END)Expand\n\
+	$(CYAN)$(BOLD)4- $(END)???????\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"; \
 		read -n 1 value; \
 		echo -e ""; \
@@ -108,9 +113,10 @@ debug:
 	$(DEBUGFLAGS) ./$(NAME)
 
 reset_debug:
-	@-DDEBUG_VALUE=0
-	@echo -e "$(CYAN)$(BOLD)DEBUG_VALUE = $(DEBUG_VALUE) !$(END)"
-	@touch includes/debug.h;\
+	@if [ $(rebuild_needed) -eq 1 ]; then \
+		echo -e "$(YELLOW)$(BOLD) DEBUG_VALUE changed from $(LAST_DEBUG_VALUE) to $(DEBUG_VALUE), rebuilding...$(END)"; \
+		touch includes/debug.h; \
+	fi
 
 $(OBJ_DIR):
 	@mkdir -p $@
@@ -122,9 +128,10 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) $(DEBUG_FILE)
 	@$(MAKE) --no-print-directory -C libft fclean
 	@echo -e "$(YELLOW)$(BOLD)$(CLEAN)Everything is clean !$(DONE)$(END)"
 
 re: fclean all
 
-.PHONY: all clean fclean re libft FORCE
+.PHONY: all clean fclean re libft FORCE reset_debug debug
