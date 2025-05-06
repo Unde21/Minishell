@@ -33,7 +33,8 @@ DEBUG_VALUE ?= 0
 DEBUG_FILE := .debug_value
 CFLAGS += -DDEBUG_VALUE=$(DEBUG_VALUE)
 LAST_DEBUG_VALUE := $(shell if [ -f $(DEBUG_FILE) ]; then cat $(DEBUG_FILE); else echo 0; fi)
-rebuild_needed := $(shell if [ $(DEBUG_VALUE) -ne $(LAST_DEBUG_VALUE) ]; then echo 1; else echo 0; fi)
+REBUILD_NEEDED := $(shell if [ $(DEBUG_VALUE) -ne $(LAST_DEBUG_VALUE) ]; then echo 1; else echo 0; fi)
+DEBUG_FILE_EXIST := $(shell if [ -f $(DEBUG_FILE) ]; then echo 1; else echo 0; fi)
 
 RM := rm -rf
 
@@ -113,7 +114,10 @@ debug:
 	$(DEBUGFLAGS) ./$(NAME)
 
 reset_debug:
-	@if [ $(rebuild_needed) -eq 1 ]; then \
+	@if [ $(DEBUG_FILE_EXIST) -eq 0 ]; then \
+		touch includes/debug.h; \
+	fi
+	@if [ $(REBUILD_NEEDED) -eq 1 ]; then \
 		echo -e "$(YELLOW)$(BOLD) DEBUG_VALUE changed from $(LAST_DEBUG_VALUE) to $(DEBUG_VALUE), rebuilding...$(END)"; \
 		touch includes/debug.h; \
 	fi
