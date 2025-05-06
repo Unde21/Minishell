@@ -1,6 +1,4 @@
 #include "exec.h"
-#include "minishell.h"
-#include "parsing.h"
 
 char	*get_key(char *env)
 {

@@ -5,11 +5,14 @@ typedef struct s_env	t_env;
 
 # include "minishell.h"
 # include "parsing.h"
+# include <fcntl.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <unistd.h>
 
 //// init ////
+bool					heredoc_init(t_data *data);
 void					init_listed_env(t_data *data);
 void					free_listed_env(t_data *data);
 void					fill_listed_env(t_data *data);

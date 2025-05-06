@@ -1,6 +1,4 @@
 #include "exec.h"
-#include "minishell.h"
-#include "parsing.h"
 
 void	free_listed_env(t_data *data)
 {

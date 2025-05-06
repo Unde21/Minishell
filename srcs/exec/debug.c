@@ -1,6 +1,4 @@
 #include "exec.h"
-#include "minishell.h"
-#include "parsing.h"
 
 void	print_list(t_data *data)
 {
