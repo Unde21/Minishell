@@ -80,5 +80,6 @@ void	clear_cmd(t_cmd *cmd);
 void	free_all(char **str);
 int		wich_quote(char *input);
 
-void		get_input(t_data *data);
+void	get_input(t_data *data);
+
 #endif

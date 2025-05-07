@@ -6,6 +6,7 @@
 # include <readline/readline.h>
 
 # define ERR_MALLOC "malloc failed\n"
+// Modifier les msg d error en fonction de bash 
 # define MISS_DBLE_QUOTE "syntax error: missing closing double quote\n"
 # define MISS_SNGL_QUOTE "syntax error: missing closing single quote\n"
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"
@@ -69,6 +70,9 @@ bool		handle_expansion(t_data *data, t_cmd *cmd);
 void		expand_tokens(t_cmd *current);
 
 //expand_utils.c 
-void	join_with_expand(char **env, char **expanded, char *s, size_t *i);
+void		join_with_expand(char **env, char **expanded, char *s, size_t *i);
+
+//remove_quote.c
+bool		remove_quote(t_args *args);
 
 #endif

@@ -10,9 +10,9 @@ static void	print_cmd_args_expanded(t_cmd *cmd)
 	while (cmd->args[i].content)
 	{
 		if (i == 0)
-			ft_printf("\033[35m%s\033[0m", cmd->args[i].content);
+			ft_printf("\033[35m[%s]\033[0m", cmd->args[i].content);
 		else
-			ft_printf("\n\033[35m%s\033[0m", cmd->args[i].content);
+			ft_printf("\n\033[35m[%s]\033[0m", cmd->args[i].content);
 		++i;
 	}
 }

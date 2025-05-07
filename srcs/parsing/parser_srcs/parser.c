@@ -3,7 +3,7 @@
 
 static bool	check_error(t_token *current)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = current->next;
 	while (current->next != NULL)

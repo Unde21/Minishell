@@ -6,6 +6,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/parsing.c \
 	srcs/parsing/utils.c \
 	srcs/parsing/handle_tokens/handle_word.c \
+	srcs/parsing/handle_tokens/is_quote_missing.c \
 	srcs/parsing/handle_tokens/handle_tokens.c \
 	srcs/parsing/handle_tokens/create_node_for_token.c \
 	srcs/parsing/parser_srcs/parser.c \
@@ -15,6 +16,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/expand/expand_tokens.c \
 	srcs/parsing/expand/handle_expansion.c \
 	srcs/parsing/expand/expand_utils.c \
+	srcs/parsing/expand/remove_quote.c \
 	srcs/debug/print_tokenizer.c \
 	srcs/debug/print_parser.c \
 	srcs/debug/print_expand.c \
@@ -95,9 +97,9 @@ debug:
 	$(CYAN)$(BOLD)3- $(END)Expand\n\
 	$(CYAN)$(BOLD)4- $(END)???????\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"
-	@read -n 1 value; \
-	echo -e ""; \
+	@read -s -n 1 value; \
 	while ! echo "$$value" | grep -Eq '^[0-5]+$$'; do \
+		clear; \
 		echo -e "$(RED)$(BOLD)$(WARNING) Input must be a number [0-5] $(WARNING)$(END)\
 		\n\n$(CYAN)$(BOLD)0- $(END)Only Valgrind\n\
 	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
@@ -105,8 +107,7 @@ debug:
 	$(CYAN)$(BOLD)3- $(END)Expand\n\
 	$(CYAN)$(BOLD)4- $(END)???????\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"; \
-		read -n 1 value; \
-		echo -e ""; \
+		read -s -n 1 value; \
 	done;\
 	touch includes/debug.h; \
 	$(MAKE) --no-print-directory DEBUG_VALUE=$$value; \

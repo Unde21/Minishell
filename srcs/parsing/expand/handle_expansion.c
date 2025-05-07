@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static void join_return_value(char **expanded, size_t *i, int prev_return_value)
+static void	join_return_value(char **expanded, size_t *i, int prev_return_value)
 {
 	char	*str_return_value;
 
@@ -33,16 +33,18 @@ static char	*expand(char *s, char **env, char *expanded, t_data *data)
 	size_t	i;
 
 	i = 0;
+	ft_printf("str : %s\n", s);
 	while (s[i])
 	{
-		if (s[i] == ASCII_DOLLAR && wich_quote(&s[i]) != ASCII_SNGL_QUOTE
-			&& s[i + 1] != ASCII_DOLLAR && s[i + 1] != '\0')
+		if (s[i] == ASCII_DOLLAR && s[i + 1] != ASCII_DOLLAR)
 		{
 			if (s[i + 1] == '?')
 				join_return_value(&expanded, &i, data->prev_return_value);
 			else
 				join_with_expand(env, &expanded, s, &i);
 		}
+		else if (s[i] == ASCII_DBLE_QUOTE)
+			++i;
 		else
 			join_without_expand(&expanded, s[i], &i);
 		if (expanded == NULL)
@@ -86,9 +88,13 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 		while (i < current_cmd->nb_args)
 		{
 			if (current_cmd->args[i].need_expand == true)
+			{
 				if (replace_env_variables(data, &current_cmd->args[i]) == false
 					&& current_cmd->args[i].need_expand == true)
 					return (false);
+			}
+			else if (remove_quote(&current_cmd->args[i]) == false)
+				return (false);
 			++i;
 		}
 		current_cmd = current_cmd->next;

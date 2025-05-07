@@ -7,7 +7,7 @@ int	wich_quote(char *input)
 	size_t	i;
 
 	i = 0;
-	while(input[i])
+	while (input[i])
 	{
 		if (input[i] == (char)ASCII_DBLE_QUOTE)
 			return (ASCII_DBLE_QUOTE);
@@ -20,8 +20,8 @@ int	wich_quote(char *input)
 
 bool	is_redir_type(t_token_type type)
 {
-	if (type == REDIR_IN || type == REDIR_OUT
-		|| type == HERE_DOC || type == APPEND)
+	if (type == REDIR_IN || type == REDIR_OUT || type == HERE_DOC
+		|| type == APPEND)
 		return (true);
 	return (false);
 }
@@ -32,7 +32,8 @@ bool	print_err(char *str_error)
 	return (false);
 }
 
-void	skip_quote_dollar(char **input, int is_quote, size_t *word_size, int *count_quote)
+void	skip_quote_dollar(char **input, int is_quote, size_t *word_size,
+		int *count_quote)
 {
 	if (**input == ASCII_DOLLAR)
 	{

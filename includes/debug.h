@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:47:49 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/06 11:58:47 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/07 17:19:38 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define PRINT_PARSER "\n\n\n\033[31;44mPRINT PARSER:\033[0m\n\n"
 # define START_SEP_LINE_PARSER "\033[34m============================\
 =============================================\033[0m\n"
-# define EXPAND_YES "  \033[32m--> need_expend: Yes\033[0m"
-# define EXPAND_NO "  \033[32m--> need_expend: No\033[0m"
+# define EXPAND_YES "  \033[32m--> need_expand: Yes\033[0m"
+# define EXPAND_NO "  \033[32m--> need_expand: No\033[0m"
 # define END_SEP_LINE_PARSER "\n\033[34m===========================\
 ==============================================\033[0m\n"
 # define PRINT_NULL_PARSER "\033[34m=============================\
