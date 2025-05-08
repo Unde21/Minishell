@@ -14,7 +14,7 @@ SRCS := srcs/main.c \
 		srcs/parsing/clear_data.c \
 		srcs/parsing/expand/expand_tokens.c \
 		srcs/parsing/expand/handle_expansion.c \
-		srcs/exec/init.c \
+		srcs/exec/listed_env_init.c \
 		srcs/exec/debug.c \
 		srcs/exec/getters.c \
 		srcs/exec/exec.c \

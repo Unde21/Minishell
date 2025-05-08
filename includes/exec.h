@@ -12,7 +12,7 @@ typedef struct s_env	t_env;
 # include <unistd.h>
 
 //// init ////
-bool					heredoc_init(t_data *data);
+void					heredoc_init(t_data *data);
 void					init_listed_env(t_data *data);
 void					free_listed_env(t_data *data);
 void					fill_listed_env(t_data *data);
@@ -28,5 +28,12 @@ char					*get_key(char *env);
 //// debug ////
 void					print_list(t_data *data);
 void					print_env(t_data *data);
+void					print_lst(t_token *token, int t);
+void					print_lst_cmd(t_cmd *cmd);
+void					print_lst_cmd_expand(t_cmd *cmd);
+
+//// exec ////
+
+void					exec_init(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/02 15:53:52 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 15:56:24 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_cmd
 	t_redir			*redir;
 	struct s_cmd	*next;
 }					t_cmd;
+
 typedef struct s_env
 {
 	char			*key;
@@ -83,6 +84,7 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	// char			*here_doc;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;
@@ -97,11 +99,6 @@ bool				init_cmd_args(t_cmd *cmd);
 
 // utils.c
 bool				print_err(char *str_error);
-
-// TODO delete
-void				print_lst(t_token *token);
-void				print_lst_cmd(t_cmd *cmd);
-void				print_lst_cmd_expand(t_cmd *cmd);
 
 void				clear_token(t_token *lst);
 void				clear_cmd(t_cmd *cmd);

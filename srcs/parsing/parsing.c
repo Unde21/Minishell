@@ -6,7 +6,7 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 08:46:37 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/06 15:31:16 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/05/08 15:41:44 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	parsing(t_data *data)
 		free(data->token_lst);
 		return ;
 	}
-	// print_lst(data->token_lst->head);
 	if (parser(data, data->cmd) == false)
 	{
 		clear_cmd(data->cmd);
@@ -31,17 +30,13 @@ void	parsing(t_data *data)
 		return ;
 	}
 	expand_tokens(data->cmd);
-	// print_lst_cmd(data->cmd);
 	if (handle_expansion(data, data->cmd) == false)
 	{
 		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);
 		return ;
 	}
-	// print_lst_cmd_expand(data->cmd);
-	init_listed_env(data);
-	heredoc_init(data);
-	free_listed_env(data);
+	exec_init(data);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
