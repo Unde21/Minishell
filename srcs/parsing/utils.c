@@ -1,6 +1,6 @@
-
-
 #include "minishell.h"
+#include "parsing.h"
+#include <stdlib.h>
 
 int	wich_quote(char *input)
 {
@@ -46,4 +46,29 @@ void	skip_quote_dollar(char **input, int is_quote, size_t *word_size,
 		++(*input);
 		++(*word_size);
 	}
+}
+
+char	*ft_strjoin_and_free(char *s1, char *s2)
+{
+	char	*join;
+	int		i;
+	int		len;
+	int		j;
+
+	i = -1;
+	len = ft_strlen(s1) + ft_strlen(s2);
+	join = malloc(sizeof(char) * (len + 1));
+	if (!join)
+	{
+		free(s1);
+		return (NULL);
+	}
+	while (s1[++i])
+		join[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+		join[i + j] = s2[j];
+	join[i + j] = '\0';
+	free(s1);
+	return (join);
 }

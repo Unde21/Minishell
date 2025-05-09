@@ -1,5 +1,5 @@
-
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 static void	get_cmd_nb_arg(t_token *current, t_cmd *cmd)
@@ -65,29 +65,28 @@ static bool	new_node_cmd(t_cmd **current_cmd)
 	return (true);
 }
 
-bool	get_cmd_args(t_token *current, t_cmd *cmd)
+bool	get_cmd_args(t_token *current, t_cmd **cmd)
 {
 	t_cmd	*current_cmd;
 
-	current_cmd = cmd;
+	current_cmd = *cmd;
 	if (current->type == PIPE)
-		return (print_err(ERR_PIPE_FIRST));
+		return (print_err(ERR_PIPE));
 	while (current != NULL)
 	{
 		get_cmd_nb_arg(current, current_cmd);
-		if (init_cmd_args(current_cmd) == false
-			|| fill_cmd_args(&current, current_cmd) == false)
+		if (init_cmd_args(current_cmd) == false || fill_cmd_args(&current,
+				current_cmd) == false)
 			return (false);
 		if (current != NULL && current->type == PIPE)
 		{
 			current = current->next;
+			if (current == NULL)
+				return (print_err(ERR_PIPE));
 			if (current->type == PIPE)
 				return (print_err(ERR_MULTIPLE_PIPE));
-			if (current != NULL)
-			{
-				if (new_node_cmd(&current_cmd) == false)
-					return (false);
-			}
+			if (current != NULL && new_node_cmd(&current_cmd) == false)
+				return (false);
 		}
 	}
 	return (true);

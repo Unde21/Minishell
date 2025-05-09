@@ -1,6 +1,5 @@
-
-
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 t_token	*new_token(char *content, t_token_type type)
@@ -9,7 +8,10 @@ t_token	*new_token(char *content, t_token_type type)
 
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
+	{
+		print_err(ERR_MALLOC);
 		return (NULL);
+	}
 	token->content = ft_strdup(content);
 	token->type = type;
 	token->next = NULL;
@@ -34,18 +36,18 @@ bool	handle_token(char *input, t_token_lst *tokens, t_token *current)
 	bool	error;
 
 	error = false;
-	while (*input != '\0')
+	while (*input != '\0' && error == false)
 	{
 		if (*input == '|')
-			input += new_node_pipes(&current);
+			input += new_node_pipes(&current, &error);
 		else if (*input == '>' && *(input + 1) == '>')
-			input += new_node_append(&current);
+			input += new_node_append(&current, &error);
 		else if (*input == '>')
-			input += new_node_redir_out(&current);
+			input += new_node_redir_out(&current, &error);
 		else if (*input == '<' && *(input + 1) == '<')
-			input += new_node_here_doc(&current);
+			input += new_node_here_doc(&current, &error);
 		else if (*input == '<')
-			input += new_node_redir_in(&current);
+			input += new_node_redir_in(&current, &error);
 		else
 			input += handle_word(input, &current, &error);
 		if (error != true)

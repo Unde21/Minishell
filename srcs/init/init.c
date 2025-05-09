@@ -1,22 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/02 10:30:40 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/08 15:56:30 by erbuffet         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 void	init_data(t_data *data, int ac, char **av, char **env)
 {
 	data->ac = ac;
 	data->av = av;
+	data->prev_return_value = 0;
 	data->env = env;
 	// data->here_doc = NULL;
 	data->line_read = NULL;
@@ -34,7 +24,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	}
 	cmd->args->need_expand = false;
 	if (cmd->nb_args == 0)
-		cmd->args = NULL;
+		cmd->args[0].content = NULL;
 	return (true);
 }
 

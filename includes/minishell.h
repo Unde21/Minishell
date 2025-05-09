@@ -1,21 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/31 13:40:58 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/08 15:56:24 by erbuffet         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 # include "exec.h"
 # include "libft.h"
-# include "parsing.h"
 # include <stdio.h>
 
 typedef enum e_token_type
@@ -48,7 +35,6 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
-	// bool			need_expand; // a voir
 	struct s_redir	*next;
 }					t_redir;
 
@@ -80,12 +66,11 @@ typedef struct s_data
 {
 	char			*line_read;
 	int				ac;
+	int				prev_return_value;
 	char			*name_infile;
 	char			*name_outfile;
 	char			**av;
 	char			**env;
-	// char			*here_doc;
-	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;
 	t_token			*token;
@@ -104,5 +89,7 @@ void				clear_token(t_token *lst);
 void				clear_cmd(t_cmd *cmd);
 void				free_all(char **str);
 int					wich_quote(char *input);
+
+void				get_input(t_data *data);
 
 #endif

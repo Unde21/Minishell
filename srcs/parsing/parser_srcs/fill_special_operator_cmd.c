@@ -1,5 +1,5 @@
-
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
 
 static void	add_new_redir_back(t_cmd *current_cmd, t_redir *new_redir)
@@ -28,7 +28,7 @@ bool	fill_cmd_special_operator(t_token **current, t_cmd *current_cmd)
 		type = (*current)->type;
 		*current = (*current)->next;
 		if (*current == NULL)
-			return (print_err(ERR_MALLOC));
+			return (print_err(ERR_NO_FILE));
 		new_redir = malloc(sizeof(t_redir));
 		if (new_redir == NULL)
 			return (print_err(ERR_MALLOC));

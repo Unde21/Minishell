@@ -1,28 +1,6 @@
-
-
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
-
-static bool	is_special_operator(char input, int is_quote)
-{
-	if ((input == '|' && is_quote == NO_QUOTE) || (input == '>'
-			&& is_quote == NO_QUOTE) || (input == '<'
-			&& is_quote == NO_QUOTE))
-		return (true);
-	return (false);
-}
-
-static int	save_quote(char input)
-{
-	int	is_quote;
-
-	is_quote = NO_QUOTE;
-	if (input == ASCII_DBLE_QUOTE)
-		is_quote = ASCII_DBLE_QUOTE;
-	else if (input == ASCII_SNGL_QUOTE)
-		is_quote = ASCII_SNGL_QUOTE;
-	return (is_quote);
-}
 
 static size_t	get_word_size(char *input, int is_quote)
 {
@@ -67,27 +45,36 @@ static char	*extract_word(char *input, size_t word_size)
 	return (word);
 }
 
-static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
+static bool	is_double_quote_missing(char *word, size_t word_size,
+		int check_quote)
 {
-	// invalid read of size 1 si input = \t 
-	if (word_size == 1 && check_quote != NO_QUOTE)
+	if (word_size == 1 && check_quote != NO_QUOTE
+		&& word[0] == ASCII_DBLE_QUOTE)
 	{
 		print_err(MISS_DBLE_QUOTE);
 		return (true);
 	}
-	else if (word_size == 1 && check_quote != NO_QUOTE)
-	{
-		print_err(MISS_SNGL_QUOTE);
-		return (true);
-	}
-	if ((word[word_size - 1] != ASCII_DBLE_QUOTE
+	else if ((word[word_size - 1] != ASCII_DBLE_QUOTE
 			&& check_quote == ASCII_DBLE_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_DBLE_QUOTE))
 	{
 		print_err(MISS_DBLE_QUOTE);
 		return (true);
 	}
-	else if ((word[word_size - 1] != ASCII_SNGL_QUOTE
+	return (false);
+}
+
+static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
+{
+	if (is_double_quote_missing(word, word_size, check_quote) == true)
+		return (true);
+	else if (word_size == 1 && check_quote != NO_QUOTE
+		&& word[0] == ASCII_SNGL_QUOTE)
+	{
+		print_err(MISS_SNGL_QUOTE);
+		return (true);
+	}
+	if ((word[word_size - 1] != ASCII_SNGL_QUOTE
 			&& check_quote == ASCII_SNGL_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_SNGL_QUOTE))
 	{
@@ -103,22 +90,24 @@ size_t	handle_word(char *input, t_token **new, bool *error)
 	char	*word;
 	int		is_quote;
 
-	is_quote = 0;
 	is_quote = save_quote(*input);
 	word_size = get_word_size(input, is_quote);
 	word = extract_word(input, word_size);
-	if (is_quote_missing(word, word_size, is_quote) == true)
+	if (word == NULL)
 	{
 		*error = true;
-		free(word);
-		return (ft_strlen(input));
+		return (0);
 	}
-	if (is_quote == ASCII_DBLE_QUOTE)
-		*new = new_token(word, DBLE_QUOTE);
-	else if (is_quote == ASCII_SNGL_QUOTE)
-		*new = new_token(word, SNGL_QUOTE);
-	else
-		*new = new_token(word, WORD);
+	if (word_size != 0)
+	{
+		if (is_quote_missing(word, word_size, is_quote) == true)
+		{
+			*error = true;
+			free(word);
+			return (ft_strlen(input));
+		}
+	}
+	new_node_word(new, word, is_quote, error);
 	free(word);
 	return (word_size);
 }

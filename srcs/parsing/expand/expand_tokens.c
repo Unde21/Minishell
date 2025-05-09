@@ -1,6 +1,5 @@
-
-
 #include "minishell.h"
+#include "parsing.h"
 
 static void	is_expand(t_args *args)
 {

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/08 15:16:05 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/02 13:18:27 by erbuffet         ###   ########lyon.fr   */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -20,10 +8,11 @@
 # include <stdbool.h>
 
 # define ERR_MALLOC "malloc failed\n"
+// Modifier les msg d error en fonction de bash
 # define MISS_DBLE_QUOTE "syntax error: missing closing double quote\n"
 # define MISS_SNGL_QUOTE "syntax error: missing closing single quote\n"
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"
-# define ERR_PIPE_FIRST "syntax error near unexpected token `|'\n"
+# define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
@@ -56,23 +45,30 @@ bool						handle_token(char *input, t_token_lst *tokens,
 size_t						handle_word(char *input, t_token **new,
 								bool *error);
 
+// handle_word_utils.c
+bool						is_special_operator(char input, int is_quote);
+int							save_quote(char input);
+void						new_node_word(t_token **new, char *word,
+								int is_quote, bool *error);
+
 // create_node_for_token.c
-size_t						new_node_pipes(t_token **new);
-size_t						new_node_redir_out(t_token **new);
-size_t						new_node_redir_in(t_token **new);
-size_t						new_node_here_doc(t_token **new);
-size_t						new_node_append(t_token **new);
+size_t						new_node_pipes(t_token **new, bool *error);
+size_t						new_node_redir_out(t_token **new, bool *error);
+size_t						new_node_redir_in(t_token **new, bool *error);
+size_t						new_node_here_doc(t_token **new, bool *error);
+size_t						new_node_append(t_token **new, bool *error);
 
 // fill_cmd_lst.c
-bool						get_cmd_args(t_token *current, t_cmd *cmd);
+bool						get_cmd_args(t_token *current, t_cmd **cmd);
 
 // utils.c
 bool						is_redir_type(t_token_type type);
 void						skip_quote_dollar(char **input, int is_quote,
 								size_t *word_size, int *count_quote);
+char						*ft_strjoin_and_free(char *s1, char *s2);
 
 // parser.c
-bool						parser(t_data *data, t_cmd *cmd);
+bool						parser(t_data *data, t_cmd **cmd);
 
 // fill_special_operator_cmd.c
 bool						add_special_operator_to_cmd(t_token *current,
@@ -85,5 +81,12 @@ bool						handle_expansion(t_data *data, t_cmd *cmd);
 
 // expand.c
 void						expand_tokens(t_cmd *current);
+
+// expand_utils.c
+void						join_with_expand(char **env, char **expanded,
+								char *s, size_t *i);
+
+// remove_quote.c
+bool						remove_quote(t_args *args);
 
 #endif
