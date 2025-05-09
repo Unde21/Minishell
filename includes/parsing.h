@@ -1,11 +1,9 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "exec.h"
 # include "minishell.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdbool.h>
 
 # define ERR_MALLOC "malloc failed\n"
 // Modifier les msg d error en fonction de bash

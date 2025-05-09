@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "exec.h"
 #include "minishell.h"
 #include <stdlib.h>
 

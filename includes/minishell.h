@@ -1,10 +1,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "exec.h"
 # include "libft.h"
 # include <stdio.h>
 
+////////////////////////////
+///////* list parsing */////
+////////////////////////////
 typedef enum e_token_type
 {
 	WORD,
@@ -30,6 +32,9 @@ typedef struct s_token_lst
 	t_token			*head;
 	t_token			*tail;
 }					t_token_lst;
+////////////////////////////
+/////* list global *///////
+///////////////////////////
 
 typedef struct s_redir
 {
@@ -37,7 +42,6 @@ typedef struct s_redir
 	char			*file;
 	struct s_redir	*next;
 }					t_redir;
-
 typedef struct s_args
 {
 	char			*content;
@@ -52,7 +56,9 @@ typedef struct s_cmd
 	t_redir			*redir;
 	struct s_cmd	*next;
 }					t_cmd;
-
+////////////////////////////
+///////* list exec *////////
+////////////////////////////
 typedef struct s_env
 {
 	char			*key;
@@ -61,7 +67,9 @@ typedef struct s_env
 
 	struct s_env	*next;
 }					t_env;
-
+///////////////////////////
+/* structure principale */
+//////////////////////////
 typedef struct s_data
 {
 	char			*line_read;
@@ -71,11 +79,13 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;
 	t_token			*token;
 	t_token_lst		*token_lst;
 }					t_data;
+////////////////////////////
 
 // init.c
 void				init_data(t_data *data, int ac, char **av, char **env);
