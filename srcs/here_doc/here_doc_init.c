@@ -29,10 +29,14 @@ char	*get_random_name(char *here_doc)
 void	heredoc_init(t_data *data)
 {
 	char	*here_doc;
+	int		fd;
 
 	(void)data;
 	here_doc = malloc(sizeof(char) * 26);
 	if (!here_doc)
 		print_err(ERR_MALLOC);
 	here_doc = get_random_name(here_doc);
+	fd = open(here_doc, O_RDONLY | O_CREAT);
+	if (fd == -1)
+		print_err("ERROR : opening fd here_doc init !\n");
 }

@@ -6,6 +6,9 @@ typedef struct s_env	t_env;
 # include "minishell.h"
 # include <fcntl.h>
 # include <stdlib.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 //// init ////
 void					heredoc_init(t_data *data);

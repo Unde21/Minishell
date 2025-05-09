@@ -2,15 +2,11 @@
 
 bool	is_heredoc(t_data *data)
 {
-	while (data->redir != NULL)
+	while (data->cmd->redir != NULL)
 	{
-		printf("coucou\n");
-		if (data->redir->type == HERE_DOC)
-		{
-			printf("HERE_DOC\n");
+		if (data->cmd->redir->type == HERE_DOC)
 			return (true);
-		}
-		data->redir = data->redir->next;
+		data->cmd->redir = data->cmd->redir->next;
 	}
 	return (false);
 }
