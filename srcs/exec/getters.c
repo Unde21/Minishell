@@ -18,29 +18,3 @@ char	*get_key(char *env)
 	key[i] = '\0';
 	return (key);
 }
-
-char	*get_value(char *env)
-{
-	char	*value;
-	int		start;
-	int		end;
-	int		i;
-
-	value = NULL;
-	start = 0;
-	end = 0;
-	i = 0;
-	while (env[i++] != '=')
-		start++;
-	while (env[i++])
-		end++;
-	start += 1;
-	i = 0;
-	value = malloc(end + 1);
-	if (!value)
-		return (NULL);
-	while (env[start])
-		value[i++] = env[start++];
-	value[i] = '\0';
-	return (value);
-}

@@ -1,4 +1,5 @@
 #include "exec.h"
+#include "parsing.h"
 
 char	*get_random_name(char *here_doc)
 {

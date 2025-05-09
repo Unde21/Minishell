@@ -43,7 +43,7 @@ t_env	*create_node(t_data *data, int i)
 	if (!next_node)
 		return (next_node);
 	next_node->key = get_key(data->env[i]);
-	next_node->value = getenv(next_node->key); // get_value(data->env[i]);
+	next_node->value = getenv(next_node->key);
 	next_node->full_line = data->env[i];
 	next_node->next = NULL;
 	return (next_node);

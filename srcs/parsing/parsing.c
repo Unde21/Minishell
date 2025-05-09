@@ -36,9 +36,9 @@ void	parsing(t_data *data)
 		clear_token(data->token_lst->head);
 		return ;
 	}
-	exec_init(data);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
+	exec_init(data);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
