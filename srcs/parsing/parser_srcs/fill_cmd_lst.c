@@ -85,11 +85,8 @@ bool	get_cmd_args(t_token *current, t_cmd **cmd)
 				return (print_err(ERR_PIPE));
 			if (current->type == PIPE)
 				return (print_err(ERR_MULTIPLE_PIPE));
-			if (current != NULL)
-			{
-				if (new_node_cmd(&current_cmd) == false)
-					return (false);
-			}
+			if (current != NULL && new_node_cmd(&current_cmd) == false)
+				return (false);
 		}
 	}
 	return (true);

@@ -8,7 +8,8 @@ static void	clear_args(t_cmd *cmd)
 	i = 0;
 	while (i < cmd->nb_args)
 	{
-		free(cmd->args[i].content);
+		if (cmd->args != NULL)
+			free(cmd->args[i].content);
 		++i;
 	}
 	free(cmd->args);

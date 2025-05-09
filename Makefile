@@ -6,7 +6,7 @@ SRCS := srcs/main.c \
 	srcs/parsing/parsing.c \
 	srcs/parsing/utils.c \
 	srcs/parsing/handle_tokens/handle_word.c \
-	srcs/parsing/handle_tokens/is_quote_missing.c \
+	srcs/parsing/handle_tokens/handle_word_utils.c \
 	srcs/parsing/handle_tokens/handle_tokens.c \
 	srcs/parsing/handle_tokens/create_node_for_token.c \
 	srcs/parsing/parser_srcs/parser.c \

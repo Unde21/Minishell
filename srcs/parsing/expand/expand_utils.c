@@ -59,7 +59,6 @@ void	join_with_expand(char **env, char **expanded, char *s, size_t *i)
 	var_name = get_var_name(&s[*i]);
 	if (var_name == NULL)
 	{
-		free(*expanded);
 		free(var_name);
 		ft_dprintf(2, ERR_MALLOC);
 		return ;

@@ -40,12 +40,17 @@ bool		handle_token(char *input, t_token_lst *tokens, t_token *current);
 // handle_word.c
 size_t		handle_word(char *input, t_token **new, bool *error);
 
+// handle_word_utils.c
+bool		is_special_operator(char input, int is_quote);
+int			save_quote(char input);
+void		new_node_word(t_token **new, char *word, int is_quote, bool *error);
+
 // create_node_for_token.c
-size_t		new_node_pipes(t_token **new);
-size_t		new_node_redir_out(t_token **new);
-size_t		new_node_redir_in(t_token **new);
-size_t		new_node_here_doc(t_token **new);
-size_t		new_node_append(t_token **new);
+size_t		new_node_pipes(t_token **new, bool *error);
+size_t		new_node_redir_out(t_token **new, bool *error);
+size_t		new_node_redir_in(t_token **new, bool *error);
+size_t		new_node_here_doc(t_token **new, bool *error);
+size_t		new_node_append(t_token **new, bool *error);
 
 //fill_cmd_lst.c
 bool		get_cmd_args(t_token *current, t_cmd **cmd);

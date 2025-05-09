@@ -2,26 +2,6 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static bool	is_special_operator(char input, int is_quote)
-{
-	if ((input == '|' && is_quote == NO_QUOTE) || (input == '>'
-			&& is_quote == NO_QUOTE) || (input == '<' && is_quote == NO_QUOTE))
-		return (true);
-	return (false);
-}
-
-static int	save_quote(char input)
-{
-	int	is_quote;
-
-	is_quote = NO_QUOTE;
-	if (input == ASCII_DBLE_QUOTE)
-		is_quote = ASCII_DBLE_QUOTE;
-	else if (input == ASCII_SNGL_QUOTE)
-		is_quote = ASCII_SNGL_QUOTE;
-	return (is_quote);
-}
-
 static size_t	get_word_size(char *input, int is_quote)
 {
 	size_t	word_size;
@@ -83,6 +63,7 @@ static bool	is_double_quote_missing(char *word, size_t word_size,
 	}
 	return (false);
 }
+
 static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 {
 	if (is_double_quote_missing(word, word_size, check_quote) == true)
@@ -109,10 +90,14 @@ size_t	handle_word(char *input, t_token **new, bool *error)
 	char	*word;
 	int		is_quote;
 
-	is_quote = 0;
 	is_quote = save_quote(*input);
 	word_size = get_word_size(input, is_quote);
 	word = extract_word(input, word_size);
+	if (word == NULL)
+	{
+		*error = true;
+		return (0);
+	}
 	if (word_size != 0)
 	{
 		if (is_quote_missing(word, word_size, is_quote) == true)
@@ -122,12 +107,7 @@ size_t	handle_word(char *input, t_token **new, bool *error)
 			return (ft_strlen(input));
 		}
 	}
-	if (is_quote == ASCII_DBLE_QUOTE)
-		*new = new_token(word, DBLE_QUOTE);
-	else if (is_quote == ASCII_SNGL_QUOTE)
-		*new = new_token(word, SNGL_QUOTE);
-	else
-		*new = new_token(word, WORD);
+	new_node_word(new, word, is_quote, error);
 	free(word);
 	return (word_size);
 }

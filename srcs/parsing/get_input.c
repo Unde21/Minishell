@@ -18,7 +18,7 @@ void	get_input(t_data *data)
 	while (data->line_read != NULL)
 	{
 		ft_printf("\nline : {%s}\n\n", data->line_read);
-		parsing(data); //BUG segfault if input == NULL
+		parsing(data);
 		free(data->line_read);
 		data->line_read = readline(str);
 		if (data->line_read != NULL)

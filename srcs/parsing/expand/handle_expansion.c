@@ -33,7 +33,6 @@ static char	*expand(char *s, char **env, char *expanded, t_data *data)
 	size_t	i;
 
 	i = 0;
-	ft_printf("str : %s\n", s);
 	while (s[i])
 	{
 		if (s[i] == ASCII_DOLLAR && s[i + 1] != ASCII_DOLLAR)
@@ -49,6 +48,7 @@ static char	*expand(char *s, char **env, char *expanded, t_data *data)
 			join_without_expand(&expanded, s[i], &i);
 		if (expanded == NULL)
 		{
+			free(s);
 			ft_dprintf(2, ERR_MALLOC);
 			return (NULL);
 		}
