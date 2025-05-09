@@ -22,7 +22,7 @@ void	exec_init(t_data *data)
 	// print_lst(data->token_lst->head, 2);
 	// print_lst_cmd(data->cmd);
 	// print_lst_cmd_expand(data->cmd);
-	// print_list(data);
+	// print_listed_env(data);
 	// printf("here_doc name => %s\n here_doc len =>%ld\n\n", here_doc,
 	// 	ft_strlen(here_doc));
 	///////////////////////////

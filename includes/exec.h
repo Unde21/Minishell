@@ -26,7 +26,7 @@ char					*get_value(char *env);
 char					*get_key(char *env);
 
 //// debug ////
-void					print_list(t_data *data);
+void					print_listed_env(t_data *data);
 void					print_env(t_data *data);
 void					print_lst(t_token *token, int t);
 void					print_lst_cmd(t_cmd *cmd);

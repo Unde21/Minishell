@@ -29,6 +29,7 @@ void	heredoc_init(t_data *data)
 {
 	char	*here_doc;
 
+	(void)data;
 	here_doc = malloc(sizeof(char) * 26);
 	if (!here_doc)
 		print_err(ERR_MALLOC);

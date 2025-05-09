@@ -1,6 +1,6 @@
 #include "exec.h"
 
-void	print_list(t_data *data)
+void	print_listed_env(t_data *data)
 {
 	int	i;
 	int	j;
