@@ -2,7 +2,6 @@ NAME = minishell
 
 SRCS := srcs/main.c \
 		srcs/init/init.c \
-		srcs/parsing/get_input.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/utils.c \
 		srcs/parsing/handle_tokens/handle_word.c \
@@ -25,6 +24,7 @@ SRCS := srcs/main.c \
 		srcs/debug/print_expand.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
+		srcs/get_input/get_input.c \
 
 HEADER := 	includes/minishell.h \
 			includes/parsing.h \

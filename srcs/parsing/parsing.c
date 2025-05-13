@@ -1,5 +1,4 @@
 #include "debug.h"
-#include "exec.h"
 #include "minishell.h"
 #include <stdlib.h>
 
@@ -17,15 +16,15 @@ static bool	tokenizer(t_data *data)
 	return (true);
 }
 
-void	parsing(t_data *data)
+bool parsing(t_data *data)
 {
-	if (init_lst(data) == false || tokenizer(data) == false)
-		return ;
+	if (tokenizer(data) == false)
+		return (false);
 	if (parser(data, &data->cmd) == false)
 	{
 		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);
-		return ;
+		return (false);
 	}
 	expand_tokens(data->cmd);
 	if (DEBUG_VALUE == 2 || DEBUG_VALUE == 5)
@@ -34,12 +33,9 @@ void	parsing(t_data *data)
 	{
 		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);
-		return ;
+		return (false);
 	}
-	exec_init(data);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
-	clear_cmd(data->cmd);
-	clear_token(data->token_lst->head);
-	free(data->token_lst);
+	return (true);
 }

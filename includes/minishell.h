@@ -100,6 +100,7 @@ void				clear_cmd(t_cmd *cmd);
 void				free_all(char **str);
 int					wich_quote(char *input);
 
+// get_input.c
 void				get_input(t_data *data);
 
 #endif
