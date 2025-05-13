@@ -11,9 +11,9 @@ typedef struct s_env	t_env;
 # include <unistd.h>
 
 //// init ////
-void					heredoc_init(t_data *data);
 void					init_listed_env(t_data *data);
 void					free_listed_env(t_data *data);
+void					heredoc(char *limiter);
 
 //// add_node ////
 t_env					*create_node(t_data *data, int i);
@@ -21,6 +21,8 @@ void					add_back(t_env *new_node, t_env **stack);
 
 //// getters ////
 char					*get_key(char *env);
+char					*get_limiter(t_data *data);
+char					*get_random_name(char *here_doc);
 
 //// exec ////
 void					exec_init(t_data *data);

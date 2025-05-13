@@ -14,6 +14,6 @@ void	exec_init(t_data *data)
 {
 	init_listed_env(data);
 	if (is_heredoc(data))
-		heredoc_init(data);
+		heredoc(get_limiter(data));
 	free_listed_env(data);
 }

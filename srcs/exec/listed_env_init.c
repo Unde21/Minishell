@@ -8,10 +8,7 @@ void	free_listed_env(t_data *data)
 	{
 		tmp = data->listed_env->next;
 		if (data->listed_env->key != NULL || data->listed_env->value != NULL)
-		{
 			free(data->listed_env->key);
-			// free(data->listed_env->value);
-		}
 		free(data->listed_env);
 		data->listed_env = tmp;
 	}

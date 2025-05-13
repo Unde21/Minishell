@@ -1,42 +1,36 @@
 #include "exec.h"
 #include "parsing.h"
 
-char	*get_random_name(char *here_doc)
+void	heredoc(char *limiter)
 {
-	char	c;
-	int		i;
-	int		fd;
+	int		fd_heredoc;
+	char	*heredoc;
+	char	*line;
 
-	i = 0;
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
+	line = NULL;
+	heredoc = malloc(sizeof(char) * 26);
+	if (!heredoc)
+		if (print_err(ERR_MALLOC) == false)
+			return ;
+	heredoc = get_random_name(heredoc);
+	fd_heredoc = open(heredoc, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd_heredoc == -1)
+		if (print_err("ERROR : openning HEREDOC !\n") == false)
+		{
+			unlink(heredoc);
+			return (free(heredoc));
+		}
+	while (1)
 	{
-		print_err("ERROR : FD HERE_DOC !\n");
-		free(here_doc);
-		return (NULL);
+		line = readline("> ");
+		write(fd_heredoc, line, ft_strlen(line));
+		write(fd_heredoc, "\n", 1);
+		if (ft_strcmp(line, limiter) == 0)
+			break ;
+		free(line);
 	}
-	while (i < 25)
-	{
-		read(fd, &c, 1);
-		if (ft_isprint(c))
-			here_doc[i++] = c;
-	}
-	here_doc[i] = '\0';
-	close(fd);
-	return (here_doc);
-}
-
-void	heredoc_init(t_data *data)
-{
-	char	*here_doc;
-	int		fd;
-
-	(void)data;
-	here_doc = malloc(sizeof(char) * 26);
-	if (!here_doc)
-		print_err(ERR_MALLOC);
-	here_doc = get_random_name(here_doc);
-	fd = open(here_doc, O_RDONLY | O_CREAT);
-	if (fd == -1)
-		print_err("ERROR : opening fd here_doc init !\n");
+	unlink(heredoc);
+	free(heredoc);
+	free(line);
+	close(fd_heredoc);
 }

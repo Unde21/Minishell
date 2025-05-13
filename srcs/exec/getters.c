@@ -18,3 +18,39 @@ char	*get_key(char *env)
 	key[i] = '\0';
 	return (key);
 }
+
+char	*get_random_name(char *here_doc)
+{
+	char	c;
+	int		i;
+	int		fd;
+
+	i = 0;
+	fd = open("/dev/random", O_RDONLY);
+	if (fd == -1)
+	{
+		print_err("ERROR : opening /dev/random in get_random_name !\n");
+		free(here_doc);
+		return (NULL);
+	}
+	while (i < 25)
+	{
+		read(fd, &c, 1);
+		if (ft_isprint(c))
+			here_doc[i++] = c;
+	}
+	here_doc[i] = '\0';
+	close(fd);
+	return (here_doc);
+}
+
+char	*get_limiter(t_data *data)
+{
+	while (data->cmd->redir != NULL)
+	{
+		if (data->cmd->redir->type == HERE_DOC)
+			return (data->cmd->redir->file);
+		data->cmd->redir = data->cmd->redir->next;
+	}
+	return (NULL);
+}
