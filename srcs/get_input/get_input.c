@@ -1,11 +1,11 @@
+#include "exec.h"
 #include "minishell.h"
 #include "parsing.h"
-#include "exec.h"
+#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <signal.h>
 
-int return_value;
+int			g_return_value;
 
 static void	exit_with_right_value(t_data *data)
 {
@@ -17,9 +17,9 @@ static void	exit_with_right_value(t_data *data)
 
 static void	signal_handler(int signal)
 {
-	if (signal == SIGINT) // code retour pas bon
+	if (signal == SIGINT)
 	{
-		return_value = 130;
+		g_return_value = 130;
 		ft_printf("^C\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -29,7 +29,7 @@ static void	signal_handler(int signal)
 
 static void	set_signal_action(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = &signal_handler;
@@ -56,7 +56,7 @@ void	get_input(t_data *data)
 
 	rl_catch_signals = 0;
 	set_signal_action();
-	path = getcwd(NULL, 0); 	// TODO Voir ce qu on met !
+	path = getcwd(NULL, 0); // TODO Voir ce qu on met !
 	str = ft_strjoin(path, "$ ");
 	free(path);
 	data->line_read = readline(str);
@@ -65,7 +65,6 @@ void	get_input(t_data *data)
 	add_history(data->line_read);
 	while (data->line_read != NULL)
 	{
-		ft_printf("return : %d\n", return_value);
 		handle_input(data);
 		free(data->line_read);
 		data->line_read = readline(str);

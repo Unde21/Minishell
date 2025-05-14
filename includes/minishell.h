@@ -87,7 +87,7 @@ typedef struct s_data
 }					t_data;
 ////////////////////////////
 
-extern int return_value;
+extern int			g_return_value;
 
 // init.c
 void				init_data(t_data *data, int ac, char **av, char **env);
