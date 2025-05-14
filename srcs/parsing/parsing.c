@@ -22,7 +22,6 @@ bool parsing(t_data *data)
 		return (false);
 	if (parser(data, &data->cmd) == false)
 	{
-		clear_cmd(data->cmd);
 		clear_token(data->token_lst->head);
 		return (false);
 	}

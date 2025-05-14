@@ -5,18 +5,21 @@
 #include <unistd.h>
 #include <signal.h>
 
-void	clear_data(t_data *data)
+int return_value;
+
+static void	exit_with_right_value(t_data *data)
 {
-	clear_cmd(data->cmd);
-	clear_token(data->token_lst->head);
-	free(data->token_lst);
-	exit(130); // call notre propre exit
+	rl_clear_history();
+	data->prev_return_value = 0;
+	ft_printf("exit\n");
+	exit(data->prev_return_value);
 }
 
-void	signal_handler(int signal)
+static void	signal_handler(int signal)
 {
-	if (signal == SIGINT)
+	if (signal == SIGINT) // code retour pas bon
 	{
+		return_value = 130;
 		ft_printf("^C\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -24,7 +27,7 @@ void	signal_handler(int signal)
 	}
 }
 
-void	set_signal_action(void)
+static void	set_signal_action(void)
 {
 	struct sigaction sa;
 
@@ -36,6 +39,8 @@ void	set_signal_action(void)
 
 static void	handle_input(t_data *data)
 {
+	if (init_lst(data) == false)
+		return ;
 	if (parsing(data) == false)
 		return ;
 	exec_init(data);
@@ -50,32 +55,22 @@ void	get_input(t_data *data)
 	char	*path;
 
 	rl_catch_signals = 0;
-	if (init_lst(data) == false)
-		exit(1);  // call notre propre exit
 	set_signal_action();
-	// TODO Voir ce qu on met !
-	path = getcwd(NULL, 0);
+	path = getcwd(NULL, 0); 	// TODO Voir ce qu on met !
 	str = ft_strjoin(path, "$ ");
 	free(path);
 	data->line_read = readline(str);
 	if (data->line_read == NULL)
-	{
-		rl_clear_history();
-		ft_printf("exit\n");
-		clear_data(data);
-	}
+		exit_with_right_value(data);
 	add_history(data->line_read);
 	while (data->line_read != NULL)
 	{
+		ft_printf("return : %d\n", return_value);
 		handle_input(data);
 		free(data->line_read);
 		data->line_read = readline(str);
 		if (data->line_read == NULL)
-		{
-			rl_clear_history();
-			ft_printf("exit\n");
-			clear_data(data);
-		}
+			exit_with_right_value(data);
 		add_history(data->line_read);
 	}
 	rl_clear_history();
