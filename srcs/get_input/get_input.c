@@ -20,10 +20,11 @@ static void	signal_handler(int signal)
 	if (signal == SIGINT)
 	{
 		g_return_value = 130;
-		ft_printf("^C\n");
-		rl_on_new_line();
+		ft_dprintf(0, "^C");
+		if (rl_readline_state & RL_STATE_COMPLETING)
+			rl_pending_input = 'n';
 		rl_replace_line("", 0);
-		rl_redisplay();
+		rl_done = 1;
 	}
 }
 
@@ -42,19 +43,29 @@ static void	handle_input(t_data *data)
 	if (init_lst(data) == false)
 		return ;
 	if (parsing(data) == false)
+	{
+		clear_cmd(data->cmd);
+		clear_token(data->token_lst->head);
+		free(data->token_lst);
 		return ;
+	}
 	exec_init(data);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
 }
 
+int	do_nothing(void)
+{
+	return (0);
+}
 void	get_input(t_data *data)
 {
 	char	*str;
 	char	*path;
 
 	rl_catch_signals = 0;
+	rl_event_hook = do_nothing;
 	set_signal_action();
 	path = getcwd(NULL, 0); // TODO Voir ce qu on met !
 	str = ft_strjoin(path, "$ ");
