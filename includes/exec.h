@@ -19,7 +19,12 @@ void					heredoc(char *limiter);
 t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
+////  isit   ////
+bool					is_heredoc(t_data *data);
+bool					is_cmd(t_data *data);
+bool					is_pipe(t_data *data);
 //// getters ////
+char					*get_listed_env(t_data *data);
 char					*get_key(char *env);
 char					*get_limiter(t_data *data);
 char					*get_random_name(char *here_doc);

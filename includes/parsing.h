@@ -12,6 +12,7 @@
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
+# define ERR_CMD "syntax error: command not found\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36

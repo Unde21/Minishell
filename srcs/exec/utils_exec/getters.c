@@ -54,3 +54,17 @@ char	*get_limiter(t_data *data)
 	}
 	return (NULL);
 }
+
+char	*get_listed_env(t_data *data)
+{
+	char *path;
+
+	path = NULL;
+	while (data->listed_env != NULL)
+	{
+		if (ft_strcmp(data->listed_env->key, "PATH") == 0)
+			path = data->listed_env->value;
+		data->listed_env = data->listed_env->next;
+	}
+	return (path);
+}

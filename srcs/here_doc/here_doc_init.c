@@ -1,25 +1,11 @@
 #include "exec.h"
 #include "parsing.h"
 
-void	heredoc(char *limiter)
+void	fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 {
-	int		fd_heredoc;
-	char	*heredoc;
 	char	*line;
 
 	line = NULL;
-	heredoc = malloc(sizeof(char) * 26);
-	if (!heredoc)
-		if (print_err(ERR_MALLOC) == false)
-			return ;
-	heredoc = get_random_name(heredoc);
-	fd_heredoc = open(heredoc, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd_heredoc == -1)
-		if (print_err("ERROR : openning HEREDOC !\n") == false)
-		{
-			unlink(heredoc);
-			return (free(heredoc));
-		}
 	while (1)
 	{
 		line = readline("> ");
@@ -33,4 +19,24 @@ void	heredoc(char *limiter)
 	free(heredoc);
 	free(line);
 	close(fd_heredoc);
+}
+
+void	heredoc(char *limiter)
+{
+	int		fd_heredoc;
+	char	*heredoc;
+
+	heredoc = malloc(sizeof(char) * 26);
+	if (!heredoc)
+		if (print_err(ERR_MALLOC) == false)
+			return ;
+	heredoc = get_random_name(heredoc);
+	fd_heredoc = open(heredoc, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd_heredoc == -1)
+		if (print_err("ERROR : openning HEREDOC !\n") == false)
+		{
+			unlink(heredoc);
+			return (free(heredoc));
+		}
+	fill_heredoc(fd_heredoc, heredoc, limiter);
 }
