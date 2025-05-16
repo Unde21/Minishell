@@ -30,7 +30,48 @@ static char	*get_var_name(char *s)
 	return (var_name);
 }
 
-static char	*get_env_value(char *var_name, char **env)
+static void	word_splitting_loop(char *src, char *dup, bool is_separator)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (src[i])
+	{
+		if (ft_isspace(src[i]) == true)
+			is_separator = true;
+		while (ft_isspace(src[i]) == true)
+			++i;
+		if (is_separator == true)
+		{
+			is_separator = false;
+			dup[j] = ' ';
+		}
+		else
+		{
+			dup[j] = src[i];
+			++i;
+		}
+		++j;
+	}
+	dup[j] = '\0';
+}
+
+static char *dup_word_splitting(char *src)
+{
+	char	*dup;
+	bool	is_separator;
+
+	is_separator = false;
+	dup = malloc(sizeof(char) * (ft_strlen(src) + 1));
+	if (dup == NULL)
+		return (NULL);
+	word_splitting_loop(src, dup, is_separator);
+	return (dup);
+}
+
+static char	*get_env_value(char *var_name, char **env, bool is_quote)
 {
 	char	*env_value;
 	size_t	i;
@@ -46,11 +87,14 @@ static char	*get_env_value(char *var_name, char **env)
 	}
 	if (env[i] == NULL)
 		return (ft_strdup(""));
-	env_value = ft_strdup(ft_strchr(env[i], '=') + 1);
+	if (is_quote == true)
+		env_value = ft_strdup(ft_strchr(env[i], '=') + 1);
+	else
+		env_value = dup_word_splitting(ft_strchr(env[i], '=') + 1);
 	return (env_value);
 }
 
-void	join_with_expand(char **env, char **expanded, char *s, size_t *i)
+void	join_with_expand(t_data *data, char **expanded, char *s, size_t *i)
 {
 	char	*var_name;
 	char	*env_value;
@@ -63,7 +107,7 @@ void	join_with_expand(char **env, char **expanded, char *s, size_t *i)
 		ft_dprintf(2, ERR_MALLOC);
 		return ;
 	}
-	env_value = get_env_value(var_name, env);
+	env_value = get_env_value(var_name, data->env, data->cmd->args->is_quote);
 	if (env_value == NULL)
 	{
 		free(var_name);

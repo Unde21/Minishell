@@ -17,7 +17,7 @@ char	*get_random_name(char *here_doc)
 	while (i < 25)
 	{
 		read(fd, &c, 1);
-		if (ft_isprint(c))
+		if (ft_isprint(c) && c != '/')
 			here_doc[i++] = c;
 	}
 	here_doc[i] = '\0';

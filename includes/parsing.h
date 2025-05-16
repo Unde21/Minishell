@@ -35,24 +35,24 @@ bool	parsing(t_data *data);
 
 // handle_token.c
 t_token	*new_token(char *content, t_token_type type);
-bool	handle_token(char *input, t_token_lst *tokens,
+bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 			t_token *current);
 
 // handle_word.c
 size_t	handle_word(char *input, t_token **new,
-			bool *error);
+			t_data *data);
 
 // handle_word_utils.c
 bool	is_special_operator(char input, int is_quote);
 int		save_quote(char input);
-void	new_node_word(t_token **new, char *word, int is_quote, bool *error);
+void	new_node_word(t_token **new, char *word, int is_quote, t_data *data);
 
 // create_node_for_token.c
-size_t	new_node_pipes(t_token **new, bool *error);
-size_t	new_node_redir_out(t_token **new, bool *error);
-size_t	new_node_redir_in(t_token **new, bool *error);
-size_t	new_node_here_doc(t_token **new, bool *error);
-size_t	new_node_append(t_token **new, bool *error);
+size_t	new_node_pipes(t_token **new, t_data *data);
+size_t	new_node_redir_out(t_token **new, t_data *data);
+size_t	new_node_redir_in(t_token **new, t_data *data);
+size_t	new_node_here_doc(t_token **new, t_data *data);
+size_t	new_node_append(t_token **new, t_data *data);
 
 // fill_cmd_lst.c
 bool	get_cmd_args(t_token *current, t_cmd **cmd);
@@ -79,7 +79,7 @@ bool	handle_expansion(t_data *data, t_cmd *cmd);
 void	expand_tokens(t_cmd *current);
 
 // expand_utils.c
-void	join_with_expand(char **env, char **expanded,
+void	join_with_expand(t_data *data, char **expanded,
 			char *s, size_t *i);
 
 // remove_quote.c

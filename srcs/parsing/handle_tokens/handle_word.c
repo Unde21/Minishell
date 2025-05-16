@@ -84,7 +84,7 @@ static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 	return (false);
 }
 
-size_t	handle_word(char *input, t_token **new, bool *error)
+size_t	handle_word(char *input, t_token **new, t_data *data)
 {
 	size_t	word_size;
 	char	*word;
@@ -95,19 +95,19 @@ size_t	handle_word(char *input, t_token **new, bool *error)
 	word = extract_word(input, word_size);
 	if (word == NULL)
 	{
-		*error = true;
+		data->return_value = 1;
 		return (0);
 	}
 	if (word_size != 0)
 	{
 		if (is_quote_missing(word, word_size, is_quote) == true)
 		{
-			*error = true;
+			data->return_value = 1;
 			free(word);
 			return (ft_strlen(input));
 		}
 	}
-	new_node_word(new, word, is_quote, error);
+	new_node_word(new, word, is_quote, data);
 	free(word);
 	return (word_size);
 }

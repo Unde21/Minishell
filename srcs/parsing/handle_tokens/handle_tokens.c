@@ -31,31 +31,28 @@ static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 	}
 }
 
-bool	handle_token(char *input, t_token_lst *tokens, t_token *current)
+bool	handle_token(t_data *data, char *input, t_token_lst *tokens, t_token *current)
 {
-	bool	error;
-
-	error = false;
-	while (*input != '\0' && error == false)
+	while (*input != '\0' && data->return_value == 0)
 	{
 		if (*input == '|')
-			input += new_node_pipes(&current, &error);
+			input += new_node_pipes(&current, data);
 		else if (*input == '>' && *(input + 1) == '>')
-			input += new_node_append(&current, &error);
+			input += new_node_append(&current, data);
 		else if (*input == '>')
-			input += new_node_redir_out(&current, &error);
+			input += new_node_redir_out(&current, data);
 		else if (*input == '<' && *(input + 1) == '<')
-			input += new_node_here_doc(&current, &error);
+			input += new_node_here_doc(&current, data);
 		else if (*input == '<')
-			input += new_node_redir_in(&current, &error);
+			input += new_node_redir_in(&current, data);
 		else
-			input += handle_word(input, &current, &error);
-		if (error != true)
+			input += handle_word(input, &current, data);
+		if (data->return_value == 0)
 			save_head_and_tail_lst(tokens, current);
 		while (ft_isspace(*input) == true)
 			++input;
 	}
-	if (error == true)
+	if (data->return_value != 0)
 		return (false);
 	return (true);
 }

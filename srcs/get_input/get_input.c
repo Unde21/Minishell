@@ -5,43 +5,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int			g_return_value;
-
-static void	exit_with_right_value(t_data *data)
-{
-	rl_clear_history();
-	data->prev_return_value = 0;
-	ft_printf("exit\n");
-	exit(data->prev_return_value);
-}
-
-static void	signal_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		g_return_value = 130;
-		ft_dprintf(0, "^C");
-		if (rl_readline_state & RL_STATE_COMPLETING)
-			rl_pending_input = 'n';
-		rl_replace_line("", 0);
-		rl_done = 1;
-	}
-}
-
-static void	set_signal_action(void)
-{
-	struct sigaction	sa;
-
-	ft_bzero(&sa, sizeof(sa));
-	sa.sa_handler = &signal_handler;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-}
+int	g_return_value = 0;
 
 static void	handle_input(t_data *data)
 {
-	if (init_lst(data) == false)
+	if (g_return_value == CODE_SIGINT)
+	{
+		data->return_value = CODE_SIGINT;
+		g_return_value = 0;
 		return ;
+	}
+	data->return_value = 0;
+	if (init_lst(data) == false)
+	{
+		data->return_value = 1;
+		return ;
+	}
 	if (parsing(data) == false)
 	{
 		clear_cmd(data->cmd);
@@ -53,12 +32,22 @@ static void	handle_input(t_data *data)
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
+	data->return_value = 0;
 }
 
-int	do_nothing(void)
+static int	do_nothing(void)
 {
 	return (0);
 }
+
+static void	exit_with_right_value(t_data *data)
+{
+	rl_clear_history();
+	data->return_value = 0;
+	ft_printf("exit\n");
+	exit(data->return_value);
+}
+
 void	get_input(t_data *data)
 {
 	char	*str;
@@ -70,18 +59,15 @@ void	get_input(t_data *data)
 	path = getcwd(NULL, 0); // TODO Voir ce qu on met !
 	str = ft_strjoin(path, "$ ");
 	free(path);
-	data->line_read = readline(str);
-	if (data->line_read == NULL)
-		exit_with_right_value(data);
-	add_history(data->line_read);
-	while (data->line_read != NULL)
+	while (1)
 	{
-		handle_input(data);
-		free(data->line_read);
 		data->line_read = readline(str);
 		if (data->line_read == NULL)
 			exit_with_right_value(data);
 		add_history(data->line_read);
+		handle_input(data);
+		ft_printf("return : %d\n", data->return_value);
+		free(data->line_read);
 	}
 	rl_clear_history();
 	free(data->line_read);

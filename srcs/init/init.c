@@ -6,7 +6,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 {
 	data->ac = ac;
 	data->av = av;
-	data->prev_return_value = 0;
+	data->return_value = 0;
 	data->env = env;
 	// data->here_doc = NULL;
 	data->line_read = NULL;
