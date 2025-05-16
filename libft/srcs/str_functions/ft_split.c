@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:33:39 by samaouch          #+#    #+#             */
-/*   Updated: 2025/01/09 04:27:21 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/15 17:58:38 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdlib.h>
 
 static void		*free_all(char **s, size_t len);
@@ -56,6 +56,8 @@ static size_t	count_words(char const *s, char c)
 	in_word = false;
 	count = 0;
 	i = 0;
+	if (s == NULL)
+		return (0);
 	while (s[i])
 	{
 		if (s[i] != c && in_word == false)

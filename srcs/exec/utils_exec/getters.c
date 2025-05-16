@@ -36,7 +36,7 @@ char	*get_random_name(char *here_doc)
 	while (i < 25)
 	{
 		read(fd, &c, 1);
-		if (ft_isprint(c))
+		if (ft_isprint(c) && c != '/')
 			here_doc[i++] = c;
 	}
 	here_doc[i] = '\0';
@@ -58,13 +58,15 @@ char	*get_limiter(t_data *data)
 char	*get_listed_env(t_data *data)
 {
 	char *path;
+	t_env *tmp;
 
+	tmp = data->listed_env;
 	path = NULL;
-	while (data->listed_env != NULL)
+	while (tmp != NULL)
 	{
-		if (ft_strcmp(data->listed_env->key, "PATH") == 0)
-			path = data->listed_env->value;
-		data->listed_env = data->listed_env->next;
+		if (ft_strcmp(tmp->key, "PATH") == 0)
+			path = tmp->value;
+		tmp = tmp->next;
 	}
 	return (path);
 }

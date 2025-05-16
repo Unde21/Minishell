@@ -43,6 +43,7 @@ typedef struct s_redir
 	char			*file;
 	struct s_redir	*next;
 }					t_redir;
+
 typedef struct s_args
 {
 	char			*content;

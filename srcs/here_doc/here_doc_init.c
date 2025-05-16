@@ -1,7 +1,7 @@
 #include "exec.h"
 #include "parsing.h"
 
-void	fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
+char	*fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 {
 	char	*line;
 
@@ -19,9 +19,10 @@ void	fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 	free(heredoc);
 	free(line);
 	close(fd_heredoc);
+	return (heredoc);
 }
 
-void	heredoc(char *limiter)
+char	*heredoc(char *limiter)
 {
 	int		fd_heredoc;
 	char	*heredoc;
@@ -29,14 +30,16 @@ void	heredoc(char *limiter)
 	heredoc = malloc(sizeof(char) * 26);
 	if (!heredoc)
 		if (print_err(ERR_MALLOC) == false)
-			return ;
+			return (NULL);
 	heredoc = get_random_name(heredoc);
 	fd_heredoc = open(heredoc, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd_heredoc == -1)
 		if (print_err("ERROR : openning HEREDOC !\n") == false)
 		{
 			unlink(heredoc);
-			return (free(heredoc));
+			free(heredoc);
+			return (NULL);
 		}
 	fill_heredoc(fd_heredoc, heredoc, limiter);
+	return (heredoc);
 }
