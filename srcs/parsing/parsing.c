@@ -1,6 +1,7 @@
 #include "debug.h"
 #include "minishell.h"
 #include <stdlib.h>
+#include "builtins.h"
 
 static bool	tokenizer(t_data *data)
 {
@@ -24,5 +25,9 @@ bool parsing(t_data *data)
 		return (false);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
+	if (ft_strcmp(data->cmd->args->content, "exit") == 0)
+	{
+			ft_exit(data, data->cmd->args);
+	}
 	return (true);
 }

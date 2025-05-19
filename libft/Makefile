@@ -24,6 +24,7 @@ SRCS := srcs/isbool_functions/ft_isalpha.c \
 	srcs/convert_functions/ft_toupper.c \
 	srcs/convert_functions/ft_tolower.c \
 	srcs/convert_functions/ft_atoi.c \
+	srcs/convert_functions/ft_atoll.c \
 	srcs/convert_functions/ft_itoa.c \
 	srcs/str_functions/ft_strlen.c \
 	srcs/str_functions/ft_strlcpy.c \

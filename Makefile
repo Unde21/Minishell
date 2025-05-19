@@ -32,6 +32,7 @@ HEADER := 	includes/minishell.h \
 			includes/parsing.h \
 			includes/exec.h \
 			includes/debug.h \
+			includes/builtins.h \
 			libft/libft.h
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g3

@@ -32,7 +32,6 @@ static void	handle_input(t_data *data)
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
-	data->return_value = 0;
 }
 
 static int	do_nothing(void)
@@ -72,4 +71,12 @@ void	get_input(t_data *data)
 	rl_clear_history();
 	free(data->line_read);
 	free(str);
+}
+
+void	clear_all_data(t_data *data)
+{
+	clear_cmd(data->cmd);
+	clear_token(data->token_lst->head);
+	free(data->token_lst);
+	free(data->line_read);
 }
