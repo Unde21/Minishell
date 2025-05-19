@@ -85,6 +85,7 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	int				nb_cmd;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;

@@ -25,6 +25,8 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/remove_quote.c \
 		srcs/exec/utils_exec/getters.c\
 		srcs/exec/utils_exec/isit.c\
+		srcs/exec/child.c\
+
 
 HEADER := 	includes/minishell.h \
 			includes/parsing.h \

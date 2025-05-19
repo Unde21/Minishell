@@ -1,5 +1,18 @@
 #include "exec.h"
 
+int	get_list_size(t_data *data)
+{
+	int	list_size;
+
+	list_size = 0;
+	while (data->cmd != NULL)
+	{
+		list_size++;
+		data->cmd = data->cmd->next;
+	}
+	return (list_size);
+}
+
 char	*get_key(char *env)
 {
 	char	*key;
@@ -44,13 +57,13 @@ char	*get_random_name(char *here_doc)
 	return (here_doc);
 }
 
-char	*get_limiter(t_data *data)
+char	*get_limiter(t_cmd *cmd)
 {
-	while (data->cmd->redir != NULL)
+	while (cmd->redir != NULL)
 	{
-		if (data->cmd->redir->type == HERE_DOC)
-			return (data->cmd->redir->file);
-		data->cmd->redir = data->cmd->redir->next;
+		if (cmd->redir->type == HERE_DOC)
+			return (cmd->redir->file);
+		cmd->redir = cmd->redir->next;
 	}
 	return (NULL);
 }

@@ -1,17 +1,21 @@
 #include "exec.h"
 #include "parsing.h"
 
-int	is_redir(t_data *data)
+char	*which_redir(t_cmd *cmd)
 {
-	while (data->cmd->redir != NULL)
+	while (cmd->redir != NULL)
 	{
-		if (data->cmd->redir->type == REDIR_IN)
-			return (1);
-		else if (data->cmd->redir->type == REDIR_OUT)
-			return (2);
-		data->cmd->redir = data->cmd->redir->next;
+		if (cmd->redir->type == REDIR_IN)
+			return (cmd->redir->file);
+		else if (cmd->redir->type == REDIR_OUT)
+			return (cmd->redir->file);
+		else if (cmd->redir->type == HERE_DOC)
+			return (heredoc(get_limiter(cmd)));
+		else
+			return (NULL);
+		cmd->redir = cmd->redir->next;
 	}
-	return (0);
+	return (NULL);
 }
 
 bool	is_pipe(t_data *data)
@@ -19,17 +23,6 @@ bool	is_pipe(t_data *data)
 	while (data->cmd->redir != NULL)
 	{
 		if (data->cmd->redir->type == PIPE)
-			return (true);
-		data->cmd->redir = data->cmd->redir->next;
-	}
-	return (false);
-}
-
-bool	is_heredoc(t_data *data)
-{
-	while (data->cmd->redir != NULL)
-	{
-		if (data->cmd->redir->type == HERE_DOC)
 			return (true);
 		data->cmd->redir = data->cmd->redir->next;
 	}

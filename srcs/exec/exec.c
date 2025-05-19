@@ -28,13 +28,14 @@
 // 	}
 // }
 
-static void	close_pipefd(t_data *data, int pipe_fd[])
+bool	close_pipefd(t_data *data, int pipe_fd[])
 {
 	int	i;
 
 	i = -1;
 	while (++i < (data->nb_cmd - 1))
 		close(pipe_fd[i]);
+	return (false);
 }
 
 bool	exec_init(t_data *data)
@@ -44,6 +45,7 @@ bool	exec_init(t_data *data)
 	int		i;
 	int		pipe_fd[2];
 
+	data->nb_cmd = get_list_size(data);
 	status = 0;
 	i = -1;
 	while (++i < data->nb_cmd)
@@ -58,7 +60,7 @@ bool	exec_init(t_data *data)
 			return (print_err("ERROR: fork failed !\n"));
 		}
 		else if (pid > 0)
-			child_init(data, pipe_fd, i);
+			child_init(data, *pipe_fd);
 	}
 	waitpid(pid, &status, 0);
 	free_listed_env(data);
