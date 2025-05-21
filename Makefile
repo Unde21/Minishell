@@ -1,15 +1,17 @@
 NAME = minishell
 
 SRCS := srcs/main.c \
+		srcs/utils.c \
 		srcs/get_input/get_input.c \
 		srcs/get_input/handle_signal.c \
 		srcs/init/init.c \
 		srcs/parsing/parsing.c \
-		srcs/parsing/utils.c \
+		srcs/parsing/utils_parsing.c \
 		srcs/parsing/handle_tokens/handle_word.c \
 		srcs/parsing/handle_tokens/handle_tokens.c \
 		srcs/parsing/handle_tokens/create_node_for_token.c \
 		srcs/parsing/parser_srcs/parser.c \
+		srcs/parsing/parser_srcs/convert_lst_to_array.c \
 		srcs/parsing/parser_srcs/fill_cmd_lst.c \
 		srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
 		srcs/parsing/handle_tokens/handle_word_utils.c \
@@ -18,6 +20,7 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/handle_expansion.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
+		srcs/parsing/expand/expand_wildcards.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/debug.c \
 		srcs/exec/getters.c \

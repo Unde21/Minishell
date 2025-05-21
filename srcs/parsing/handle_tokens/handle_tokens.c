@@ -31,7 +31,8 @@ static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 	}
 }
 
-bool	handle_token(t_data *data, char *input, t_token_lst *tokens, t_token *current)
+bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
+		t_token *current)
 {
 	while (*input != '\0' && data->return_value == 0)
 	{

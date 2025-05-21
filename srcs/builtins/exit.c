@@ -46,6 +46,7 @@ static void	get_exit_code(t_data *data, char *s)
 		exit(2);
 	}
 	clear_all_data(data);
+	ft_printf("exit_code : %d\n", exit_code);
 	exit(exit_code);
 }
 
@@ -53,15 +54,20 @@ int	ft_exit(t_data *data, t_args *args)
 {
 	char	*s;
 	int		nb_args;
+	int		exit_code;
 
+	exit_code = 0;
 	nb_args = get_nb_args(args);
 	if (nb_args == 1)
-		s = "0";
+	{
+		exit_code = data->return_value;
+		ft_printf("exit_code : %d\n", exit_code);
+		clear_all_data(data);
+		exit(exit_code);
+	}
 	else
 		s = args[1].content;
-	ft_printf("s : %s\n", s);
 	is_number(data, s);
-	ft_printf("nb_args : %d\n", nb_args);
 	if (nb_args > 2)
 	{
 		ft_dprintf(2, EXIT_TOO_MANY);

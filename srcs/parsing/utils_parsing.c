@@ -26,12 +26,6 @@ bool	is_redir_type(t_token_type type)
 	return (false);
 }
 
-bool	print_err(char *str_error)
-{
-	ft_dprintf(2, "%s", str_error);
-	return (false);
-}
-
 void	skip_quote_dollar(char **input, int is_quote, size_t *word_size,
 		int *count_quote)
 {

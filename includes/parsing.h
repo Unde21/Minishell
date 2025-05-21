@@ -12,6 +12,8 @@
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
+# define ERR_OP_DIR "error: failed to open directory\n"
+# define ERR_CLOSE_DIR "error: failed to close directory\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36
@@ -82,7 +84,14 @@ void	expand_tokens(t_cmd *current);
 void	join_with_expand(t_data *data, char **expanded,
 			char *s, size_t *i);
 
+// expand_wildcards
+void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i);
+
 // remove_quote.c
 bool	remove_quote(t_args *args);
+
+//convert_lst_to_array.c
+bool	convert_lst_to_array(t_cmd *cmd);
+char	**lst_to_array(t_args *args, size_t nb_args);
 
 #endif

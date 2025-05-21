@@ -54,6 +54,7 @@ typedef struct s_args
 typedef struct s_cmd
 {
 	t_args			*args;
+	char			**params;
 	size_t			nb_args;
 	t_redir			*redir;
 	struct s_cmd	*next;

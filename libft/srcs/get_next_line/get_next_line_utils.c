@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:27:22 by samaouch          #+#    #+#             */
-/*   Updated: 2025/01/21 23:29:48 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/21 11:42:26 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-char	*ft_strchr(const char *s, int c)
-{
-	size_t	i;
-	char	*str;
-
-	if (!s)
-		return (NULL);
-	str = (char *)s;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == (uint8_t)c)
-			return (&str[i]);
-		++i;
-	}
-	return (NULL);
-}
 
 size_t	ft_strlen_delim(const char *str, int check)
 {
