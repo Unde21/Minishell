@@ -56,7 +56,7 @@ bool	exec_init(t_data *data)
 			return (print_err("ERROR: fork failed !\n"));
 		}
 		else if (pid > 0)
-			child_init(data, pipe_fd, i);
+			child_init(data, pipe_fd);
 		data->cmd = data->cmd->next;
 	}
 	close_pipefd(data, pipe_fd);

@@ -25,11 +25,11 @@ bool	first_child(t_data *data, int *pipe_fd)
 // {
 // }
 
-bool	child_init(t_data *data, int *pipe_fd, int i)
+bool	child_init(t_data *data, int *pipe_fd)
 {
 	while (data->cmd != NULL)
 	{
-		if (i == 1)
+		if ()
 			return (first_child(data, pipe_fd));
 		// else if (data->cmd->next != NULL && data->nb_cmd > 1 && i > 1)
 		// 	return (middle_childs(data->cmd, pipe_fd));
