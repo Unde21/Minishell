@@ -22,8 +22,7 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/remove_quote.c \
 		srcs/parsing/expand/expand_wildcards.c \
 		srcs/exec/listed_env_init.c \
-		srcs/exec/debug.c \
-		srcs/exec/getters.c \
+		srcs/exec/utils_exec/getters.c \
 		srcs/exec/exec.c \
 		srcs/here_doc/here_doc_init.c \
 		srcs/builtins/exit.c \
