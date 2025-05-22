@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:26:41 by samaouch          #+#    #+#             */
-/*   Updated: 2025/01/21 23:29:53 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/15 14:12:53 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_next_line(int fd)
 		line = ft_strnjoin(line, buffer[fd], '\n');
 		if (line == NULL)
 			return (NULL);
-		if (ft_strchr(line, '\n'))
+		if (ft_strchr_gnl(line, '\n'))
 			break ;
 		bytes_read = read_file(fd, buffer[fd]);
 		if ((bytes_read == 0 && line[0] == '\0') || bytes_read < 0)
@@ -62,7 +62,7 @@ char	*clear_buffer(char *buffer)
 {
 	char	*newline_pos;
 
-	newline_pos = ft_strchr(buffer, '\n');
+	newline_pos = ft_strchr_gnl(buffer, '\n');
 	if (buffer[0] && newline_pos)
 	{
 		newline_pos++;

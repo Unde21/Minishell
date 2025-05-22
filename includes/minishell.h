@@ -34,16 +34,18 @@ typedef struct s_token_lst
 	t_token			*head;
 	t_token			*tail;
 }					t_token_lst;
-////////////////////////////
+////////////////////////////////
+
+///////////////////////////
 /////* list global *///////
 ///////////////////////////
-
 typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
 	struct s_redir	*next;
 }					t_redir;
+
 typedef struct s_args
 {
 	char			*content;
@@ -60,6 +62,8 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 ////////////////////////////
+
+////////////////////////////
 ///////* list exec *////////
 ////////////////////////////
 typedef struct s_env
@@ -70,8 +74,10 @@ typedef struct s_env
 
 	struct s_env	*next;
 }					t_env;
-///////////////////////////
-/* structure principale */
+/////////////////////////////
+
+//////////////////////////
+/////* main structur *////
 //////////////////////////
 typedef struct s_data
 {
@@ -93,23 +99,23 @@ typedef struct s_data
 extern int			g_return_value;
 
 // init.c
-void	init_data(t_data *data, int ac, char **av, char **env);
-bool	init_lst(t_data *data);
-bool	init_cmd_args(t_cmd *cmd);
+void				init_data(t_data *data, int ac, char **av, char **env);
+bool				init_lst(t_data *data);
+bool				init_cmd_args(t_cmd *cmd);
 
 // utils.c
-bool	print_err(char *str_error);
+bool				print_err(char *str_error);
 
-void	clear_token(t_token *lst);
-void	clear_cmd(t_cmd *cmd);
-void	free_all(char **str);
-int		wich_quote(char *input);
+void				clear_token(t_token *lst);
+void				clear_cmd(t_cmd *cmd);
+void				free_all(char **str);
+int					wich_quote(char *input);
 
 // get_input.c
-void	get_input(t_data *data);
-void	clear_all_data(t_data *data);
+void				get_input(t_data *data);
+void				clear_all_data(t_data *data);
 
 // handle_signal.c
-void	set_signal_action(void);
+void				set_signal_action(void);
 
 #endif

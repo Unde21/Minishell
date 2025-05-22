@@ -1,18 +1,19 @@
 #include "exec.h"
+#include "parsing.h"
 
-char	*get_random_name(char *here_doc)
+char	*fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 {
-	char	c;
-	int		i;
-	int		fd;
+	char	*line;
 
-	i = 0;
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
+	line = NULL;
+	while (1)
 	{
-		print_err("ERROR : FD HERE_DOC !\n");
-		free(here_doc);
-		return (NULL);
+		line = readline("> ");
+		write(fd_heredoc, line, ft_strlen(line));
+		write(fd_heredoc, "\n", 1);
+		if (ft_strcmp(line, limiter) == 0)
+			break ;
+		free(line);
 	}
 	while (i < 25)
 	{
@@ -25,13 +26,24 @@ char	*get_random_name(char *here_doc)
 	return (here_doc);
 }
 
-void	heredoc_init(t_data *data)
+char	*heredoc(char *limiter)
 {
-	char	*here_doc;
+	int		fd_heredoc;
+	char	*heredoc;
 
-	(void)data;
-	here_doc = malloc(sizeof(char) * 26);
-	if (!here_doc)
-		print_err(ERR_MALLOC);
-	here_doc = get_random_name(here_doc);
+	heredoc = malloc(sizeof(char) * 26);
+	if (!heredoc)
+		if (print_err(ERR_MALLOC) == false)
+			return (NULL);
+	heredoc = get_random_name(heredoc);
+	fd_heredoc = open(heredoc, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd_heredoc == -1)
+		if (print_err("ERROR : openning HEREDOC !\n") == false)
+		{
+			unlink(heredoc);
+			free(heredoc);
+			return (NULL);
+		}
+	fill_heredoc(fd_heredoc, heredoc, limiter);
+	return (heredoc);
 }
