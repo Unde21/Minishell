@@ -3,6 +3,8 @@
 
 char	*fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 {
+	int		i;
+	char	c;
 	char	*line;
 
 	line = NULL;
@@ -17,13 +19,13 @@ char	*fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 	}
 	while (i < 25)
 	{
-		read(fd, &c, 1);
+		read(fd_heredoc, &c, 1);
 		if (ft_isprint(c) && c != '/')
-			here_doc[i++] = c;
+			heredoc[i++] = c;
 	}
-	here_doc[i] = '\0';
-	close(fd);
-	return (here_doc);
+	heredoc[i] = '\0';
+	close(fd_heredoc);
+	return (heredoc);
 }
 
 char	*heredoc(char *limiter)

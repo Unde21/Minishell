@@ -15,7 +15,7 @@ bool	first_child(t_data *data, int *pipe_fd)
 	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
 		return (print_err("ERROR: dup failed !\n"));
 	close_pipefd(data, pipe_fd);
-	execve(path, cmd, data->env);
+	execve(path, data->cmd->params, data->env);
 	return (true);
 }
 // bool	middle_child(t_cmd *cmd, int *pipe_fd)
