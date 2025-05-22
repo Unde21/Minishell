@@ -4,6 +4,8 @@
 # include "libft.h"
 # include <stdio.h>
 
+# define CODE_SIGINT 130
+
 ////////////////////////////
 ///////* list parsing */////
 ////////////////////////////
@@ -81,8 +83,7 @@ typedef struct s_data
 {
 	char			*line_read;
 	int				ac;
-	int				nb_cmd;
-	int				prev_return_value;
+	int				return_value;
 	char			*name_infile;
 	char			*name_outfile;
 	char			**av;
@@ -94,6 +95,8 @@ typedef struct s_data
 	t_token_lst		*token_lst;
 }					t_data;
 ////////////////////////////
+
+extern int			g_return_value;
 
 // init.c
 void				init_data(t_data *data, int ac, char **av, char **env);
@@ -108,6 +111,11 @@ void				clear_cmd(t_cmd *cmd);
 void				free_all(char **str);
 int					wich_quote(char *input);
 
+// get_input.c
 void				get_input(t_data *data);
+void				clear_all_data(t_data *data);
+
+// handle_signal.c
+void				set_signal_action(void);
 
 #endif

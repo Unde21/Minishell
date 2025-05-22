@@ -20,7 +20,7 @@ int	save_quote(char input)
 	return (is_quote);
 }
 
-void	new_node_word(t_token **new, char *word, int is_quote, bool *error)
+void	new_node_word(t_token **new, char *word, int is_quote, t_data *data)
 {
 	if (is_quote == ASCII_DBLE_QUOTE)
 		*new = new_token(word, DBLE_QUOTE);
@@ -29,5 +29,5 @@ void	new_node_word(t_token **new, char *word, int is_quote, bool *error)
 	else
 		*new = new_token(word, WORD);
 	if (*new == NULL)
-		*error = true;
+		data->return_value = 1;
 }

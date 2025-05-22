@@ -58,7 +58,7 @@ char	*ft_strjoin_and_free(char *s1, char *s2)
 	i = -1;
 	len = ft_strlen(s1) + ft_strlen(s2);
 	join = malloc(sizeof(char) * (len + 1));
-	if (!join)
+	if (join == NULL)
 	{
 		free(s1);
 		return (NULL);

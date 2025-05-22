@@ -15,11 +15,15 @@ char	*fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
 			break ;
 		free(line);
 	}
-	unlink(heredoc);
-	free(heredoc);
-	free(line);
-	close(fd_heredoc);
-	return (heredoc);
+	while (i < 25)
+	{
+		read(fd, &c, 1);
+		if (ft_isprint(c) && c != '/')
+			here_doc[i++] = c;
+	}
+	here_doc[i] = '\0';
+	close(fd);
+	return (here_doc);
 }
 
 char	*heredoc(char *limiter)
