@@ -19,7 +19,8 @@ static void	is_expand(t_args *args)
 			args[i].is_quote = true;
 		while (args[i].content[j])
 		{
-			if (args[i].content[j] == ASCII_DOLLAR && args[i].is_quote == true)
+			if ((args[i].content[j] == ASCII_DOLLAR && args[i].is_quote == true)
+				|| args[i].content[j] == '*')
 				args[i].need_expand = true;
 			++j;
 		}

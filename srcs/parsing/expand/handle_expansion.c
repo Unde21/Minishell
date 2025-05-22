@@ -44,6 +44,8 @@ static char	*expand(char *s, char *expanded, t_data *data)
 			else
 				join_with_expand(data, &expanded, s, &i);
 		}
+		else if ((s[i] == '*' || s[i + 1] == '*' ) && data->cmd->args->is_quote == false)
+			join_wildcards(data, &expanded, s, &i);
 		else if (s[i] == ASCII_DBLE_QUOTE)
 			++i;
 		else

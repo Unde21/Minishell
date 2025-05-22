@@ -6,7 +6,7 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:27:22 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/15 14:12:49 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 14:54:57 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-char	*ft_strchr_gnl(const char *s, int c)
-{
-	size_t	i;
-	char	*str;
-
-	if (!s)
-		return (NULL);
-	str = (char *)s;
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == (uint8_t)c)
-			return (&str[i]);
-		++i;
-	}
-	return (NULL);
-}
 
 size_t	ft_strlen_delim(const char *str, int check)
 {

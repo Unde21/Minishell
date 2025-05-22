@@ -8,7 +8,7 @@ static void	clear_args(t_cmd *cmd)
 	i = 0;
 	while (i < cmd->nb_args)
 	{
-		if (cmd->args != NULL)
+		if (cmd->args[i].content != NULL)
 		{
 			free(cmd->args[i].content);
 			cmd->args[i].content = NULL;
@@ -50,6 +50,8 @@ void	clear_cmd(t_cmd *cmd)
 			clear_redir(cmd->redir);
 		}
 		clear_args(cmd);
+		if (cmd->params != NULL)
+			free_all(cmd->params);
 		free(cmd);
 		cmd = NULL;
 		cmd = tmp;

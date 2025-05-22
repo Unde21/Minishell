@@ -15,7 +15,6 @@ static void	handle_input(t_data *data)
 		g_return_value = 0;
 		return ;
 	}
-	data->return_value = 0;
 	if (init_lst(data) == false)
 	{
 		data->return_value = 1;
@@ -42,7 +41,6 @@ static int	do_nothing(void)
 static void	exit_with_right_value(t_data *data)
 {
 	rl_clear_history();
-	data->return_value = 0;
 	ft_printf("exit\n");
 	exit(data->return_value);
 }
@@ -80,3 +78,4 @@ void	clear_all_data(t_data *data)
 	free(data->token_lst);
 	free(data->line_read);
 }
+
