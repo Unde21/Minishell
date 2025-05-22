@@ -67,6 +67,7 @@ SRCS := srcs/isbool_functions/ft_isalpha.c \
 	srcs/list_functions/ft_lstmap.c \
 	srcs/get_next_line/get_next_line.c \
 	srcs/get_next_line/get_next_line_utils.c \
+	
 
 OBJS := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPS := $(SRCS:$(SRC_DIR)%.c=$(DEP_DIR)%.d)

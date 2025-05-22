@@ -1,11 +1,12 @@
+#include "builtins.h"
 #include "debug.h"
 #include "minishell.h"
 #include <stdlib.h>
-#include "builtins.h"
 
 static bool	tokenizer(t_data *data)
 {
-	if (handle_token(data, data->line_read, data->token_lst, data->token) == false)
+	if (handle_token(data, data->line_read, data->token_lst,
+			data->token) == false)
 		return (false);
 	if (DEBUG_VALUE == 1 || DEBUG_VALUE == 5)
 		print_lst(data->token_lst->head);
@@ -15,7 +16,7 @@ static bool	tokenizer(t_data *data)
 #include <fcntl.h>
 #include <unistd.h>
 
-bool parsing(t_data *data)
+bool	parsing(t_data *data)
 {
 	int	prev_return_value;
 

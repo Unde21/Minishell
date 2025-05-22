@@ -1,31 +1,64 @@
 #include "exec.h"
+#include "parsing.h"
 
-bool	is_heredoc(t_token *token)
+// void	executable(t_data *data)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (data->cmd)
+// 	{
+// 		while (data->cmd->args[++i].content)
+// 		{
+// 			if (is_cmd(data, data->cmd->args[i].content))
+// 				printf("executable => %s\n", data->cmd->args[i].content);
+// 			else
+// 				print_err(ERR_CMD);
+// 		}
+// 		if (is_heredoc(data))
+// 			heredoc(get_limiter(data));
+// 		if (is_redir(data) == 1)
+// 			printf("%s => redirection in\n", data->cmd->args->content);
+// 		else if (is_redir(data) == 2)
+// 			printf("%s => redirection out\n", data->cmd->args->content);
+// 		i = -1;
+// 		if (data->cmd->next != NULL)
+// 			printf("there_is_pipe\n");
+// 		data->cmd = data->cmd->next;
+// 	}
+// }
+
+bool	close_pipefd(t_data *data, int pipe_fd[])
 {
-	while (token != NULL)
-	{
-		if (ft_strcmp(token->content, "<<") == 0)
-			return (true);
-		token = token->next;
-	}
-	return (false);
+	int	i;
+
+	i = -1;
+	while (++i < (data->nb_cmd - 1))
+		if (pipe_fd[i] > 0)
+			close(pipe_fd[i]);
+	return (true);
 }
-void	exec_init(t_data *data)
+
+bool	exec_init(t_data *data)
 {
-	init_listed_env(data);
-	if (is_heredoc(data->token_lst->head))
-		heredoc_init(data);
-	//////////////////////////
-	//////////* DEBUG *///////
-	//////////////////////////
-	// ft_printf("\nline : {%s}\n\n", data->line_read);
-	// print_lst(data->token_lst->head, 2);
-	// print_lst_cmd(data->cmd);
-	// print_lst_cmd_expand(data->cmd);
-	// print_listed_env(data);
-	// printf("here_doc name => %s\n here_doc len =>%ld\n\n", here_doc,
-	// 	ft_strlen(here_doc));
-	///////////////////////////
-	///////////////////////////
-	free_listed_env(data);
+	pid_t	pid;
+	int		pipe_fd[2];
+
+	while (data->cmd)
+	{
+		if (data->cmd->next != NULL)
+			if (pipe(pipe_fd) < 0)
+				return (print_err("ERROR: pipe failed !\n"));
+		pid = fork();
+		if (pid < 0)
+		{
+			close_pipefd(data, pipe_fd);
+			return (print_err("ERROR: fork failed !\n"));
+		}
+		else if (pid > 0)
+			child_init(data, pipe_fd);
+		data->cmd = data->cmd->next;
+	}
+	close_pipefd(data, pipe_fd);
+	return (true);
 }
