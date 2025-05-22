@@ -78,3 +78,4 @@ void	clear_all_data(t_data *data)
 	free(data->token_lst);
 	free(data->line_read);
 }
+
