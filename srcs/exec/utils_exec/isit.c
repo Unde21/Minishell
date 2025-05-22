@@ -1,7 +1,7 @@
 #include "exec.h"
 #include "parsing.h"
 
-char	*which_redir(t_cmd *cmd)
+char	*wich_redir(t_cmd *cmd)
 {
 	while (cmd->redir != NULL)
 	{
@@ -17,7 +17,6 @@ char	*which_redir(t_cmd *cmd)
 	}
 	return (NULL);
 }
-
 bool	is_pipe(t_data *data)
 {
 	while (data->cmd->redir != NULL)

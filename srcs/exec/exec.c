@@ -34,21 +34,17 @@ bool	close_pipefd(t_data *data, int pipe_fd[])
 
 	i = -1;
 	while (++i < (data->nb_cmd - 1))
-		close(pipe_fd[i]);
-	return (false);
+		if (pipe_fd[i] > 0)
+			close(pipe_fd[i]);
+	return (true);
 }
 
 bool	exec_init(t_data *data)
 {
 	pid_t	pid;
-	int		status;
-	int		i;
 	int		pipe_fd[2];
 
-	data->nb_cmd = get_list_size(data);
-	status = 0;
-	i = -1;
-	while (++i < data->nb_cmd)
+	while (data->cmd)
 	{
 		if (data->cmd->next != NULL)
 			if (pipe(pipe_fd) < 0)
@@ -60,10 +56,9 @@ bool	exec_init(t_data *data)
 			return (print_err("ERROR: fork failed !\n"));
 		}
 		else if (pid > 0)
-			child_init(data, *pipe_fd);
+			child_init(data, pipe_fd, i);
+		data->cmd = data->cmd->next;
 	}
-	waitpid(pid, &status, 0);
-	free_listed_env(data);
 	close_pipefd(data, pipe_fd);
 	return (true);
 }

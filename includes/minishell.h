@@ -54,6 +54,7 @@ typedef struct s_args
 typedef struct s_cmd
 {
 	t_args			*args;
+	char			**params;
 	size_t			nb_args;
 	t_redir			*redir;
 	struct s_cmd	*next;
@@ -80,12 +81,12 @@ typedef struct s_data
 {
 	char			*line_read;
 	int				ac;
+	int				nb_cmd;
 	int				prev_return_value;
 	char			*name_infile;
 	char			*name_outfile;
 	char			**av;
 	char			**env;
-	int				nb_cmd;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;

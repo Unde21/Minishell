@@ -16,7 +16,7 @@ typedef struct s_cmd	t_cmd;
 void					init_listed_env(t_data *data);
 void					free_listed_env(t_data *data);
 char					*heredoc(char *limiter);
-bool					child_init(t_data *data, int pipe_fd);
+bool					child_init(t_data *data, int *pipe_fd, int i);
 
 //// add_node ////
 t_env					*create_node(t_data *data, int i);
@@ -28,6 +28,7 @@ bool					is_heredoc(t_data *data);
 bool					is_cmd(t_data *data, char *cmd);
 bool					is_pipe(t_data *data);
 //// getters ////
+char					*path_cmd(t_data *data);
 int						get_list_size(t_data *data);
 char					*get_listed_env(t_data *data);
 char					*get_key(char *env);

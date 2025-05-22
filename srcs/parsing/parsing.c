@@ -38,6 +38,7 @@ void	parsing(t_data *data)
 	}
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
+	data->nb_cmd = get_list_size(data);
 	exec_init(data);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);

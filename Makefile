@@ -15,8 +15,6 @@ SRCS := srcs/main.c \
 		srcs/parsing/clear_data.c \
 		srcs/parsing/expand/expand_tokens.c \
 		srcs/parsing/expand/handle_expansion.c \
-		srcs/exec/listed_env_init.c \
-		srcs/exec/exec.c \
 		srcs/here_doc/here_doc_init.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
@@ -24,8 +22,10 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
 		srcs/exec/utils_exec/getters.c\
+		srcs/exec/listed_env_init.c \
 		srcs/exec/utils_exec/isit.c\
 		srcs/exec/child.c\
+		srcs/exec/exec.c \
 
 
 HEADER := 	includes/minishell.h \
