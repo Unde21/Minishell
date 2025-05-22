@@ -6,7 +6,7 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:45:35 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/15 14:11:56 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/05/22 15:13:38 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ bool				ft_isspace(int c);
 int					ft_isalpha(int c);
 int					ft_isalnum(int c);
 int					ft_atoi(const char *nptr, int *check_error);
+long long			ft_atoll(const char *nptr, int *check_error);
 
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strnstr(const char *big, const char *little,
 						size_t len);
 char				*ft_strdup(const char *s);
 char				*ft_strchr(const char *s, int c);
-char				*ft_strchr_gnl(const char *s, int c);
 
 /* ************************************************************************** */
 /*						Part 2: Additional functions							*/
@@ -96,7 +96,7 @@ void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 
 /* ************************************************************************** */
-/*								ft_printf										  */
+/*								ft_printf											*/
 /* ************************************************************************** */
 
 int					ft_printf(const char *format,
@@ -110,7 +110,7 @@ int					print_hexa(unsigned int n, const char *base, int count);
 int					check_format(va_list *params, char format);
 
 /* ************************************************************************** */
-/*								ft_dprintf										  */
+/*								ft_dprintf											*/
 /* ************************************************************************** */
 
 int					ft_dprintf(int fd, const char *format,
@@ -124,7 +124,7 @@ int					dprint_hexa(unsigned int n, const char *base, int nb_char,
 						int fd);
 
 /* ************************************************************************** */
-/*								get_next_line									  */
+/*								get_next_line										*/
 /* ************************************************************************** */
 
 # ifndef BUFFER_SIZE

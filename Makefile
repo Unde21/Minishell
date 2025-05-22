@@ -1,37 +1,41 @@
 NAME = minishell
 
 SRCS := srcs/main.c \
+		srcs/utils.c \
+		srcs/get_input/get_input.c \
+		srcs/get_input/handle_signal.c \
 		srcs/init/init.c \
-		srcs/parsing/get_input.c \
 		srcs/parsing/parsing.c \
-		srcs/parsing/utils.c \
+		srcs/parsing/utils_parsing.c \
 		srcs/parsing/handle_tokens/handle_word.c \
 		srcs/parsing/handle_tokens/handle_tokens.c \
 		srcs/parsing/handle_tokens/create_node_for_token.c \
 		srcs/parsing/parser_srcs/parser.c \
+		srcs/parsing/parser_srcs/convert_lst_to_array.c \
 		srcs/parsing/parser_srcs/fill_cmd_lst.c \
 		srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
 		srcs/parsing/handle_tokens/handle_word_utils.c \
 		srcs/parsing/clear_data.c \
 		srcs/parsing/expand/expand_tokens.c \
 		srcs/parsing/expand/handle_expansion.c \
+		srcs/parsing/expand/expand_utils.c \
+		srcs/parsing/expand/remove_quote.c \
+		srcs/parsing/expand/expand_wildcards.c \
+		srcs/exec/listed_env_init.c \
+		srcs/exec/debug.c \
+		srcs/exec/getters.c \
+		srcs/exec/exec.c \
 		srcs/here_doc/here_doc_init.c \
+		srcs/builtins/exit.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
 		srcs/debug/print_expand.c \
-		srcs/parsing/expand/expand_utils.c \
-		srcs/parsing/expand/remove_quote.c \
-		srcs/exec/utils_exec/getters.c\
-		srcs/exec/listed_env_init.c \
-		srcs/exec/utils_exec/isit.c\
-		srcs/exec/child.c\
-		srcs/exec/exec.c \
-
 
 HEADER := 	includes/minishell.h \
 			includes/parsing.h \
 			includes/exec.h \
 			includes/debug.h \
+			includes/builtins.h \
 			libft/libft.h
 CC := cc
 CFLAGS := -Wall -Wextra -Werror -g3

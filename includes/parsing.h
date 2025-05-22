@@ -12,7 +12,8 @@
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"
 # define ERR_PIPE "syntax error near unexpected token `|'\n"
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
-# define ERR_CMD "syntax error: command not found\n"
+# define ERR_OP_DIR "error: failed to open directory\n"
+# define ERR_CLOSE_DIR "error: failed to close directory\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36
@@ -32,30 +33,29 @@ typedef struct s_token_lst	t_token_lst;
 typedef enum e_token_type	t_token_type;
 
 // parsing.c
-void						get_input(t_data *data);
-void						parsing(t_data *data);
+bool						parsing(t_data *data);
 
 // handle_token.c
 t_token						*new_token(char *content, t_token_type type);
-bool						handle_token(char *input, t_token_lst *tokens,
-								t_token *current);
+bool						handle_token(t_data *data, char *input,
+								t_token_lst *tokens, t_token *current);
 
 // handle_word.c
 size_t						handle_word(char *input, t_token **new,
-								bool *error);
+								t_data *data);
 
 // handle_word_utils.c
 bool						is_special_operator(char input, int is_quote);
 int							save_quote(char input);
 void						new_node_word(t_token **new, char *word,
-								int is_quote, bool *error);
+								int is_quote, t_data *data);
 
 // create_node_for_token.c
-size_t						new_node_pipes(t_token **new, bool *error);
-size_t						new_node_redir_out(t_token **new, bool *error);
-size_t						new_node_redir_in(t_token **new, bool *error);
-size_t						new_node_here_doc(t_token **new, bool *error);
-size_t						new_node_append(t_token **new, bool *error);
+size_t						new_node_pipes(t_token **new, t_data *data);
+size_t						new_node_redir_out(t_token **new, t_data *data);
+size_t						new_node_redir_in(t_token **new, t_data *data);
+size_t						new_node_here_doc(t_token **new, t_data *data);
+size_t						new_node_append(t_token **new, t_data *data);
 
 // fill_cmd_lst.c
 bool						get_cmd_args(t_token *current, t_cmd **cmd);
@@ -82,10 +82,18 @@ bool						handle_expansion(t_data *data, t_cmd *cmd);
 void						expand_tokens(t_cmd *current);
 
 // expand_utils.c
-void						join_with_expand(char **env, char **expanded,
+void						join_with_expand(t_data *data, char **expanded,
+								char *s, size_t *i);
+
+// expand_wildcards
+void						join_wildcards(t_data *data, char **expanded,
 								char *s, size_t *i);
 
 // remove_quote.c
 bool						remove_quote(t_args *args);
+
+// convert_lst_to_array.c
+bool						convert_lst_to_array(t_cmd *cmd);
+char						**lst_to_array(t_args *args, size_t nb_args);
 
 #endif

@@ -28,32 +28,34 @@ static void	join_without_expand(char **expanded, char c, size_t *i)
 	++(*i);
 }
 
-static char	*expand(char *s, char **env, char *expanded, t_data *data)
+static char	*expand(char *s, char *expanded, t_data *data)
 {
 	size_t	i;
 
 	i = 0;
+	if (s[i] == ASCII_DBLE_QUOTE)
+		data->cmd->args->is_quote = true;
 	while (s[i])
 	{
 		if (s[i] == ASCII_DOLLAR && s[i + 1] != ASCII_DOLLAR)
 		{
 			if (s[i + 1] == '?')
-				join_return_value(&expanded, &i, data->prev_return_value);
+				join_return_value(&expanded, &i, data->return_value);
 			else
-				join_with_expand(env, &expanded, s, &i);
+				join_with_expand(data, &expanded, s, &i);
 		}
+		else if ((s[i] == '*' || s[i + 1] == '*' ) && data->cmd->args->is_quote == false)
+			join_wildcards(data, &expanded, s, &i);
 		else if (s[i] == ASCII_DBLE_QUOTE)
 			++i;
 		else
 			join_without_expand(&expanded, s[i], &i);
 		if (expanded == NULL)
-		{
-			free(s);
-			ft_dprintf(2, ERR_MALLOC);
-			return (NULL);
-		}
+			break ;
 	}
 	free(s);
+	if (expanded == NULL)
+		return (NULL);
 	return (expanded);
 }
 
@@ -64,12 +66,16 @@ static bool	replace_env_variables(t_data *data, t_args *args)
 	expanded = ft_calloc(sizeof(char), 1);
 	if (expanded == NULL)
 	{
+		data->return_value = 1;
 		ft_dprintf(2, ERR_MALLOC);
 		return (NULL);
 	}
-	args->content = expand(args->content, data->env, expanded, data);
+	data->cmd->args->is_quote = false;
+	args->content = expand(args->content, expanded, data);
 	if (args->content == NULL)
 	{
+		data->return_value = 1;
+		ft_dprintf(2, ERR_MALLOC);
 		return (false);
 	}
 	return (true);
