@@ -1,41 +1,12 @@
 #include "exec.h"
 
-bool	first_child(t_data *data, int *pipe_fd)
+bool	init_child(t_cmd *cmd, char *path_cmd, int *pipe_fd, char **env)
 {
-	char	*redir;
-	int		fd;
-	char	*path;
-
-	redir = wich_redir(data->cmd);
-	path = path_cmd(data);
-	if ((fd = open(redir, O_RDONLY)) == -1)
-		return (close_pipefd(data, pipe_fd));
-	if (dup2(fd, STDIN_FILENO) == -1)
-		return (print_err("ERROR: dup failed !\n"));
-	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-		return (print_err("ERROR: dup failed !\n"));
-	close_pipefd(data, pipe_fd);
-	execve(path, data->cmd->params, data->env);
-	return (true);
-}
-// bool	middle_child(t_cmd *cmd, int *pipe_fd)
-// {
-// }
-// bool	last_child(t_cmd *cmd, int *pipe_fd)
-// {
-// }
-
-bool	child_init(t_data *data, int *pipe_fd)
-{
-	while (data->cmd != NULL)
-	{
-		if ()
-			return (first_child(data, pipe_fd));
-		// else if (data->cmd->next != NULL && data->nb_cmd > 1 && i > 1)
-		// 	return (middle_childs(data->cmd, pipe_fd));
-		// else if (data->cmd->next == NULL && data->nb_cmd > 1  && i > 1)
-		// 	return (last_child(data->cmd, pipe_fd));
-		data->cmd = data->cmd->next;
-	}
-	return (true);
+	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+		return (print_err("ERROR: 1 !\n"));
+	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+		return (print_err("ERROR: 2 !\n"));
+	close_fd(pipe_fd);
+	execve(path_cmd, cmd->params, env);
+	return (print_err("ERROR: execve failed!\n"));
 }

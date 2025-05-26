@@ -24,6 +24,7 @@ SRCS := srcs/main.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/utils_exec/getters.c \
 		srcs/exec/exec.c \
+		srcs/exec/child.c\
 		srcs/here_doc/here_doc_init.c \
 		srcs/builtins/exit.c \
 		srcs/debug/print_tokenizer.c \

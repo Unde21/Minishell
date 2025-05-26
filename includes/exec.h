@@ -6,6 +6,8 @@ typedef struct s_cmd	t_cmd;
 
 # include "minishell.h"
 # include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -13,10 +15,11 @@ typedef struct s_cmd	t_cmd;
 # include <unistd.h>
 
 //// init ////
+bool					init_child(t_cmd *cmd, char *path_cmd, int *pipe_fd,
+							char **env);
+
 void					init_listed_env(t_data *data);
-void					free_listed_env(t_data *data);
 char					*heredoc(char *limiter);
-bool					child_init(t_data *data, int *pipe_fd);
 
 //// add_node ////
 t_env					*create_node(t_data *data, int i);
@@ -30,7 +33,7 @@ bool					is_pipe(t_data *data);
 //// getters ////
 char					*path_cmd(t_data *data);
 int						get_list_size(t_data *data);
-char					*get_listed_env(t_data *data);
+char					*get_path(t_env *listed_env);
 char					*get_key(char *env);
 char					*get_limiter(t_cmd *cmd);
 char					*get_random_name(char *here_doc);
@@ -39,6 +42,7 @@ char					*get_random_name(char *here_doc);
 bool					exec_init(t_data *data);
 
 //// utils ////
-bool					close_pipefd(t_data *data, int pipe_fd[]);
+void					free_listed_env(t_data *data);
+bool					close_fd(int *fd);
 
 #endif

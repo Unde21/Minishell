@@ -39,6 +39,10 @@ char	*get_random_name(char *here_doc)
 	int		fd;
 
 	i = 0;
+	here_doc = malloc(sizeof(char) * 26);
+	if (!here_doc)
+		if (print_err("ERROR: malloc failed !\n") == false)
+			return (NULL);
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
 	{
@@ -68,12 +72,12 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-char	*get_listed_env(t_data *data)
+char	*get_path(t_env *listed_env)
 {
 	char	*path;
 	t_env	*tmp;
 
-	tmp = data->listed_env;
+	tmp = listed_env;
 	path = NULL;
 	while (tmp != NULL)
 	{
@@ -90,7 +94,7 @@ char	*path_cmd(t_data *data)
 	int i;
 
 	i = -1;
-	path = ft_split(get_listed_env(data), ':');
+	path = ft_split(get_path(data->listed_env), ':');
 	if (!path)
 	{
 		print_err("malloc failed\n");

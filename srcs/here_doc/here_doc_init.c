@@ -1,51 +1,47 @@
-#include "exec.h"
-#include "parsing.h"
 
-char	*fill_heredoc(int fd_heredoc, char *heredoc, char *limiter)
+#include "exec.h"
+
+char	*fill_heredoc(int fd_heredoc, char *limiter)
 {
-	int		i;
-	char	c;
 	char	*line;
 
-	line = NULL;
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+			break ;
+		if (ft_strcmp(line, limiter) == 0)
+		{
+			free(line);
+			break ;
+		}
 		write(fd_heredoc, line, ft_strlen(line));
 		write(fd_heredoc, "\n", 1);
-		if (ft_strcmp(line, limiter) == 0)
-			break ;
 		free(line);
 	}
-	while (i < 25)
-	{
-		read(fd_heredoc, &c, 1);
-		if (ft_isprint(c) && c != '/')
-			heredoc[i++] = c;
-	}
-	heredoc[i] = '\0';
 	close(fd_heredoc);
-	return (heredoc);
+	return (NULL);
 }
 
 char	*heredoc(char *limiter)
 {
 	int		fd_heredoc;
-	char	*heredoc;
+	char	*filename;
 
-	heredoc = malloc(sizeof(char) * 26);
-	if (!heredoc)
-		if (print_err(ERR_MALLOC) == false)
-			return (NULL);
-	heredoc = get_random_name(heredoc);
-	fd_heredoc = open(heredoc, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	filename = NULL;
+	filename = get_random_name(filename);
+	if (!filename)
+	{
+		print_err("ERROR: heredoc creation failed !\n");
+		return (NULL);
+	}
+	fd_heredoc = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd_heredoc == -1)
-		if (print_err("ERROR : openning HEREDOC !\n") == false)
-		{
-			unlink(heredoc);
-			free(heredoc);
-			return (NULL);
-		}
-	fill_heredoc(fd_heredoc, heredoc, limiter);
-	return (heredoc);
+	{
+		print_err("ERROR : opening HEREDOC!\n");
+		free(filename);
+		return (NULL);
+	}
+	fill_heredoc(fd_heredoc, limiter);
+	return (filename);
 }

@@ -34,7 +34,7 @@ bool	is_cmd(t_data *data, char *cmd)
 	int		i;
 
 	i = -1;
-	path = ft_split(get_listed_env(data), ':');
+	path = ft_split(get_path(data->listed_env), ':');
 	if (!path)
 		return (print_err(ERR_MALLOC));
 	while (path[++i])
