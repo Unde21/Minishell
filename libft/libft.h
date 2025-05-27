@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:45:35 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/27 01:32:09 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/27 06:51:41 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char		*ft_strnstr(const char *big, const char *little,
 				size_t len);
 char		*ft_strdup(const char *s);
 char		*ft_strchr(const char *s, int c);
+void		ft_swap_array(char **s1, char **s2);
 
 /* ************************************************************************** */
 /*						Part 2: Additional functions						  */

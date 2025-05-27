@@ -4,6 +4,7 @@
 # include "minishell.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <dirent.h>
 
 # define ERR_MALLOC "malloc failed\n"
 // Modifier les msg d error en fonction de bash
@@ -90,11 +91,19 @@ void						join_with_expand(t_data *data, char **expanded,
 								char *s, size_t *i);
 // expand_wildcards
 void					join_wildcards(char **expanded, char *s, size_t *i);
+char					*expand_wildcards(char *wildcards, int nb_file, char *cpy_file);
 
 // wildcards_utils.c
 int						get_nb_file(char *wildcards);
-char					*get_pattern(char *s, size_t i);
+bool					open_dir(DIR **current_dir);
+bool					close_dir(DIR **current_dir);
+char					*ft_strjoin_and_free_array(char **tab, size_t len);
+int						bash_strcmp(const char *s1, const char *s2);
+
+// get_pattern.c
 bool					check_match(char *file_name, char *wildcards);
+char					*get_pattern(char *s, size_t i);
+char					*create_cpy_pattern(char **expanded, char *wildcards);
 
 // remove_quote.c
 bool						remove_quote(t_args *args);

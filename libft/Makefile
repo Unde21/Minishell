@@ -41,6 +41,7 @@ SRCS := srcs/isbool_functions/ft_isalpha.c \
 	srcs/str_functions/ft_strncmp.c \
 	srcs/str_functions/ft_strcmp.c \
 	srcs/str_functions/ft_strnstr.c \
+	srcs/str_functions/ft_swap_array.c \
 	srcs/memory_functions/ft_memset.c \
 	srcs/memory_functions/ft_bzero.c \
 	srcs/memory_functions/ft_memcpy.c \
