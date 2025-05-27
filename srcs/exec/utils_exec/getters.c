@@ -72,42 +72,28 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-char	*get_path(t_env *listed_env)
+char	*get_path_cmd(char **params)
 {
-	char	*path;
-	t_env	*tmp;
-
-	tmp = listed_env;
-	path = NULL;
-	while (tmp != NULL)
-	{
-		if (ft_strcmp(tmp->key, "PATH") == 0)
-			path = tmp->value;
-		tmp = tmp->next;
-	}
-	return (path);
-}
-
-char	*path_cmd(t_data *data)
-{
-	char **path;
-	int i;
+	int		i;
+	char	**path;
 
 	i = -1;
-	path = ft_split(get_path(data->listed_env), ':');
+	path = ft_split(getenv("PATH"), ':');
 	if (!path)
 	{
 		print_err("malloc failed\n");
 		return (NULL);
 	}
 	while (path[++i])
-		path[i] = ft_strjoin(path[i], "/");
-	i = -1;
-	while (path[++i])
 	{
-		path[i] = ft_strjoin(path[i], data->cmd->args[i].content);
-		if (access(path[i], F_OK | X_OK) == 0)
+		path[i] = ft_strjoin(path[i], "/");
+		path[i] = ft_strjoin(path[i], params[0]);
+		if (access(path[i], X_OK) == 0)
 			return (path[i]);
 	}
+	i = -1;
+	while (path[++i])
+		free(path[i]);
+	free(path);
 	return (NULL);
 }

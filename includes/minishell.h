@@ -61,6 +61,8 @@ typedef struct s_cmd
 	t_redir			*redir;
 	int				fd_in;
 	int				fd_out;
+	int				pipe_fd_current[2];
+
 	struct s_cmd	*next;
 }					t_cmd;
 ////////////////////////////

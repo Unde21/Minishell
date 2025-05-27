@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int	g_return_value = 0;
+int			g_return_value = 0;
 
 static void	handle_input(t_data *data)
 {
@@ -63,7 +63,7 @@ void	get_input(t_data *data)
 			exit_with_right_value(data);
 		add_history(data->line_read);
 		handle_input(data);
-		ft_printf("return : %d\n", data->return_value);
+		// ft_printf("return (: %d\n", data->return_value));
 		free(data->line_read);
 	}
 	rl_clear_history();
@@ -78,4 +78,3 @@ void	clear_all_data(t_data *data)
 	free(data->token_lst);
 	free(data->line_read);
 }
-

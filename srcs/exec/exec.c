@@ -1,48 +1,46 @@
 #include "exec.h"
 
-bool	close_fd(int *pipe_fd)
+void	close_fd(t_cmd *cmd)
 {
-	int	i;
+	while (cmd)
+	{
+		if (cmd->pipe_fd_current[0] != -1)
+			close(cmd->pipe_fd_current[0]);
+		if (cmd->pipe_fd_current[1] != -1)
+			close(cmd->pipe_fd_current[1]);
+		cmd = cmd->next;
+	}
+}
 
-	i = -1;
-	while (pipe_fd[++i] != -1)
-		close(pipe_fd[i]);
+bool	init_pipe(t_cmd *cmd)
+{
+	while (cmd && cmd->next != NULL)
+	{
+		(cmd)->pipe_fd_current[0] = -1;
+		(cmd)->pipe_fd_current[1] = -1;
+		if (pipe(cmd->pipe_fd_current) < 0)
+		{
+			close_fd(cmd);
+			return (print_err("ERROR: pipe failed !\n"));
+		}
+		cmd = cmd->next;
+	}
 	return (true);
 }
 
-char	*get_path_cmd(char **params)
+void	set_pipe(t_cmd *cmd)
 {
-	int		i;
-	char	**path;
-
-	i = -1;
-	path = ft_split(getenv("PATH"), ':');
-	if (!path)
+	if (cmd->next != NULL)
 	{
-		print_err("malloc failed\n");
-		return (NULL);
+		cmd->fd_out = cmd->pipe_fd_current[1];
+		cmd->next->fd_in = cmd->pipe_fd_current[0];
 	}
-	while (path[++i])
-	{
-		path[i] = ft_strjoin(path[i], "/");
-		path[i] = ft_strjoin(path[i], params[0]);
-		if (access(path[i], X_OK) == 0)
-			return (path[i]);
-	}
-	i = -1;
-	while (path[++i])
-		free(path[i]);
-	free(path);
-	return (NULL);
 }
 
-bool	init_pipe(t_cmd *cmd, int *pipe_fd)
+bool	init_redir(t_cmd *cmd)
 {
 	(cmd)->fd_in = 0;
 	(cmd)->fd_out = 1;
-	if (cmd->next != NULL)
-		if (pipe(pipe_fd) < 0)
-			return (print_err("ERROR: pipe failed !\n"));
 	while (cmd->redir)
 	{
 		if (cmd->redir->type == REDIR_IN)
@@ -66,7 +64,6 @@ bool	init_pipe(t_cmd *cmd, int *pipe_fd)
 
 bool	exec_init(t_data *data)
 {
-	int		pipe_fd[2] = {-1, -1};
 	int		status;
 	char	*path_cmd;
 	pid_t	pid;
@@ -75,19 +72,21 @@ bool	exec_init(t_data *data)
 	while (data->cmd)
 	{
 		path_cmd = get_path_cmd(data->cmd->params);
-		init_pipe(data->cmd, pipe_fd);
+		init_pipe(data->cmd);
+		set_pipe(data->cmd);
+		init_redir(data->cmd);
 		pid = fork();
 		if (pid < 0)
 		{
-			close_fd(pipe_fd);
+			close_fd(data->cmd);
 			return (print_err("ERROR: fork failed !\n"));
 		}
 		else if (pid == 0)
-			init_child(data->cmd, path_cmd, pipe_fd, data->env);
+			init_child(data->cmd, path_cmd, data->env);
 		data->cmd = data->cmd->next;
 	}
 	while (wait(&status) > 0)
 		;
-	close_fd(pipe_fd);
+	close_fd(data->cmd);
 	return (true);
 }

@@ -15,8 +15,7 @@ typedef struct s_cmd	t_cmd;
 # include <unistd.h>
 
 //// init ////
-bool					init_child(t_cmd *cmd, char *path_cmd, int *pipe_fd,
-							char **env);
+bool					init_child(t_cmd *cmd, char *path_cmd, char **env);
 
 void					init_listed_env(t_data *data);
 char					*heredoc(char *limiter);
@@ -31,9 +30,8 @@ bool					is_heredoc(t_data *data);
 bool					is_cmd(t_data *data, char *cmd);
 bool					is_pipe(t_data *data);
 //// getters ////
-char					*path_cmd(t_data *data);
+char					*get_path_cmd(char **params);
 int						get_list_size(t_data *data);
-char					*get_path(t_env *listed_env);
 char					*get_key(char *env);
 char					*get_limiter(t_cmd *cmd);
 char					*get_random_name(char *here_doc);
@@ -43,6 +41,6 @@ bool					exec_init(t_data *data);
 
 //// utils ////
 void					free_listed_env(t_data *data);
-bool					close_fd(int *fd);
+void					close_fd(t_cmd *cmd);
 
 #endif
