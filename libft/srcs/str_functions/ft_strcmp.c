@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 00:56:08 by samaouch          #+#    #+#             */
-/*   Updated: 2025/01/22 00:57:09 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/05/27 03:26:58 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,3 +21,4 @@ int	ft_strcmp(const char *s1, const char *s2)
 		++i;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+ 

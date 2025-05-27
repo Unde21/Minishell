@@ -20,7 +20,8 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/handle_expansion.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
-		srcs/parsing/expand/expand_wildcards.c \
+		srcs/parsing/expand/wildcards/expand_wildcards.c \
+		srcs/parsing/expand/wildcards/wildcards_utils.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/utils_exec/getters.c \
 		srcs/exec/exec.c \

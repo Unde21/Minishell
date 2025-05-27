@@ -19,6 +19,9 @@
 # define ASCII_DOLLAR 36
 # define ASCII_UNDERSCORE 95
 # define NO_QUOTE 0
+# define WILDCARDS '*'
+# define CURRENT_DIRECTORY "."
+# define QUESTION_MARK '?'
 
 struct s_cmd;
 struct s_data;
@@ -76,18 +79,22 @@ bool						fill_cmd_special_operator(t_token **current,
 								t_cmd *current_cmd);
 
 // handle_expansion.c
-bool						handle_expansion(t_data *data, t_cmd *cmd);
+bool						replace_env_variables(t_data *data, t_args *args);
 
-// expand.c
+// expand_tokens.c
 void						expand_tokens(t_cmd *current);
+bool						handle_expansion(t_data *data, t_cmd *cmd);
 
 // expand_utils.c
 void						join_with_expand(t_data *data, char **expanded,
 								char *s, size_t *i);
-
 // expand_wildcards
-void						join_wildcards(t_data *data, char **expanded,
-								char *s, size_t *i);
+void					join_wildcards(char **expanded, char *s, size_t *i);
+
+// wildcards_utils.c
+int						get_nb_file(char *wildcards);
+char					*get_pattern(char *s, size_t i);
+bool					check_match(char *file_name, char *wildcards);
 
 // remove_quote.c
 bool						remove_quote(t_args *args);

@@ -39,3 +39,30 @@ void	expand_tokens(t_cmd *cmd)
 		current_cmd = current_cmd->next;
 	}
 }
+
+bool	handle_expansion(t_data *data, t_cmd *cmd)
+{
+	t_cmd	*current_cmd;
+	size_t	i;
+
+	i = 0;
+	current_cmd = cmd;
+	while (current_cmd != NULL)
+	{
+		i = 0;
+		while (i < current_cmd->nb_args)
+		{
+			if (current_cmd->args[i].need_expand == true)
+			{
+				if (replace_env_variables(data, &current_cmd->args[i]) == false
+					&& current_cmd->args[i].need_expand == true)
+					return (false);
+			}
+			else if (remove_quote(&current_cmd->args[i]) == false)
+				return (false);
+			++i;
+		}
+		current_cmd = current_cmd->next;
+	}
+	return (true);
+}
