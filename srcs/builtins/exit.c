@@ -7,6 +7,8 @@ static void	is_number(t_data *data, char *s)
 	size_t	i;
 
 	i = 0;
+	if (s == NULL)
+		return ;
 	while (s[i])
 	{
 		if (ft_isdigit(s[i]) == 0)
@@ -37,7 +39,10 @@ static void	get_exit_code(t_data *data, char *s)
 	int	check_error;
 
 	check_error = 0;
-	exit_code = ft_atoll(s, &check_error) % 256;
+	if (s == NULL)
+		exit_code = data->return_value;
+	else
+		exit_code = ft_atoll(s, &check_error) % 256;
 	if (check_error != 0)
 	{
 		ft_dprintf(2, EXIT_ERROR);

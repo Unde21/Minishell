@@ -37,10 +37,12 @@ bool	parsing(t_data *data)
 		print_lst_cmd_expand(data->cmd);
 	if (convert_lst_to_array(data->cmd) == false)
 		return (false);
+	// test builtins
 	if (ft_strcmp(data->cmd->params[0], "exit") == 0)
-	{
 		ft_exit(data, data->cmd->args);
-	}
-	execve("/usr/bin/ls", data->cmd->params, data->env);
+	else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
+		ft_echo(data->cmd);
+	// else
+	// 	execve("/usr/bin/ls", data->cmd->params, data->env);
 	return (true);
 }

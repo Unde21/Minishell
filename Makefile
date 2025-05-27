@@ -28,6 +28,8 @@ SRCS := srcs/main.c \
 		srcs/exec/exec.c \
 		srcs/here_doc/here_doc_init.c \
 		srcs/builtins/exit.c \
+		srcs/builtins/echo.c \
+		srcs/builtins/env.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
 		srcs/debug/print_expand.c \

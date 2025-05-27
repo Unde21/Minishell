@@ -36,7 +36,7 @@ static char	*expand_wildcards_loop(char *wildcards, int nb_file, char *cpy_file,
 		read_file = readdir(current_dir);
 		if (errno != 0)
 		{
-			ft_dprintf(2, "ERR READDIR \n"); // define + update
+			ft_dprintf(2, ERR_READDIR);
 			return (NULL);
 		}
 		else if (read_file == NULL)

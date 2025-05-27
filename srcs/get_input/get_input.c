@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
+#include "builtins.h"
 int	g_return_value = 0;
 
 static void	handle_input(t_data *data)
@@ -15,6 +17,8 @@ static void	handle_input(t_data *data)
 		g_return_value = 0;
 		return ;
 	}
+	if (ft_strcmp(data->line_read, "") == 0)
+		return ;
 	if (init_lst(data) == false)
 	{
 		data->return_value = 1;
@@ -28,6 +32,9 @@ static void	handle_input(t_data *data)
 		return ;
 	}
 	// exec_init(data);
+	init_listed_env(data);
+	if (ft_strcmp(data->cmd->params[0], "env") == 0)
+		ft_env(data, data->cmd);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
@@ -63,7 +70,6 @@ void	get_input(t_data *data)
 			exit_with_right_value(data);
 		add_history(data->line_read);
 		handle_input(data);
-		ft_printf("return : %d\n", data->return_value);
 		free(data->line_read);
 	}
 	rl_clear_history();

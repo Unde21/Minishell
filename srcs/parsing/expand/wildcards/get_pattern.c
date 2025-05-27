@@ -62,7 +62,7 @@ char	*create_cpy_pattern(char **expanded, char *wildcards)
 	if (nb_file < 0)
 	{
 		if (nb_file == -3)
-			ft_dprintf(2, "ERR READDIR\n"); // define + update
+			ft_dprintf(2, ERR_READDIR);
 		*expanded = NULL;
 		return (NULL);
 	}

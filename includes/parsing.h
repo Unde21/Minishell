@@ -15,6 +15,7 @@
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
 # define ERR_OP_DIR "error: failed to open directory\n"
 # define ERR_CLOSE_DIR "error: failed to close directory\n"
+# define ERR_READDIR "error: failed to readdir\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36
@@ -23,6 +24,7 @@
 # define WILDCARDS '*'
 # define CURRENT_DIRECTORY "."
 # define QUESTION_MARK '?'
+# define DOT '.'
 
 struct s_cmd;
 struct s_data;

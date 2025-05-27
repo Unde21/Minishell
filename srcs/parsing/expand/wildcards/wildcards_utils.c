@@ -23,7 +23,7 @@ int	get_nb_file(char *wildcards)
 			return (-3);
 		else if (read_file == NULL)
 			break ;
-		if (read_file->d_name[0] != '.'
+		if (read_file->d_name[0] != DOT
 			&& check_match(read_file->d_name, wildcards) == true)
 			++nb_file;
 	}
