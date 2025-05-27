@@ -28,37 +28,37 @@
 // 	}
 // }
 
-bool	close_pipefd(t_data *data, int pipe_fd[])
-{
-	int	i;
+// bool	close_pipefd(t_data *data, int pipe_fd[])
+// {
+// 	int	i;
 
-	i = -1;
-	while (++i < (data->nb_cmd - 1))
-		if (pipe_fd[i] > 0)
-			close(pipe_fd[i]);
-	return (true);
-}
+// 	i = -1;
+// 	while (++i < (data->nb_cmd - 1))
+// 		if (pipe_fd[i] > 0)
+// 			close(pipe_fd[i]);
+// 	return (true);
+// }
 
-bool	exec_init(t_data *data)
-{
-	pid_t	pid;
-	int		pipe_fd[2];
+// bool	exec_init(t_data *data)
+// {
+// 	pid_t	pid;
+// 	int		pipe_fd[2];
 
-	while (data->cmd)
-	{
-		if (data->cmd->next != NULL)
-			if (pipe(pipe_fd) < 0)
-				return (print_err("ERROR: pipe failed !\n"));
-		pid = fork();
-		if (pid < 0)
-		{
-			close_pipefd(data, pipe_fd);
-			return (print_err("ERROR: fork failed !\n"));
-		}
-		else if (pid > 0)
-			child_init(data, pipe_fd);
-		data->cmd = data->cmd->next;
-	}
-	close_pipefd(data, pipe_fd);
-	return (true);
-}
+// 	while (data->cmd)
+// 	{
+// 		if (data->cmd->next != NULL)
+// 			if (pipe(pipe_fd) < 0)
+// 				return (print_err("ERROR: pipe failed !\n"));
+// 		pid = fork();
+// 		if (pid < 0)
+// 		{
+// 			close_pipefd(data, pipe_fd);
+// 			return (print_err("ERROR: fork failed !\n"));
+// 		}
+// 		else if (pid > 0)
+// 			child_init(data, pipe_fd);
+// 		data->cmd = data->cmd->next;
+// 	}
+// 	close_pipefd(data, pipe_fd);
+// 	return (true);
+// }

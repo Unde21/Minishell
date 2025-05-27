@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:33:39 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/22 15:13:59 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/05/27 02:42:10 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	i = 0;
 	start = 0;
-	while (s[start] && i < count_words(s, c))
+	while (s[start] && i < nb_words)
 	{
 		while (s[start] && s[start] == c)
 			++start;
@@ -42,7 +42,7 @@ char	**ft_split(char const *s, char c)
 		split[i++] = ft_substr(s, start, (end - start));
 		if (!split[i - 1])
 			return (free_all(split, i - 1));
-		start = end + 1;
+		start = end;
 	}
 	return (split);
 }
