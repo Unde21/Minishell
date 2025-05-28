@@ -8,6 +8,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->av = av;
 	data->return_value = 0;
 	data->env = env;
+	data->error_readdir = false;
 	data->line_read = NULL;
 	data->name_infile = NULL;
 	data->name_outfile = NULL;
@@ -73,5 +74,6 @@ bool	init_lst(t_data *data)
 		free(data->token_lst);
 		return (false);
 	}
+	data->had_space_before = true;
 	return (true);
 }

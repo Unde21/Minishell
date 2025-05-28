@@ -53,7 +53,7 @@ char	*get_pattern(char *s, size_t i)
 	return (wildcards);
 }
 
-char	*create_cpy_pattern(char **expanded, char *wildcards)
+char	*create_cpy_pattern(t_data *data, char **expanded, char *wildcards)
 {
 	int		nb_file;
 	char	*cpy_file;
@@ -62,7 +62,7 @@ char	*create_cpy_pattern(char **expanded, char *wildcards)
 	if (nb_file < 0)
 	{
 		if (nb_file == -3)
-			ft_dprintf(2, ERR_READDIR);
+			data->error_readdir = true;
 		*expanded = NULL;
 		return (NULL);
 	}

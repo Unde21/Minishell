@@ -42,6 +42,10 @@ bool	parsing(t_data *data)
 		ft_exit(data, data->cmd->args);
 	else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
 		ft_echo(data->cmd);
+	else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
+		ft_pwd(data, data->cmd);
+	// else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
+	// 	ft_cd(data, data->cmd);
 	// else
 	// 	execve("/usr/bin/ls", data->cmd->params, data->env);
 	return (true);

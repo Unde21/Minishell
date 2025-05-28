@@ -89,7 +89,7 @@ static char	*sort_file_name(char *cpy_file)
 	return (cpy_file);
 }
 
-void	join_wildcards(char **expanded, char *s, size_t *i)
+void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i)
 {
 	char		*wildcards;
 	size_t		len_expanded;
@@ -102,7 +102,7 @@ void	join_wildcards(char **expanded, char *s, size_t *i)
 		*expanded = NULL;
 		return ;
 	}
-	cpy_file = create_cpy_pattern(expanded, wildcards);
+	cpy_file = create_cpy_pattern(data, expanded, wildcards);
 	if (cpy_file == NULL)
 		return ;
 	cpy_file = sort_file_name(cpy_file);

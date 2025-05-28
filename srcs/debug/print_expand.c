@@ -29,7 +29,7 @@ static void	print_special_operator_expand(t_redir *current_redir)
 			ft_printf("%s", EXPAND_HERE_DOC);
 		else if (current_redir->type == 7)
 			ft_printf("%s", EXPAND_APPEND);
-		ft_printf(" || \033[35mFILE: %s\033[0m", current_redir->file);
+		ft_printf(" && \033[35mFILE: %s\033[0m", current_redir->file);
 		current_redir = current_redir->next;
 	}
 }

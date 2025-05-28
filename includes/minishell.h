@@ -25,6 +25,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	char			*content;
+	bool			in_list;
 	t_token_type	type;
 	struct s_token	*next;
 }					t_token;
@@ -88,6 +89,8 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	bool			error_readdir;
+	bool			had_space_before;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;

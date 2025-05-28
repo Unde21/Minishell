@@ -20,14 +20,15 @@ t_token	*new_token(char *content, t_token_type type)
 
 static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 {
-	if (new != NULL)
+	if (new != NULL && new->in_list == false)
 	{
 		if (tokens->head == NULL)
 			tokens->head = new;
 		else
 			tokens->tail->next = new;
 		tokens->tail = new;
-		new = NULL;
+		new->next = NULL;
+		new->in_list = true;
 	}
 }
 
@@ -50,8 +51,12 @@ bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 			input += handle_word(input, &current, data);
 		if (data->return_value == 0)
 			save_head_and_tail_lst(tokens, current);
+		data->had_space_before = false;
 		while (ft_isspace(*input) == true)
+		{
 			++input;
+			data->had_space_before = true;
+		}
 	}
 	if (data->return_value != 0)
 		return (false);

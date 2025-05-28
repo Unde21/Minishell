@@ -2,6 +2,32 @@
 #include "parsing.h"
 #include <stdlib.h>
 
+static bool	is_quote_need_remove(char *src, size_t i)
+{
+	size_t	index;
+	int		first_quote;
+
+	index = 0;
+	first_quote = NO_QUOTE;
+	while (src[index])
+	{
+		if (src[index] == ASCII_DBLE_QUOTE)
+		{
+			first_quote = ASCII_DBLE_QUOTE;
+			break ;
+		}
+		else if (src[index] == ASCII_SNGL_QUOTE)
+		{
+			first_quote = ASCII_SNGL_QUOTE;
+			break ;
+		}
+		++index;
+	}
+	if (first_quote != src[i])
+		return (false);
+	return (true);
+}
+
 static char	*ft_strcdup(char *src)
 {
 	size_t	i;
@@ -9,17 +35,21 @@ static char	*ft_strcdup(char *src)
 	size_t	len_s;
 	char	*dup;
 
-	i = 1;
+	i = 0;
 	j = 0;
-	len_s = ft_strlen(src);
-	dup = malloc(sizeof(char) * (len_s - 1));
+	len_s = ft_strlen(src) - 2;
+	ft_printf("len : %d\n", (int)len_s);
+	dup = malloc(sizeof(char) * (len_s + 1));
 	if (dup == NULL)
 		return (NULL);
-	while (src[i] && i < len_s - 1)
+	while (src[i])
 	{
-		dup[j] = src[i];
+		if (is_quote_need_remove(src, i) == false)
+		{
+			dup[j] = src[i];
+			++j;
+		}
 		++i;
-		++j;
 	}
 	dup[j] = '\0';
 	return (dup);
@@ -32,8 +62,8 @@ bool	remove_quote(t_args *args)
 
 	dup = NULL;
 	i = 0;
-	if (args->content[i] == ASCII_DBLE_QUOTE
-		|| args->content[i] == ASCII_SNGL_QUOTE)
+	ft_printf("args : %s\n", args->content);
+	if (wich_quote(args->content) != NO_QUOTE)
 	{
 		dup = ft_strcdup(args->content);
 		if (dup == NULL)

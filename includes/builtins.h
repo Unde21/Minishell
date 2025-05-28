@@ -17,7 +17,14 @@ int		ft_exit(t_data *data, t_args *args);
 // ft_echo.c
 void	ft_echo(t_cmd *cmd);
 
-// ft_env
+// ft_env.c
 void	ft_env(t_data *data, t_cmd *cmd);
+
+// ft_pwd.c
+void	ft_pwd(t_data *data, t_cmd *cmd);
+
+// ft_cd.c
+
+void	ft_cd(t_data *data, t_cmd *cmd);
 
 #endif

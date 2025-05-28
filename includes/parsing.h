@@ -15,7 +15,7 @@
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
 # define ERR_OP_DIR "error: failed to open directory\n"
 # define ERR_CLOSE_DIR "error: failed to close directory\n"
-# define ERR_READDIR "error: failed to readdir\n"
+# define ERR_READDIR "error: failed to read directory\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36
@@ -24,7 +24,7 @@
 # define WILDCARDS '*'
 # define CURRENT_DIRECTORY "."
 # define QUESTION_MARK '?'
-# define DOT '.'
+# define DOT '.'	
 
 struct s_cmd;
 struct s_data;
@@ -92,7 +92,7 @@ bool						handle_expansion(t_data *data, t_cmd *cmd);
 void						join_with_expand(t_data *data, char **expanded,
 								char *s, size_t *i);
 // expand_wildcards
-void					join_wildcards(char **expanded, char *s, size_t *i);
+void					join_wildcards(t_data *data, char **expanded, char *s, size_t *i);
 char					*expand_wildcards(char *wildcards, int nb_file, char *cpy_file);
 
 // wildcards_utils.c
@@ -105,7 +105,7 @@ int						bash_strcmp(const char *s1, const char *s2);
 // get_pattern.c
 bool					check_match(char *file_name, char *wildcards);
 char					*get_pattern(char *s, size_t i);
-char					*create_cpy_pattern(char **expanded, char *wildcards);
+char					*create_cpy_pattern(t_data *data, char **expanded, char *wildcards);
 
 // remove_quote.c
 bool						remove_quote(t_args *args);
