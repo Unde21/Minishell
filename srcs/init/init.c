@@ -38,6 +38,8 @@ static bool	init_cmd(t_data *data)
 		return (false);
 	}
 	cmd->nb_args = 0;
+	cmd->fd_in = 0;
+	cmd->fd_out = 1;
 	cmd->redir = NULL;
 	cmd->args = NULL;
 	cmd->next = NULL;

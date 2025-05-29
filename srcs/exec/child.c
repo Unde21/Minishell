@@ -1,12 +1,24 @@
 #include "exec.h"
 
-bool	init_child(t_cmd *cmd, char *path_cmd, char **env)
+void	init_child(t_cmd *cmd, char *path_cmd, char **env)
 {
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-		return (print_err("ERROR: 1 !\n"));
+	{
+		close(cmd->fd_in);
+		print_err("ERROR: 1 !\n");
+		exit(1);
+	}
+	if (cmd->fd_in != STDIN_FILENO)
+		close(cmd->fd_in);
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-		return (print_err("ERROR: 2 !\n"));
-	close_fd(cmd);
+	{
+		close(cmd->fd_out);
+		print_err("ERROR: 2 !\n");
+		exit(1);
+	}
+	if (cmd->fd_out != STDOUT_FILENO)
+		close(cmd->fd_out);
 	execve(path_cmd, cmd->params, env);
-	return (print_err("ERROR: execve failed!\n"));
+	perror("ERROR: execve failed !\n");
+	exit(127);
 }

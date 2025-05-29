@@ -59,9 +59,9 @@ typedef struct s_cmd
 	char			**params;
 	size_t			nb_args;
 	t_redir			*redir;
+	int				pipe_fd[2];
 	int				fd_in;
 	int				fd_out;
-	int				pipe_fd_current[2];
 
 	struct s_cmd	*next;
 }					t_cmd;

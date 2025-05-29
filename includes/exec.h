@@ -15,8 +15,9 @@ typedef struct s_cmd	t_cmd;
 # include <unistd.h>
 
 //// init ////
-bool					init_child(t_cmd *cmd, char *path_cmd, char **env);
 
+char					*init(t_cmd *cmd);
+void					init_child(t_cmd *cmd, char *path_cmd, char **env);
 void					init_listed_env(t_data *data);
 char					*heredoc(char *limiter);
 
@@ -24,11 +25,6 @@ char					*heredoc(char *limiter);
 t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
-////  isit   ////
-char					*wich_redir(t_cmd *cmd);
-bool					is_heredoc(t_data *data);
-bool					is_cmd(t_data *data, char *cmd);
-bool					is_pipe(t_data *data);
 //// getters ////
 char					*get_path_cmd(char **params);
 int						get_list_size(t_data *data);

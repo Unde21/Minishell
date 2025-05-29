@@ -1,18 +1,5 @@
 #include "exec.h"
 
-int	get_list_size(t_data *data)
-{
-	int	list_size;
-
-	list_size = 0;
-	while (data->cmd != NULL)
-	{
-		list_size++;
-		data->cmd = data->cmd->next;
-	}
-	return (list_size);
-}
-
 char	*get_key(char *env)
 {
 	char	*key;
