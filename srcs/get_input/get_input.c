@@ -41,7 +41,7 @@ static void	handle_input(t_data *data)
 	else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
 		ft_echo(data->cmd);
 	else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
-		ft_pwd(data, data->cmd);
+		ft_pwd(data);
 	else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
 		ft_cd(data, data->cmd);
 	clear_cmd(data->cmd);
@@ -54,32 +54,37 @@ static int	do_nothing(void)
 	return (0);
 }
 
-static void	exit_with_right_value(t_data *data)
+static void	exit_with_right_value(t_data *data, char *prompt)
 {
 	rl_clear_history();
+	free(prompt);
 	ft_printf("exit\n");
+	free(data->line_read);
 	exit(data->return_value);
 }
 
-static void	prompt(t_data *data, char **str)
+static void	get_prompt(t_data *data, char **prompt)
 {
 	char	*code;
 	char	*path;
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
+	{
+		*prompt = NULL;
 		return ;
+	}
 	code = ft_itoa(data->return_value);
 	if (code != NULL)
 	{
 		if (data->return_value != 0)
-			*str = RED CROSS;
+			*prompt = ft_strdup(RED CROSS);
 		else
-			*str = GREEN CHECK;
-		*str = ft_strjoin(*str, code);
-		*str = ft_strjoin_and_free(*str, END_RED);
-		*str = ft_strjoin_and_free(*str, path);
-		*str = ft_strjoin_and_free(*str, END_COLOR);
+			*prompt = ft_strdup(GREEN CHECK);
+		*prompt = ft_strjoin_and_free(*prompt, code);
+		*prompt = ft_strjoin_and_free(*prompt, END_RED);
+		*prompt = ft_strjoin_and_free(*prompt, path);
+		*prompt = ft_strjoin_and_free(*prompt, END_COLOR);
 	}
 	free(path);
 	free(code);
@@ -88,29 +93,29 @@ static void	prompt(t_data *data, char **str)
 
 static void	readline_loop(t_data *data)
 {
-	bool	error;
-	char	*str;
+	char	*prompt;
 
-	str = NULL;
+	prompt = NULL;
 	while (1)
 	{
-		error = false;
-		prompt(data, &str);
-		if (str == NULL)
+		get_prompt(data, &prompt);
+		if (prompt == NULL)
 		{
-			error = true;
-			str = RED "SEGFAULT$ " END_COLOR; //TODO je sais pas quoi mettre mais c est drole
+			prompt = ft_strdup(RED "SEGFAULT$ " END_COLOR); //TODO je sais pas quoi mettre mais c est drole
+			if (prompt == NULL)
+			{
+				ft_dprintf(2, ERR_MALLOC);
+				return ;
+			}
 		}
-		data->line_read = readline(str);
+		data->line_read = readline(prompt);
 		if (data->line_read == NULL)
-			exit_with_right_value(data);
+			exit_with_right_value(data, prompt);
 		add_history(data->line_read);
 		handle_input(data);
-		if (error == false)
-			free(str);
+		free(prompt);
 		free(data->line_read);
 	}
-	free(str);
 }
 
 void	get_input(t_data *data)
@@ -121,5 +126,4 @@ void	get_input(t_data *data)
 	set_signal_action();
 	readline_loop(data);
 	rl_clear_history();
-	free(data->line_read);
 }

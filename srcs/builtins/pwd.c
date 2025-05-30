@@ -1,10 +1,19 @@
 #include "builtins.h"
 #include "minishell.h"
 #include <unistd.h>
+#include <stdlib.h>
 
-void	ft_pwd(t_data *data, t_cmd *cmd)
+void	ft_pwd(t_data *data)
 {
-	(void)data;
-	(void)cmd;
-	ft_printf("%s\n", getcwd(NULL, 0));
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	if (path == NULL)
+	{
+		ft_dprintf(2, ERR_PWD);
+		data->return_value = 1;
+		return ;
+	}
+	ft_printf("%s\n", path);
+	free(path);
 }

@@ -42,7 +42,7 @@ void	skip_quote_dollar(char **input, int is_quote, size_t *word_size,
 	}
 }
 
-static	char *free_return(char *s1)
+static	char	*free_return(char *s1)
 {
 	free(s1);
 	return (NULL);

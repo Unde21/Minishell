@@ -16,6 +16,14 @@ static char	*get_home_path(t_env *env)
 	return (NULL);
 }
 
+static void	display_error(t_data *data, char *params)
+{
+	ft_dprintf(2, CD_ERR);
+	ft_dprintf(2, "%s: ", params);
+	ft_dprintf(2, CD_NO_DIR);
+	data->return_value = 1;
+}
+
 void	ft_cd(t_data *data, t_cmd *cmd)
 {
 	char	*home_path;
@@ -31,13 +39,9 @@ void	ft_cd(t_data *data, t_cmd *cmd)
 			data->return_value = 1;
 			return ;
 		}
-		chdir(home_path);
+		if (chdir(home_path) == -1)
+			display_error(data, cmd->params[1]);
 	}
 	else if (chdir(cmd->params[1]) == -1)
-	{
-		ft_dprintf(2, CD_ERR);
-		ft_dprintf(2, "%s: ", cmd->params[1]);
-		ft_dprintf(2, CD_NO_DIR);
-		data->return_value = 1;
-	}
+		display_error(data, cmd->params[1]);
 }
