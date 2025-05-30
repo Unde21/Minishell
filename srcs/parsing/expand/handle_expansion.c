@@ -65,7 +65,7 @@ static char	*expand(char *s, char *expanded, t_data *data)
 	return (expanded);
 }
 
-bool	replace_env_variables(t_data *data, t_args *args)
+bool	replace_env_variables(t_data *data, char **params)
 {
 	char	*expanded;
 
@@ -77,8 +77,8 @@ bool	replace_env_variables(t_data *data, t_args *args)
 		return (NULL);
 	}
 	data->cmd->args->is_quote = false;
-	args->content = expand(args->content, expanded, data);
-	if (args->content == NULL)
+	*params = expand(*params, expanded, data);
+	if (*params == NULL)
 	{
 		data->return_value = 1;
 		if (data->error_readdir == false)

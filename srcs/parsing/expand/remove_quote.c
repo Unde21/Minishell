@@ -38,7 +38,6 @@ static char	*ft_strcdup(char *src)
 	i = 0;
 	j = 0;
 	len_s = ft_strlen(src) - 2;
-	ft_printf("len : %d\n", (int)len_s);
 	dup = malloc(sizeof(char) * (len_s + 1));
 	if (dup == NULL)
 		return (NULL);
@@ -55,28 +54,23 @@ static char	*ft_strcdup(char *src)
 	return (dup);
 }
 
-bool	remove_quote(t_args *args)
+bool	remove_quote(char **params)
 {
 	size_t	i;
 	char	*dup;
 
 	dup = NULL;
 	i = 0;
-	ft_printf("args : %s\n", args->content);
-	if (wich_quote(args->content) != NO_QUOTE)
+	if (wich_quote(*params) != NO_QUOTE)
 	{
-		dup = ft_strcdup(args->content);
+		dup = ft_strcdup(*params);
 		if (dup == NULL)
 		{
 			print_err(ERR_MALLOC);
 			return (false);
 		}
-		free(args->content);
-		args->content = dup;
+		free(*params);
+		*params = dup;
 	}
 	return (true);
 }
-
-
-
-

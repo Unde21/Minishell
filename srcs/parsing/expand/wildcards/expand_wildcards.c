@@ -1,64 +1,36 @@
 #include "minishell.h"
 #include "parsing.h"
-#include <stdlib.h>
-#include <errno.h>
 #include <dirent.h>
+#include <errno.h>
+#include <stdlib.h>
 
-static bool	is_file_name_valid(char *file_name, char *wildcards,
-	char **cpy_file, int *nb_file)
+static int	bash_strcmp(const char *s1, const char *s2)
 {
-	if (file_name[0] != '.' && check_match(file_name, wildcards) == true)
+	int				i;
+	unsigned char	c1;
+	unsigned char	c2;
+
+	i = -1;
+	while (s1[++i] && s2[i])
 	{
-		*cpy_file = ft_strjoin_and_free(*cpy_file, file_name);
-		if (*cpy_file == NULL)
-			return (false);
-		if (nb_file > 0)
+		c1 = (unsigned char)s1[i];
+		c2 = (unsigned char)s2[i];
+		if (c1 != c2)
 		{
-			--*nb_file;
-			*cpy_file = ft_strjoin_and_free(*cpy_file, " ");
-			if (*cpy_file == NULL)
-				return (false);
+			if (s1[i] >= 'A' && s1[i] <= 'Z')
+				c1 = (unsigned char)(s1[i] + 32);
+			if (s2[i] >= 'A' && s2[i] <= 'Z')
+				c2 = (unsigned char)(s2[i] + 32);
+			if (c1 == c2)
+				continue ;
+			if (c1 < c2)
+				return (-1);
+			else if (c1 > c2)
+				return (1);
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 		}
 	}
-	return (true);
-}
-
-static char	*expand_wildcards_loop(char *wildcards, int nb_file, char *cpy_file,
-		DIR *current_dir)
-{
-	size_t			index;
-	struct dirent	*read_file;
-
-	index = 0;
-	errno = 0;
-	while (1)
-	{
-		read_file = readdir(current_dir);
-		if (errno != 0)
-		{
-			ft_dprintf(2, ERR_READDIR);
-			return (NULL);
-		}
-		else if (read_file == NULL)
-			break ;
-		if (is_file_name_valid(read_file->d_name,
-				wildcards, &cpy_file, &nb_file) == false)
-			return (NULL);
-	}
-	return (cpy_file);
-}
-
-char	*expand_wildcards(char *wildcards, int nb_file, char *cpy_file)
-{
-	DIR			*current_dir;
-
-	current_dir = NULL;
-	if (open_dir(&current_dir) == false)
-		return (NULL);
-	cpy_file = expand_wildcards_loop(wildcards, nb_file, cpy_file, current_dir);
-	if (close_dir(&current_dir) == false)
-		return (NULL);
-	return (cpy_file);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
 static char	*sort_file_name(char *cpy_file)
@@ -85,15 +57,39 @@ static char	*sort_file_name(char *cpy_file)
 				ft_swap_array(&split_file[i], &split_file[j]);
 		}
 	}
-	cpy_file = ft_strjoin_and_free_array(split_file, ft_strlen(cpy_file));
+	cpy_file = ft_strjoin_and_free_array(split_file, ft_strlen(cpy_file),
+			cpy_file);
 	return (cpy_file);
+}
+
+static void	expand_wildcards(char **expanded, char *cpy_file, char *wildcards,
+		size_t len_expanded)
+{
+	cpy_file = sort_file_name(cpy_file);
+	if (cpy_file == NULL)
+	{
+		free(wildcards);
+		ft_dprintf(2, ERR_MALLOC);
+		*expanded = NULL;
+		return ;
+	}
+	*expanded = ft_strjoin_and_free(*expanded, cpy_file);
+	if (*expanded == NULL)
+	{
+		free(cpy_file);
+		free(wildcards);
+		return ;
+	}
+	if (len_expanded == ft_strlen(*expanded))
+		*expanded = ft_strjoin_and_free(*expanded, wildcards);
+	free(cpy_file);
 }
 
 void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i)
 {
-	char		*wildcards;
-	size_t		len_expanded;
-	char		*cpy_file;
+	char	*wildcards;
+	size_t	len_expanded;
+	char	*cpy_file;
 
 	len_expanded = ft_strlen(*expanded);
 	wildcards = get_pattern(s, *i);
@@ -104,16 +100,11 @@ void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i)
 	}
 	cpy_file = create_cpy_pattern(data, expanded, wildcards);
 	if (cpy_file == NULL)
-		return ;
-	cpy_file = sort_file_name(cpy_file);
-	if (cpy_file == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		free(wildcards);
 		return ;
 	}
-	*expanded = ft_strjoin_and_free(*expanded, cpy_file);
-	free(cpy_file);
+	expand_wildcards(expanded, cpy_file, wildcards, len_expanded);
 	*i = ft_strlen(wildcards);
-	if (len_expanded == ft_strlen(*expanded))
-		*expanded = ft_strjoin_and_free(*expanded, wildcards);
+	free(wildcards);
 }

@@ -32,7 +32,7 @@ static void	handle_input(t_data *data)
 		return ;
 	}
 	// exec_init(data);
-	init_listed_env(data);
+	init_listed_env(data); //TODO sa leak si tu lance 2 appel a readline (a voir si tu as deja fix)
 	if (ft_strcmp(data->cmd->params[0], "env") == 0)
 		ft_env(data, data->cmd);
 	clear_cmd(data->cmd);

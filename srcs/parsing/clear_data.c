@@ -1,24 +1,6 @@
 #include "minishell.h"
 #include <stdlib.h>
 
-static void	clear_args(t_cmd *cmd)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < cmd->nb_args)
-	{
-		if (cmd->args[i].content != NULL)
-		{
-			free(cmd->args[i].content);
-			cmd->args[i].content = NULL;
-		}
-		++i;
-	}
-	free(cmd->args);
-	cmd->args = NULL;
-}
-
 static void	clear_redir(t_redir *redir)
 {
 	t_redir	*tmp;
@@ -49,9 +31,11 @@ void	clear_cmd(t_cmd *cmd)
 		{
 			clear_redir(cmd->redir);
 		}
-		clear_args(cmd);
+		free(cmd->args);
 		if (cmd->params != NULL)
+		{
 			free_all(cmd->params);
+		}
 		free(cmd);
 		cmd = NULL;
 		cmd = tmp;

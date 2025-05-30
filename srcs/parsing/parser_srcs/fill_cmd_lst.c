@@ -36,16 +36,16 @@ static bool	fill_cmd_args(t_token **current, t_cmd *current_cmd)
 				return (false);
 			continue ;
 		}
-		current_cmd->args[i++].content = ft_strdup((*current)->content);
-		if (current_cmd->args[i - 1].content == NULL)
+		current_cmd->params[i] = ft_strdup((*current)->content);
+		if (current_cmd->params[i] == NULL)
 		{
 			print_err(ERR_MALLOC);
 			return (false);
 		}
+		++i;
 		*current = (*current)->next;
 	}
-	if (current_cmd->nb_args != 0)
-		current_cmd->args[i].content = NULL;
+	current_cmd->params[i] = NULL;
 	return (true);
 }
 

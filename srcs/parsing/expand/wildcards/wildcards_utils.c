@@ -1,8 +1,8 @@
 #include "minishell.h"
 #include "parsing.h"
-#include <stdlib.h>
-#include <errno.h>
 #include <dirent.h>
+#include <errno.h>
+#include <stdlib.h>
 
 int	get_nb_file(char *wildcards)
 {
@@ -23,8 +23,8 @@ int	get_nb_file(char *wildcards)
 			return (-3);
 		else if (read_file == NULL)
 			break ;
-		if (read_file->d_name[0] != DOT
-			&& check_match(read_file->d_name, wildcards) == true)
+		if (read_file->d_name[0] != DOT && check_match(read_file->d_name,
+				wildcards) == true)
 			++nb_file;
 	}
 	if (close_dir(&current_dir) == false)
@@ -53,36 +53,26 @@ bool	open_dir(DIR **current_dir)
 	return (true);
 }
 
-int	bash_strcmp(const char *s1, const char *s2)
+bool	is_file_name_valid(char *file_name, char *wildcards, char **cpy_file,
+		int *nb_file)
 {
-	int				i;
-	unsigned char	c1;
-	unsigned char	c2;
-
-	i = -1;
-	while (s1[++i] && s2[i])
+	if (file_name[0] != '.' && check_match(file_name, wildcards) == true)
 	{
-		c1 = (unsigned char)s1[i];
-		c2 = (unsigned char)s2[i];
-		if (c1 != c2)
+		*cpy_file = ft_strjoin_and_free(*cpy_file, file_name);
+		if (*cpy_file == NULL)
+			return (false);
+		if (*nb_file > 0)
 		{
-			if (s1[i] >= 'A' && s1[i] <= 'Z')
-				c1 = (unsigned char)(s1[i] + 32);
-			if (s2[i] >= 'A' && s2[i] <= 'Z')
-				c2 = (unsigned char)(s2[i] + 32);
-			if (c1 == c2)
-				continue ;
-			if (c1 < c2)
-				return (-1);
-			else if (c1 > c2)
-				return (1);
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+			--*nb_file;
+			*cpy_file = ft_strjoin_and_free(*cpy_file, " ");
+			if (*cpy_file == NULL)
+				return (false);
 		}
 	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	return (true);
 }
 
-char	*ft_strjoin_and_free_array(char **tab, size_t len)
+char	*ft_strjoin_and_free_array(char **tab, size_t len, char *cpy_file)
 {
 	char	*join;
 	int		i;
@@ -92,6 +82,7 @@ char	*ft_strjoin_and_free_array(char **tab, size_t len)
 	join = malloc(sizeof(char) * (len + 1));
 	if (join == NULL)
 	{
+		free(cpy_file);
 		free_all(tab);
 		return (NULL);
 	}
@@ -106,5 +97,6 @@ char	*ft_strjoin_and_free_array(char **tab, size_t len)
 	}
 	join[len] = '\0';
 	free_all(tab);
+	free(cpy_file);
 	return (join);
 }

@@ -1,27 +1,28 @@
 #include "minishell.h"
 #include "parsing.h"
 
-static void	is_expand(t_args *args)
+static void	is_expand(t_cmd *cmd)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	if (args == NULL)
+	if (cmd->params == NULL)
 		return ;
-	while (args[i].content)
+	while (cmd->params[i])
 	{
 		j = 0;
-		args[i].need_expand = false;
-		if (args[i].content[j] == ASCII_SNGL_QUOTE)
-			args[i].is_quote = false;
+		cmd->args[i].need_expand = false;
+		if (cmd->params[i][j] == ASCII_SNGL_QUOTE)
+			cmd->args[i].is_quote = false;
 		else
-			args[i].is_quote = true;
-		while (args[i].content[j])
+			cmd->args[i].is_quote = true;
+		while (cmd->params[i][j])
 		{
-			if ((args[i].content[j] == ASCII_DOLLAR && args[i].is_quote == true)
-				|| args[i].content[j] == '*')
-				args[i].need_expand = true;
+			if ((cmd->params[i][j] == ASCII_DOLLAR
+				&& cmd->args[i].is_quote == true)
+				|| cmd->params[i][j] == '*')
+				cmd->args[i].need_expand = true;
 			++j;
 		}
 		++i;
@@ -35,7 +36,7 @@ void	expand_tokens(t_cmd *cmd)
 	current_cmd = cmd;
 	while (current_cmd != NULL)
 	{
-		is_expand(current_cmd->args);
+		is_expand(current_cmd);
 		current_cmd = current_cmd->next;
 	}
 }
@@ -54,11 +55,12 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 		{
 			if (current_cmd->args[i].need_expand == true)
 			{
-				if (replace_env_variables(data, &current_cmd->args[i]) == false
+				if (replace_env_variables(data,
+						&current_cmd->params[i]) == false
 					&& current_cmd->args[i].need_expand == true)
 					return (false);
 			}
-			else if (remove_quote(&current_cmd->args[i]) == false)
+			else if (remove_quote(&current_cmd->params[i]) == false)
 				return (false);
 			++i;
 		}

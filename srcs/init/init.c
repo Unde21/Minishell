@@ -16,6 +16,12 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 
 bool	init_cmd_args(t_cmd *cmd)
 {
+	cmd->params = malloc(sizeof(char *) * (cmd->nb_args + 1));
+	if (cmd->params == NULL)
+	{
+		ft_dprintf(2, ERR_MALLOC);
+		return (false);
+	}
 	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));
 	if (cmd->args == NULL)
 	{
@@ -41,6 +47,7 @@ static bool	init_cmd(t_data *data)
 	cmd->nb_args = 0;
 	cmd->redir = NULL;
 	cmd->args = NULL;
+	cmd->params = NULL;
 	cmd->next = NULL;
 	data->cmd = cmd;
 	return (true);
