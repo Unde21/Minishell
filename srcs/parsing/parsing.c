@@ -13,9 +13,6 @@ static bool	tokenizer(t_data *data)
 	return (true);
 }
 
-#include <fcntl.h>
-#include <unistd.h>
-
 bool	parsing(t_data *data)
 {
 	int	prev_return_value;
@@ -35,14 +32,5 @@ bool	parsing(t_data *data)
 		return (false);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
-	if (convert_lst_to_array(data->cmd) == false)
-		return (false);
-	// test builtins
-	if (ft_strcmp(data->cmd->params[0], "exit") == 0)
-		ft_exit(data, data->cmd->args);
-	else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
-		ft_echo(data->cmd);
-	// else
-	// 	execve("/usr/bin/ls", data->cmd->params, data->env);
 	return (true);
 }

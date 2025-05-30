@@ -23,16 +23,6 @@ static void	is_number(t_data *data, char *s)
 	}
 }
 
-static int	get_nb_args(t_args *args)
-{
-	size_t	i;
-
-	i = 0;
-	while (args[i].content)
-		++i;
-	return (i);
-}
-
 static void	get_exit_code(t_data *data, char *s)
 {
 	int	exit_code;
@@ -51,29 +41,25 @@ static void	get_exit_code(t_data *data, char *s)
 		exit(2);
 	}
 	clear_all_data(data);
-	ft_printf("exit_code : %d\n", exit_code);
 	exit(exit_code);
 }
 
-int	ft_exit(t_data *data, t_args *args)
+int	ft_exit(t_data *data, t_cmd *cmd)
 {
 	char	*s;
-	int		nb_args;
 	int		exit_code;
 
 	exit_code = 0;
-	nb_args = get_nb_args(args);
-	if (nb_args == 1)
+	if (cmd->nb_args == 1)
 	{
 		exit_code = data->return_value;
-		ft_printf("exit_code : %d\n", exit_code);
 		clear_all_data(data);
 		exit(exit_code);
 	}
 	else
-		s = args[1].content;
+		s = cmd->params[1];
 	is_number(data, s);
-	if (nb_args > 2)
+	if (cmd->nb_args > 2)
 	{
 		ft_dprintf(2, EXIT_TOO_MANY);
 		data->return_value = 127;

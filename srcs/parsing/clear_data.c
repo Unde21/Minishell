@@ -1,22 +1,12 @@
 #include "minishell.h"
 #include <stdlib.h>
 
-static void	clear_args(t_cmd *cmd)
+void	clear_all_data(t_data *data)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < cmd->nb_args)
-	{
-		if (cmd->args[i].content != NULL)
-		{
-			free(cmd->args[i].content);
-			cmd->args[i].content = NULL;
-		}
-		++i;
-	}
-	free(cmd->args);
-	cmd->args = NULL;
+	clear_cmd(data->cmd);
+	clear_token(data->token_lst->head);
+	free(data->token_lst);
+	free(data->line_read);
 }
 
 static void	clear_redir(t_redir *redir)
@@ -49,9 +39,11 @@ void	clear_cmd(t_cmd *cmd)
 		{
 			clear_redir(cmd->redir);
 		}
-		clear_args(cmd);
+		free(cmd->args);
 		if (cmd->params != NULL)
+		{
 			free_all(cmd->params);
+		}
 		free(cmd);
 		cmd = NULL;
 		cmd = tmp;

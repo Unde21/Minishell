@@ -25,14 +25,14 @@ static void	print_cmd_args(t_cmd *cmd)
 	size_t	i;
 
 	i = 0;
-	if (cmd->args == NULL)
+	if (cmd->params == NULL)
 		return ;
-	while (cmd->args[i].content)
+	while (cmd->params[i])
 	{
 		if (i == 0)
-			ft_printf("\033[32m[%s]\033[0m", cmd->args[i].content);
+			ft_printf("\033[32m[%s]\033[0m", cmd->params[i]);
 		else
-			ft_printf("\n\033[32m[%s]\033[0m", cmd->args[i].content);
+			ft_printf("\n\033[32m[%s]\033[0m", cmd->params[i]);
 		if (cmd->args[i].need_expand == true)
 			ft_printf("%s", EXPAND_YES);
 		else

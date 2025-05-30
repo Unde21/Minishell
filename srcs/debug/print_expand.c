@@ -5,14 +5,14 @@ static void	print_cmd_args_expanded(t_cmd *cmd)
 	size_t	i;
 
 	i = 0;
-	if (cmd->args == NULL)
+	if (cmd->params == NULL)
 		return ;
-	while (cmd->args[i].content)
+	while (cmd->params[i])
 	{
 		if (i == 0)
-			ft_printf("\033[35m[%s]\033[0m", cmd->args[i].content);
+			ft_printf("\033[35m[%s]\033[0m", cmd->params[i]);
 		else
-			ft_printf("\n\033[35m[%s]\033[0m", cmd->args[i].content);
+			ft_printf("\n\033[35m[%s]\033[0m", cmd->params[i]);
 		++i;
 	}
 }
@@ -29,7 +29,7 @@ static void	print_special_operator_expand(t_redir *current_redir)
 			ft_printf("%s", EXPAND_HERE_DOC);
 		else if (current_redir->type == 7)
 			ft_printf("%s", EXPAND_APPEND);
-		ft_printf(" || \033[35mFILE: %s\033[0m", current_redir->file);
+		ft_printf(" && \033[35mFILE: %s\033[0m", current_redir->file);
 		current_redir = current_redir->next;
 	}
 }

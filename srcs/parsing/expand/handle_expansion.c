@@ -39,9 +39,9 @@ static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 	}
 	else if ((s[*i] == WILDCARDS || s[*i + 1] == WILDCARDS)
 		&& data->cmd->args->is_quote == false)
-		join_wildcards(expanded, s, i);
+		join_wildcards(data, expanded, s, i);
 	else if (s[*i] == ASCII_DBLE_QUOTE)
-		++i;
+		++(*i);
 	else
 		join_without_expand(expanded, s[*i], i);
 }
@@ -65,7 +65,7 @@ static char	*expand(char *s, char *expanded, t_data *data)
 	return (expanded);
 }
 
-bool	replace_env_variables(t_data *data, t_args *args)
+bool	replace_env_variables(t_data *data, char **params)
 {
 	char	*expanded;
 
@@ -77,11 +77,14 @@ bool	replace_env_variables(t_data *data, t_args *args)
 		return (NULL);
 	}
 	data->cmd->args->is_quote = false;
-	args->content = expand(args->content, expanded, data);
-	if (args->content == NULL)
+	*params = expand(*params, expanded, data);
+	if (*params == NULL)
 	{
 		data->return_value = 1;
-		ft_dprintf(2, ERR_MALLOC);
+		if (data->error_readdir == false)
+			ft_dprintf(2, ERR_MALLOC);
+		else
+			ft_dprintf(2, ERR_READDIR);
 		return (false);
 	}
 	return (true);

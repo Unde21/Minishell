@@ -84,30 +84,31 @@ static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 	return (false);
 }
 
-size_t	handle_word(char *input, t_token **new, t_data *data)
+size_t	handle_word(char *input, t_token **new, t_data *data, size_t word_size)
 {
-	size_t	word_size;
 	char	*word;
 	int		is_quote;
 
 	is_quote = save_quote(*input);
 	word_size = get_word_size(input, is_quote);
+	if (word_size == 0)
+		return (1);
 	word = extract_word(input, word_size);
 	if (word == NULL)
 	{
 		data->return_value = 1;
 		return (0);
 	}
-	if (word_size != 0)
+	if (is_quote_missing(word, word_size, is_quote) == true)
 	{
-		if (is_quote_missing(word, word_size, is_quote) == true)
-		{
-			data->return_value = 1;
-			free(word);
-			return (ft_strlen(input));
-		}
+		data->return_value = 1;
+		free(word);
+		return (ft_strlen(input));
 	}
-	new_node_word(new, word, is_quote, data);
+	if (data->had_space_before == true || *new == NULL)
+		new_node_word(new, word, is_quote, data);
+	else
+		(*new)->content = ft_strjoin_and_free((*new)->content, word);
 	free(word);
 	return (word_size);
 }

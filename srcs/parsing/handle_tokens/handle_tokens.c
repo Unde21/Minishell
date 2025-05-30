@@ -15,27 +15,47 @@ t_token	*new_token(char *content, t_token_type type)
 	token->content = ft_strdup(content);
 	token->type = type;
 	token->next = NULL;
+	token->in_list = false;
 	return (token);
 }
 
 static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
 {
-	if (new != NULL)
+	if (new != NULL && new->in_list == false)
 	{
 		if (tokens->head == NULL)
 			tokens->head = new;
 		else
 			tokens->tail->next = new;
 		tokens->tail = new;
-		new = NULL;
+		new->next = NULL;
+		new->in_list = true;
 	}
+}
+
+static size_t	skip_isspace(t_data *data, char *input)
+{
+	size_t	i;
+
+	i = 0;
+	while (ft_isspace(*input) == true)
+	{
+		++input;
+		++i;
+		data->had_space_before = true;
+	}
+	return (i);
 }
 
 bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 		t_token *current)
 {
+	size_t	word_size;
+
+	word_size = 0;
 	while (*input != '\0' && data->return_value == 0)
 	{
+		input += skip_isspace(data, input);
 		if (*input == '|')
 			input += new_node_pipes(&current, data);
 		else if (*input == '>' && *(input + 1) == '>')
@@ -47,11 +67,10 @@ bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 		else if (*input == '<')
 			input += new_node_redir_in(&current, data);
 		else
-			input += handle_word(input, &current, data);
+			input += handle_word(input, &current, data, word_size);
 		if (data->return_value == 0)
 			save_head_and_tail_lst(tokens, current);
-		while (ft_isspace(*input) == true)
-			++input;
+		data->had_space_before = false;
 	}
 	if (data->return_value != 0)
 		return (false);
