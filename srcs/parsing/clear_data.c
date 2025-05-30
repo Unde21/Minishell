@@ -1,6 +1,14 @@
 #include "minishell.h"
 #include <stdlib.h>
 
+void	clear_all_data(t_data *data)
+{
+	clear_cmd(data->cmd);
+	clear_token(data->token_lst->head);
+	free(data->token_lst);
+	free(data->line_read);
+}
+
 static void	clear_redir(t_redir *redir)
 {
 	t_redir	*tmp;

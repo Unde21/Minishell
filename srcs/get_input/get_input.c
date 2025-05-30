@@ -31,10 +31,19 @@ static void	handle_input(t_data *data)
 		free(data->token_lst);
 		return ;
 	}
+	data->return_value = 0;
 	// exec_init(data);
 	init_listed_env(data); //TODO sa leak si tu lance 2 appel a readline (a voir si tu as deja fix)
 	if (ft_strcmp(data->cmd->params[0], "env") == 0)
 		ft_env(data, data->cmd);
+	if (ft_strcmp(data->cmd->params[0], "exit") == 0)
+		ft_exit(data, data->cmd); // exit
+	else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
+		ft_echo(data->cmd);
+	else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
+		ft_pwd(data, data->cmd);
+	else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
+		ft_cd(data, data->cmd);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
@@ -52,35 +61,65 @@ static void	exit_with_right_value(t_data *data)
 	exit(data->return_value);
 }
 
-void	get_input(t_data *data)
+static void	prompt(t_data *data, char **str)
 {
-	char	*str;
+	char	*code;
 	char	*path;
 
-	rl_catch_signals = 0;
-	rl_event_hook = do_nothing;
-	set_signal_action();
-	path = getcwd(NULL, 0); // TODO Voir ce qu on met !
-	str = ft_strjoin(path, "$ ");
+	path = getcwd(NULL, 0);
+	if (path == NULL)
+		return ;
+	code = ft_itoa(data->return_value);
+	if (code != NULL)
+	{
+		if (data->return_value != 0)
+			*str = RED CROSS;
+		else
+			*str = GREEN CHECK;
+		*str = ft_strjoin(*str, code);
+		*str = ft_strjoin_and_free(*str, END_RED);
+		*str = ft_strjoin_and_free(*str, path);
+		*str = ft_strjoin_and_free(*str, END_COLOR);
+	}
 	free(path);
+	free(code);
+}
+
+
+static void	readline_loop(t_data *data)
+{
+	bool	error;
+	char	*str;
+
+	str = NULL;
 	while (1)
 	{
+		error = false;
+		prompt(data, &str);
+		if (str == NULL)
+		{
+			error = true;
+			str = RED "SEGFAULT$ " END_COLOR; //TODO je sais pas quoi mettre mais c est drole
+		}
 		data->line_read = readline(str);
 		if (data->line_read == NULL)
 			exit_with_right_value(data);
 		add_history(data->line_read);
 		handle_input(data);
+		if (error == false)
+			free(str);
 		free(data->line_read);
 	}
-	rl_clear_history();
-	free(data->line_read);
 	free(str);
 }
 
-void	clear_all_data(t_data *data)
+void	get_input(t_data *data)
 {
-	clear_cmd(data->cmd);
-	clear_token(data->token_lst->head);
-	free(data->token_lst);
+
+	rl_catch_signals = 0;
+	rl_event_hook = do_nothing;
+	set_signal_action();
+	readline_loop(data);
+	rl_clear_history();
 	free(data->line_read);
 }

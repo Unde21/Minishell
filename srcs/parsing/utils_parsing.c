@@ -42,6 +42,12 @@ void	skip_quote_dollar(char **input, int is_quote, size_t *word_size,
 	}
 }
 
+static	char *free_return(char *s1)
+{
+	free(s1);
+	return (NULL);
+}
+
 char	*ft_strjoin_and_free(char *s1, char *s2)
 {
 	char	*join;
@@ -50,6 +56,8 @@ char	*ft_strjoin_and_free(char *s1, char *s2)
 	int		j;
 
 	i = -1;
+	if (s1 == NULL || s2 == NULL)
+		return (free_return(s1));
 	len = ft_strlen(s1) + ft_strlen(s2);
 	join = malloc(sizeof(char) * (len + 1));
 	if (join == NULL)

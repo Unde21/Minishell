@@ -10,6 +10,9 @@
 env: use -[v]S to pass options in shebang lines\n"
 # define ERR_ENV "env: ‘"
 # define ENV_NO_FILE "No such file or directory\n"
+# define CD_HOME "HOME"
+# define CD_ERR "bash: cd: "
+# define CD_NO_DIR "No such file or directory\n"
 
 // ft_exit.c
 int		ft_exit(t_data *data, t_cmd *cmd);
