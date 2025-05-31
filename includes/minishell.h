@@ -10,8 +10,8 @@
 # define GREEN "\001\033[1;32m\002"
 # define END_RED "] \001\033[0m\002\001\033[1;34m\002"
 # define END_COLOR "$ \001\033[0m\002"
-# define CROSS "❌ ["
-# define CHECK "✅ ["
+# define CROSS "\001❌\002 ["
+# define CHECK "\001✅\002 ["
 
 ////////////////////////////
 ///////* list parsing */////
