@@ -54,37 +54,36 @@ static void	init_redir(t_cmd *cmd)
 	}
 }
 
-char	*init(t_cmd *cmd)
+void	init(t_cmd *cmd, char **path_cmd, int *return_value)
 {
 	if (cmd->next != NULL)
 		set_pipe(cmd);
 	init_redir(cmd);
-	return (get_path_cmd(cmd->params));
+	get_path_cmd(cmd->params, path_cmd, return_value);
 }
 
-bool	exec_init(t_data *data)
+void	exec_init(t_data *data)
 {
 	char	*path_cmd;
 	t_cmd	*head_cmd;
 	pid_t	pid;
-	int		status;
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
 	while (data->cmd)
 	{
-		path_cmd = init(data->cmd);
-		pid = fork();
+		init(data->cmd, &path_cmd, &data->return_value);
+		if (path_cmd == NULL)
+			pid = fork();
 		if (pid < 0)
 		{
 			close_fd(head_cmd);
-			return (print_err("ERROR: fork failed !\n"));
+			print_err("ERROR: fork failed !\n");
 		}
 		else if (pid == 0)
-			init_child(data->cmd, path_cmd, data->env);
+			init_child(data->cmd, path_cmd, data->env, head_cmd);
 		data->cmd = data->cmd->next;
 	}
 	close_fd(head_cmd);
-	waitpid(-1, &status, 0);
-	return (true);
+	wait_child(&data->return_value);
 }

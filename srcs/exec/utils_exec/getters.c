@@ -59,7 +59,20 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-char	*get_path_cmd(char **params)
+void	get_access(char *path, int *return_value, char **path_cmd)
+{
+	if (access(path, F_OK) == 0)
+	{
+		if (access(path, X_OK) == 0)
+			*path_cmd = path;
+		else
+			*return_value = 127;
+	}
+	else
+		*return_value = 126;
+}
+
+void	get_path_cmd(char **params, char **path_cmd, int *return_value)
 {
 	int		i;
 	char	**path;
@@ -67,20 +80,15 @@ char	*get_path_cmd(char **params)
 	i = -1;
 	path = ft_split(getenv("PATH"), ':');
 	if (!path)
-	{
 		print_err("malloc failed\n");
-		return (NULL);
-	}
 	while (path[++i])
 	{
 		path[i] = ft_strjoin(path[i], "/");
 		path[i] = ft_strjoin(path[i], params[0]);
-		if (access(path[i], X_OK) == 0)
-			return (path[i]);
+		get_access(path[i], return_value, path_cmd);
 	}
 	i = -1;
 	while (path[++i])
 		free(path[i]);
 	free(path);
-	return (NULL);
 }

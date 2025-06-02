@@ -42,7 +42,7 @@ static void	handle_input(t_data *data)
 	// else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
 	// 	ft_pwd(data);
 	// else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
-	// 	ft_cd(data, data->cmd);
+	// ft_cd(data, data->cmd);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
