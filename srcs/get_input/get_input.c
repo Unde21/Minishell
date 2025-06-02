@@ -80,7 +80,7 @@ static void	get_prompt(t_data *data, char **prompt)
 			*prompt = ft_strdup(RED CROSS);
 		else
 			*prompt = ft_strdup(GREEN CHECK);
-		*prompt = ft_strjoin_and_free(*prompt, code);
+		*prompt = ft_strjoin_and_free(*prompt, code);	
 		*prompt = ft_strjoin_and_free(*prompt, END_RED);
 		*prompt = ft_strjoin_and_free(*prompt, path);
 		*prompt = ft_strjoin_and_free(*prompt, END_COLOR);
