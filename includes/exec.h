@@ -18,7 +18,6 @@ typedef struct s_cmd	t_cmd;
 
 char					*init(t_cmd *cmd);
 void					init_child(t_cmd *cmd, char *path_cmd, char **env);
-void					init_listed_env(t_data *data);
 char					*heredoc(char *limiter);
 
 //// add_node ////

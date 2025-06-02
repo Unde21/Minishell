@@ -8,6 +8,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->av = av;
 	data->return_value = 0;
 	data->env = env;
+	init_listed_env(data);
 	data->error_readdir = false;
 	data->line_read = NULL;
 	data->name_infile = NULL;

@@ -1,3 +1,4 @@
+#include "builtins.h"
 #include "exec.h"
 #include "minishell.h"
 #include "parsing.h"
@@ -30,19 +31,18 @@ static void	handle_input(t_data *data)
 		return ;
 	}
 	data->return_value = 0;
-	// exec_init(data);
-	init_listed_env(data);
+	exec_init(data);
 	// TODO sa leak si tu lance 2 appel a readline (a voir si tu as deja fix)
-	if (ft_strcmp(data->cmd->params[0], "env") == 0)
-		ft_env(data, data->cmd);
-	if (ft_strcmp(data->cmd->params[0], "exit") == 0)
-		ft_exit(data, data->cmd); // exit
-	else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
-		ft_echo(data->cmd);
-	else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
-		ft_pwd(data);
-	else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
-		ft_cd(data, data->cmd);
+	// if (ft_strcmp(data->cmd->params[0], "env") == 0)
+	// 	ft_env(data, data->cmd);
+	// if (ft_strcmp(data->cmd->params[0], "exit") == 0)
+	// 	ft_exit(data, data->cmd); // exit
+	// else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
+	// 	ft_echo(data->cmd);
+	// else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
+	// 	ft_pwd(data);
+	// else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
+	// 	ft_cd(data, data->cmd);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
@@ -122,26 +122,6 @@ void	get_input(t_data *data)
 	rl_catch_signals = 0;
 	rl_event_hook = do_nothing;
 	set_signal_action();
-	path = getcwd(NULL, 0); // TODO Voir ce qu on met !
-	str = ft_strjoin(path, "$ ");
-	free(path);
-	while (1)
-	{
-		data->line_read = readline(str);
-		if (data->line_read == NULL)
-			exit_with_right_value(data);
-		add_history(data->line_read);
-		handle_input(data);
-		// ft_printf("return (: %d\n", data->return_value));
-		free(data->line_read);
-	}
+	readline_loop(data);
 	rl_clear_history();
-}
-
-void	clear_all_data(t_data *data)
-{
-	clear_cmd(data->cmd);
-	clear_token(data->token_lst->head);
-	free(data->token_lst);
-	free(data->line_read);
 }

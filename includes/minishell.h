@@ -113,6 +113,8 @@ typedef struct s_data
 extern int			g_return_value;
 
 // init.c
+void				init_listed_env(t_data *data);
+
 void				init_data(t_data *data, int ac, char **av, char **env);
 bool				init_lst(t_data *data);
 bool				init_cmd_args(t_cmd *cmd);
