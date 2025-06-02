@@ -58,7 +58,7 @@ static void	word_splitting_loop(char *src, char *dup, bool is_separator)
 	dup[j] = '\0';
 }
 
-static char *dup_word_splitting(char *src)
+static char	*dup_word_splitting(char *src)
 {
 	char	*dup;
 	bool	is_separator;

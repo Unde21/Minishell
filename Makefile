@@ -20,13 +20,19 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/handle_expansion.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
-		srcs/parsing/expand/expand_wildcards.c \
+		srcs/parsing/expand/wildcards/expand_wildcards.c \
+		srcs/parsing/expand/wildcards/wildcards_utils.c \
+		srcs/parsing/expand/wildcards/get_pattern.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/utils_exec/getters.c \
 		srcs/exec/exec.c \
 		srcs/exec/child.c\
 		srcs/here_doc/here_doc_init.c \
 		srcs/builtins/exit.c \
+		srcs/builtins/echo.c \
+		srcs/builtins/env.c \
+		srcs/builtins/pwd.c \
+		srcs/builtins/cd.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
 		srcs/debug/print_expand.c \
@@ -86,7 +92,7 @@ DONE := "🏁"
 
 all: $(NAME)
 
-$(NAME): reset_debug libft/libft.a $(OBJS) Makefile
+$(NAME): reset_debug libft/libft.a $(OBJS)
 	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) -DDEBUG_VALUE=$(DEBUG_VALUE) ./libft/libft.a -o $@
 	@echo -e "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
 	@echo $(DEBUG_VALUE) > $(DEBUG_FILE)

@@ -5,6 +5,13 @@
 # include <stdio.h>
 
 # define CODE_SIGINT 130
+# define BLUE "\001\033[1;34m\002"
+# define RED "\001\033[1;31m\002"
+# define GREEN "\001\033[1;32m\002"
+# define END_RED "] \001\033[0m\002\001\033[1;34m\002"
+# define END_COLOR "$ \001\033[0m\002"
+# define CROSS "\001❌\002 ["
+# define CHECK "\001✅\002 ["
 
 ////////////////////////////
 ///////* list parsing */////
@@ -25,6 +32,7 @@ typedef enum e_token_type
 typedef struct s_token
 {
 	char			*content;
+	bool			in_list;
 	t_token_type	type;
 	struct s_token	*next;
 }					t_token;
@@ -92,7 +100,8 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
-	int				nb_cmd;
+	bool			error_readdir;
+	bool			had_space_before;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;

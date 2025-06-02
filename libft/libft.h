@@ -6,7 +6,7 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:45:35 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/02 10:26:07 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/06/02 10:44:11 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,9 @@ void				*ft_memmove(void *dest, const void *src, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
-
 size_t				ft_strlen(const char *s);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
-
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -48,12 +46,12 @@ int					ft_isalpha(int c);
 int					ft_isalnum(int c);
 int					ft_atoi(const char *nptr, int *check_error);
 long long			ft_atoll(const char *nptr, int *check_error);
-
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strnstr(const char *big, const char *little,
 						size_t len);
 char				*ft_strdup(const char *s);
 char				*ft_strchr(const char *s, int c);
+void				ft_swap_array(char **s1, char **s2);
 
 /* ************************************************************************** */
 /*						Part 2: Additional functions							*/
@@ -64,7 +62,6 @@ void				ft_putstr_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putchar_fd(char c, int fd);
-
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
@@ -96,7 +93,7 @@ void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 
 /* ************************************************************************** */
-/*								ft_printf											*/
+/*								ft_printf										*/
 /* ************************************************************************** */
 
 int					ft_printf(const char *format,
@@ -110,7 +107,7 @@ int					print_hexa(unsigned int n, const char *base, int count);
 int					check_format(va_list *params, char format);
 
 /* ************************************************************************** */
-/*								ft_dprintf											*/
+/*								ft_dprintf										*/
 /* ************************************************************************** */
 
 int					ft_dprintf(int fd, const char *format,
@@ -124,7 +121,7 @@ int					dprint_hexa(unsigned int n, const char *base, int nb_char,
 						int fd);
 
 /* ************************************************************************** */
-/*								get_next_line										*/
+/*								get_next_line									*/
 /* ************************************************************************** */
 
 # ifndef BUFFER_SIZE

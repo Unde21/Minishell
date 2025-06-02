@@ -28,6 +28,24 @@ static void	join_without_expand(char **expanded, char c, size_t *i)
 	++(*i);
 }
 
+static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
+{
+	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR)
+	{
+		if (s[*i + 1] == '?')
+			join_return_value(expanded, i, data->return_value);
+		else
+			join_with_expand(data, expanded, s, i);
+	}
+	else if ((s[*i] == WILDCARDS || s[*i + 1] == WILDCARDS)
+		&& data->cmd->args->is_quote == false)
+		join_wildcards(data, expanded, s, i);
+	else if (s[*i] == ASCII_DBLE_QUOTE)
+		++(*i);
+	else
+		join_without_expand(expanded, s[*i], i);
+}
+
 static char	*expand(char *s, char *expanded, t_data *data)
 {
 	size_t	i;
@@ -37,19 +55,7 @@ static char	*expand(char *s, char *expanded, t_data *data)
 		data->cmd->args->is_quote = true;
 	while (s[i])
 	{
-		if (s[i] == ASCII_DOLLAR && s[i + 1] != ASCII_DOLLAR)
-		{
-			if (s[i + 1] == '?')
-				join_return_value(&expanded, &i, data->return_value);
-			else
-				join_with_expand(data, &expanded, s, &i);
-		}
-		else if ((s[i] == '*' || s[i + 1] == '*' ) && data->cmd->args->is_quote == false)
-			join_wildcards(data, &expanded, s, &i);
-		else if (s[i] == ASCII_DBLE_QUOTE)
-			++i;
-		else
-			join_without_expand(&expanded, s[i], &i);
+		expand_loop(s, &expanded, data, &i);
 		if (expanded == NULL)
 			break ;
 	}
@@ -59,7 +65,7 @@ static char	*expand(char *s, char *expanded, t_data *data)
 	return (expanded);
 }
 
-static bool	replace_env_variables(t_data *data, t_args *args)
+bool	replace_env_variables(t_data *data, char **params)
 {
 	char	*expanded;
 
@@ -71,39 +77,15 @@ static bool	replace_env_variables(t_data *data, t_args *args)
 		return (NULL);
 	}
 	data->cmd->args->is_quote = false;
-	args->content = expand(args->content, expanded, data);
-	if (args->content == NULL)
+	*params = expand(*params, expanded, data);
+	if (*params == NULL)
 	{
 		data->return_value = 1;
-		ft_dprintf(2, ERR_MALLOC);
+		if (data->error_readdir == false)
+			ft_dprintf(2, ERR_MALLOC);
+		else
+			ft_dprintf(2, ERR_READDIR);
 		return (false);
-	}
-	return (true);
-}
-
-bool	handle_expansion(t_data *data, t_cmd *cmd)
-{
-	t_cmd	*current_cmd;
-	size_t	i;
-
-	i = 0;
-	current_cmd = cmd;
-	while (current_cmd != NULL)
-	{
-		i = 0;
-		while (i < current_cmd->nb_args)
-		{
-			if (current_cmd->args[i].need_expand == true)
-			{
-				if (replace_env_variables(data, &current_cmd->args[i]) == false
-					&& current_cmd->args[i].need_expand == true)
-					return (false);
-			}
-			else if (remove_quote(&current_cmd->args[i]) == false)
-				return (false);
-			++i;
-		}
-		current_cmd = current_cmd->next;
 	}
 	return (true);
 }

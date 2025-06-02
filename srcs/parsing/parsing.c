@@ -14,9 +14,6 @@ static bool	tokenizer(t_data *data)
 	return (true);
 }
 
-#include <fcntl.h>
-#include <unistd.h>
-
 bool	parsing(t_data *data)
 {
 	int	prev_return_value;

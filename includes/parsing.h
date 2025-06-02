@@ -2,6 +2,7 @@
 # define PARSING_H
 
 # include "minishell.h"
+# include <dirent.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 
@@ -14,11 +15,16 @@
 # define ERR_NO_FILE "syntax error: missing file after redirection\n"
 # define ERR_OP_DIR "error: failed to open directory\n"
 # define ERR_CLOSE_DIR "error: failed to close directory\n"
+# define ERR_READDIR "error: failed to read directory\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39
 # define ASCII_DOLLAR 36
 # define ASCII_UNDERSCORE 95
 # define NO_QUOTE 0
+# define WILDCARDS '*'
+# define CURRENT_DIRECTORY "."
+# define QUESTION_MARK '?'
+# define DOT '.'
 
 struct s_cmd;
 struct s_data;
@@ -42,7 +48,7 @@ bool						handle_token(t_data *data, char *input,
 
 // handle_word.c
 size_t						handle_word(char *input, t_token **new,
-								t_data *data);
+								t_data *data, size_t word_size);
 
 // handle_word_utils.c
 bool						is_special_operator(char input, int is_quote);
@@ -76,24 +82,35 @@ bool						fill_cmd_special_operator(t_token **current,
 								t_cmd *current_cmd);
 
 // handle_expansion.c
-bool						handle_expansion(t_data *data, t_cmd *cmd);
+bool						replace_env_variables(t_data *data, char **params);
 
-// expand.c
+// expand_tokens.c
 void						expand_tokens(t_cmd *current);
+bool						handle_expansion(t_data *data, t_cmd *cmd);
 
 // expand_utils.c
 void						join_with_expand(t_data *data, char **expanded,
 								char *s, size_t *i);
-
 // expand_wildcards
 void						join_wildcards(t_data *data, char **expanded,
 								char *s, size_t *i);
 
-// remove_quote.c
-bool						remove_quote(t_args *args);
+// wildcards_utils.c
+int							get_nb_file(char *wildcards);
+bool						open_dir(DIR **current_dir);
+bool						close_dir(DIR **current_dir);
+char						*ft_strjoin_and_free_array(char **tab, size_t len,
+								char *cpy_file);
+bool						is_file_name_valid(char *file_name, char *wildcards,
+								char **cpy_file, int *nb_file);
 
-// convert_lst_to_array.c
-bool						convert_lst_to_array(t_cmd *cmd);
-char						**lst_to_array(t_args *args, size_t nb_args);
+// get_pattern.c
+bool						check_match(char *file_name, char *wildcards);
+char						*get_pattern(char *s, size_t i);
+char						*create_cpy_pattern(t_data *data, char **expanded,
+								char *wildcards);
+
+// // remove_quote.c
+bool						remove_quote(char **params);
 
 #endif
