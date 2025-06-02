@@ -6,7 +6,12 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:27:22 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/22 15:13:54 by erbuffet         ###   ########lyon.fr   */
+<<<<<<<<<Temporary merge branch 1
+				/*   Updated: 2025/05/21 11:42:26 by samaouch         ###   ########lyon.fr   */
+				== == == ==
+			=
+				/*   Updated: 2025/05/15 14:12:49 by erbuffet         ###   ########lyon.fr   */
+			>>>>>>>>> Temporary merge branch 2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +20,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-size_t	ft_strlen_delim(const char *str, int check)
+	size_t
+	ft_strlen_delim(const char *str, int check)
 {
 	size_t	len;
 

@@ -59,6 +59,10 @@ typedef struct s_cmd
 	char			**params;
 	size_t			nb_args;
 	t_redir			*redir;
+	int				pipe_fd[2];
+	int				fd_in;
+	int				fd_out;
+
 	struct s_cmd	*next;
 }					t_cmd;
 ////////////////////////////
@@ -88,6 +92,7 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	int				nb_cmd;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;

@@ -63,6 +63,10 @@ static bool	new_node_cmd(t_cmd **current_cmd)
 	(*current_cmd)->redir = NULL;
 	(*current_cmd)->next = NULL;
 	(*current_cmd)->params = NULL;
+	(*current_cmd)->fd_in = 0;
+	(*current_cmd)->fd_out = 1;
+	(*current_cmd)->pipe_fd[0] = -1;
+	(*current_cmd)->pipe_fd[1] = -1;
 	return (true);
 }
 

@@ -1,18 +1,5 @@
 #include "exec.h"
 
-int	get_list_size(t_data *data)
-{
-	int	list_size;
-
-	list_size = 0;
-	while (data->cmd != NULL)
-	{
-		list_size++;
-		data->cmd = data->cmd->next;
-	}
-	return (list_size);
-}
-
 char	*get_key(char *env)
 {
 	char	*key;
@@ -39,6 +26,10 @@ char	*get_random_name(char *here_doc)
 	int		fd;
 
 	i = 0;
+	here_doc = malloc(sizeof(char) * 26);
+	if (!here_doc)
+		if (print_err("ERROR: malloc failed !\n") == false)
+			return (NULL);
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
 	{
@@ -68,42 +59,28 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-char	*get_listed_env(t_data *data)
+char	*get_path_cmd(char **params)
 {
-	char	*path;
-	t_env	*tmp;
-
-	tmp = data->listed_env;
-	path = NULL;
-	while (tmp != NULL)
-	{
-		if (ft_strcmp(tmp->key, "PATH") == 0)
-			path = tmp->value;
-		tmp = tmp->next;
-	}
-	return (path);
-}
-
-char	*path_cmd(t_data *data)
-{
-	char **path;
-	int i;
+	int		i;
+	char	**path;
 
 	i = -1;
-	path = ft_split(get_listed_env(data), ':');
+	path = ft_split(getenv("PATH"), ':');
 	if (!path)
 	{
 		print_err("malloc failed\n");
 		return (NULL);
 	}
 	while (path[++i])
-		path[i] = ft_strjoin(path[i], "/");
-	i = -1;
-	while (path[++i])
 	{
-		path[i] = ft_strjoin(path[i], data->cmd->args[i].content);
-		if (access(path[i], F_OK | X_OK) == 0)
+		path[i] = ft_strjoin(path[i], "/");
+		path[i] = ft_strjoin(path[i], params[0]);
+		if (access(path[i], X_OK) == 0)
 			return (path[i]);
 	}
+	i = -1;
+	while (path[++i])
+		free(path[i]);
+	free(path);
 	return (NULL);
 }

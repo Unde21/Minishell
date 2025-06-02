@@ -1,64 +1,91 @@
 #include "exec.h"
-#include "parsing.h"
 
-// void	executable(t_data *data)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (data->cmd)
-// 	{
-// 		while (data->cmd->args[++i].content)
-// 		{
-// 			if (is_cmd(data, data->cmd->args[i].content))
-// 				printf("executable => %s\n", data->cmd->args[i].content);
-// 			else
-// 				print_err(ERR_CMD);
-// 		}
-// 		if (is_heredoc(data))
-// 			heredoc(get_limiter(data));
-// 		if (is_redir(data) == 1)
-// 			printf("%s => redirection in\n", data->cmd->args->content);
-// 		else if (is_redir(data) == 2)
-// 			printf("%s => redirection out\n", data->cmd->args->content);
-// 		i = -1;
-// 		if (data->cmd->next != NULL)
-// 			printf("there_is_pipe\n");
-// 		data->cmd = data->cmd->next;
-// 	}
-// }
-
-bool	close_pipefd(t_data *data, int pipe_fd[])
+void	close_fd(t_cmd *cmd)
 {
-	int	i;
+	while (cmd)
+	{
+		if (cmd->pipe_fd[0] != -1)
+			close(cmd->pipe_fd[0]);
+		if (cmd->pipe_fd[1] != -1)
+			close(cmd->pipe_fd[1]);
+		cmd = cmd->next;
+	}
+}
 
-	i = -1;
-	while (++i < (data->nb_cmd - 1))
-		if (pipe_fd[i] > 0)
-			close(pipe_fd[i]);
-	return (true);
+static void	set_pipe(t_cmd *cmd)
+{
+	t_cmd	*head;
+
+	head = cmd;
+	if (pipe(cmd->pipe_fd) < 0)
+	{
+		close_fd(head);
+		print_err("ERROR: pipe failed !\n");
+	}
+	if (cmd->fd_out == STDOUT_FILENO)
+		cmd->fd_out = cmd->pipe_fd[1];
+	if (cmd->next->fd_in == STDIN_FILENO)
+		cmd->next->fd_in = cmd->pipe_fd[0];
+}
+
+static void	init_redir(t_cmd *cmd)
+{
+	while (cmd->redir)
+	{
+		if (cmd->redir->type == REDIR_IN)
+			if ((cmd->fd_in = open(cmd->redir->file, O_RDONLY)) < 0)
+				print_err("ERROR: opening FD !\n");
+		if (cmd->redir->type == REDIR_OUT)
+			if ((cmd->fd_out = open(cmd->redir->file,
+						O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
+				print_err("ERROR: opening FD !\n");
+		if (cmd->redir->type == APPEND)
+			if (((cmd->fd_out = open(cmd->redir->file,
+							O_WRONLY | O_CREAT | O_APPEND, 0644))) < 0)
+				print_err("ERROR: opening FD !\n");
+		if (cmd->redir->type == HERE_DOC)
+		{
+			cmd->redir->file = heredoc(get_limiter(cmd));
+			if ((cmd->fd_in = open(cmd->redir->file, O_RDONLY)) < 0)
+				print_err("ERROR: opening FD !\n");
+			unlink(cmd->redir->file);
+		}
+		cmd->redir = cmd->redir->next;
+	}
+}
+
+char	*init(t_cmd *cmd)
+{
+	if (cmd->next != NULL)
+		set_pipe(cmd);
+	init_redir(cmd);
+	return (get_path_cmd(cmd->params));
 }
 
 bool	exec_init(t_data *data)
 {
+	char	*path_cmd;
+	t_cmd	*head_cmd;
 	pid_t	pid;
-	int		pipe_fd[2];
+	int		status;
 
+	head_cmd = data->cmd;
+	path_cmd = NULL;
 	while (data->cmd)
 	{
-		if (data->cmd->next != NULL)
-			if (pipe(pipe_fd) < 0)
-				return (print_err("ERROR: pipe failed !\n"));
+		path_cmd = init(data->cmd);
 		pid = fork();
 		if (pid < 0)
 		{
-			close_pipefd(data, pipe_fd);
+			close_fd(head_cmd);
 			return (print_err("ERROR: fork failed !\n"));
 		}
-		else if (pid > 0)
-			child_init(data, pipe_fd);
+		else if (pid == 0)
+			init_child(data->cmd, path_cmd, data->env);
 		data->cmd = data->cmd->next;
 	}
-	close_pipefd(data, pipe_fd);
+	close_fd(head_cmd);
+	while (waitpid(-1, &status, 0) > 0)
+		;
 	return (true);
 }

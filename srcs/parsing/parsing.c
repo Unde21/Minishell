@@ -1,5 +1,6 @@
 #include "builtins.h"
 #include "debug.h"
+#include "exec.h"
 #include "minishell.h"
 #include <stdlib.h>
 
@@ -38,9 +39,6 @@ bool	parsing(t_data *data)
 	if (convert_lst_to_array(data->cmd) == false)
 		return (false);
 	if (ft_strcmp(data->cmd->params[0], "exit") == 0)
-	{
 		ft_exit(data, data->cmd->args);
-	}
-	execve("/usr/bin/ls", data->cmd->params, data->env);
 	return (true);
 }

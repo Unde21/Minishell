@@ -6,7 +6,12 @@
 /*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:33:39 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/22 15:13:59 by erbuffet         ###   ########lyon.fr   */
+<<<<<<<<<Temporary merge branch 1
+				/*   Updated: 2025/05/21 15:05:31 by samaouch         ###   ########lyon.fr   */
+				== == == ==
+			=
+				/*   Updated: 2025/05/15 17:58:38 by erbuffet         ###   ########lyon.fr   */
+			>>>>>>>>> Temporary merge branch 2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +20,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-static void		*free_all(char **s, size_t len);
+	static void *
+	free_all(char **s, size_t len);
 static size_t	count_words(char const *s, char c);
 
 char	**ft_split(char const *s, char c)
