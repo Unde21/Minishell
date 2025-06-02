@@ -85,7 +85,6 @@ bool	exec_init(t_data *data)
 		data->cmd = data->cmd->next;
 	}
 	close_fd(head_cmd);
-	while (waitpid(-1, &status, 0) > 0)
-		;
+	waitpid(-1, &status, 0);
 	return (true);
 }
