@@ -5,26 +5,21 @@ void	close_fd(t_cmd *cmd)
 	while (cmd)
 	{
 		if (cmd->pipe_fd[0] != -1)
-		{
 			close(cmd->pipe_fd[0]);
-			cmd->pipe_fd[0] = -1;
-		}
 		if (cmd->pipe_fd[1] != -1)
-		{
 			close(cmd->pipe_fd[1]);
-			cmd->pipe_fd[1] = -1;
-		}
 		cmd = cmd->next;
 	}
 }
 
 static void	set_pipe(t_cmd *cmd)
 {
-	cmd->pipe_fd[0] = -1;
-	cmd->pipe_fd[1] = -1;
+	t_cmd	*head;
+
+	head = cmd;
 	if (pipe(cmd->pipe_fd) < 0)
 	{
-		close_fd(cmd);
+		close_fd(head);
 		print_err("ERROR: pipe failed !\n");
 	}
 	if (cmd->fd_out == STDOUT_FILENO)

@@ -40,7 +40,5 @@ bool	parsing(t_data *data)
 		return (false);
 	if (ft_strcmp(data->cmd->params[0], "exit") == 0)
 		ft_exit(data, data->cmd->args);
-	exec_init(data);
-	// execve("/usr/bin/ls", data->cmd->params, data->env);
 	return (true);
 }
