@@ -1,6 +1,0 @@
-*.o
-*.d
-*.a
-.vscode
-.debug_value
-minishell
