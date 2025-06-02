@@ -38,12 +38,15 @@ static size_t	skip_isspace(t_data *data, char *input)
 	size_t	i;
 
 	i = 0;
+	data->had_space_before = false;
 	while (ft_isspace(*input) == true)
 	{
 		++input;
 		++i;
 		data->had_space_before = true;
 	}
+	if (data-> last_type != WORD)
+		data->had_space_before = true;
 	return (i);
 }
 
@@ -70,7 +73,6 @@ bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 			input += handle_word(input, &current, data, word_size);
 		if (data->return_value == 0)
 			save_head_and_tail_lst(tokens, current);
-		data->had_space_before = false;
 	}
 	if (data->return_value != 0)
 		return (false);

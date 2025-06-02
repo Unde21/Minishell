@@ -102,6 +102,7 @@ typedef struct s_data
 	char			**env;
 	bool			error_readdir;
 	bool			had_space_before;
+	int				last_type;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;

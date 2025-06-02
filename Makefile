@@ -11,7 +11,6 @@ SRCS := srcs/main.c \
 		srcs/parsing/handle_tokens/handle_tokens.c \
 		srcs/parsing/handle_tokens/create_node_for_token.c \
 		srcs/parsing/parser_srcs/parser.c \
-		srcs/parsing/parser_srcs/convert_lst_to_array.c \
 		srcs/parsing/parser_srcs/fill_cmd_lst.c \
 		srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
 		srcs/parsing/handle_tokens/handle_word_utils.c \
