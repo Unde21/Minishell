@@ -62,7 +62,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->nb_args > 2)
 	{
 		ft_dprintf(2, EXIT_TOO_MANY);
-		data->return_value = 127;
+		data->return_value = 1;
 		return (-1);
 	}
 	get_exit_code(data, s);

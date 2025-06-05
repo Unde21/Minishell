@@ -113,4 +113,7 @@ char						*create_cpy_pattern(t_data *data, char **expanded,
 // // remove_quote.c
 bool						remove_quote(char **params);
 
+// split_params.c
+bool						split_wildcards_file(t_cmd *cmd);
+
 #endif

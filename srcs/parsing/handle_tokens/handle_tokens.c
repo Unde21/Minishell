@@ -19,8 +19,10 @@ t_token	*new_token(char *content, t_token_type type)
 	return (token);
 }
 
-static void	save_head_and_tail_lst(t_token_lst *tokens, t_token *new)
+static void	save_head_and_tail_lst(t_data *data, t_token_lst *tokens, t_token *new)
 {
+	if (data->return_value != 0)
+		return ;
 	if (new != NULL && new->in_list == false)
 	{
 		if (tokens->head == NULL)
@@ -39,7 +41,7 @@ static size_t	skip_isspace(t_data *data, char *input)
 
 	i = 0;
 	data->had_space_before = false;
-	while (ft_isspace(*input) == true)
+	while (ft_isspace(*input) == true && *input != '\0')
 	{
 		++input;
 		++i;
@@ -59,6 +61,8 @@ bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 	while (*input != '\0' && data->return_value == 0)
 	{
 		input += skip_isspace(data, input);
+		if (*input == '\0')
+			break ;
 		if (*input == '|')
 			input += new_node_pipes(&current, data);
 		else if (*input == '>' && *(input + 1) == '>')
@@ -71,8 +75,7 @@ bool	handle_token(t_data *data, char *input, t_token_lst *tokens,
 			input += new_node_redir_in(&current, data);
 		else
 			input += handle_word(input, &current, data, word_size);
-		if (data->return_value == 0)
-			save_head_and_tail_lst(tokens, current);
+		save_head_and_tail_lst(data, tokens, current);
 	}
 	if (data->return_value != 0)
 		return (false);
