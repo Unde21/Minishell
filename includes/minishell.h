@@ -70,7 +70,6 @@ typedef struct s_cmd
 	int				pipe_fd[2];
 	int				fd_in;
 	int				fd_out;
-
 	struct s_cmd	*next;
 }					t_cmd;
 ////////////////////////////

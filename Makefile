@@ -37,6 +37,7 @@ SRCS := srcs/main.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
 		srcs/debug/print_expand.c \
+		srcs/debug/print_final_lst.c \
 
 HEADER := 	includes/minishell.h \
 			includes/parsing.h \
@@ -114,7 +115,7 @@ debug:
 	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
 	$(CYAN)$(BOLD)2- $(END)Parser\n\
 	$(CYAN)$(BOLD)3- $(END)Expand\n\
-	$(CYAN)$(BOLD)4- $(END)???????\n\
+	$(CYAN)$(BOLD)4- $(END)Final list\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"
 	@read -s -n 1 value; \
 	while ! echo "$$value" | grep -Eq '^[0-5]+$$'; do \
@@ -124,7 +125,7 @@ debug:
 	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
 	$(CYAN)$(BOLD)2- $(END)Parser\n\
 	$(CYAN)$(BOLD)3- $(END)Expand\n\
-	$(CYAN)$(BOLD)4- $(END)???????\n\
+	$(CYAN)$(BOLD)4- $(END)Final list\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"; \
 		read -s -n 1 value; \
 	done;\

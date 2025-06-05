@@ -33,7 +33,9 @@ bool	parsing(t_data *data)
 		return (false);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
-	if (split_wildcards_file(data->cmd) == false) // ADD debug 
+	if (split_wildcards_file(data->cmd) == false)
 		return (false);
+	if (DEBUG_VALUE == 4 || DEBUG_VALUE == 5)
+		print_final_lst(data->cmd);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 12:47:49 by samaouch          #+#    #+#             */
-/*   Updated: 2025/05/16 14:51:02 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/05 20:28:32 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,24 @@
 ============================================\033[0m\n			       \
 \033[42;42mNULL\033[0m"
 
+//final lst
+# define PRINT_FINAL_LST "\n\n\n\033[1;93;42mFINAL LIST:\033[0m\n\n"
+# define START_SEP_LINE_FINAL "\033[32m=============================\
+============================================\033[0m\n"
+# define FINAL_REDIR_IN "\033[97m	=> REDIR_IN\033[0m"
+# define FINAL_REDIR_OUT "\033[97m	=> REDIR_OUT\033[0m"
+# define FINAL_HERE_DOC "\033[97m	=> HERE_DOC\033[0m"
+# define FINAL_APPEND "\033[97m	=> APPEND\033[0m"
+# define END_SEP_LINE_FINAL "\n\033[32m=============================\
+============================================\033[0m\n"
+# define PRINT_NULL_FINAL "\033[32m=============================\
+============================================\033[0m\n			       \
+\033[42;42mNULL\033[0m"
+
 //print_.c
 void	print_lst(t_token *token);
 void	print_lst_cmd(t_cmd *cmd);
 void	print_lst_cmd_expand(t_cmd *cmd);
+void	print_final_lst(t_cmd *cmd);
 
 #endif
