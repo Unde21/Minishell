@@ -74,13 +74,10 @@ void	free_all(char **str)
 {
 	size_t	i;
 
-	i = 0;
+	i = -1;
 	if (str == NULL)
 		return ;
-	while (str[i])
-	{
+	while (str[++i])
 		free(str[i]);
-		++i;
-	}
 	free(str);
 }

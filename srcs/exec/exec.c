@@ -54,12 +54,20 @@ static void	init_redir(t_cmd *cmd)
 	}
 }
 
-void	init(t_cmd *cmd, char **path_cmd, int *return_value)
+void	init(t_data *data, char **path_cmd, int *return_value)
 {
-	if (cmd->next != NULL)
-		set_pipe(cmd);
-	init_redir(cmd);
-	get_path_cmd(cmd->params, path_cmd, return_value);
+	if (data->cmd->next != NULL)
+		set_pipe(data->cmd);
+	init_redir(data->cmd);
+	if (data->env[0] == NULL || data->cmd->params[0][0] == '/')
+	{
+		if (is_access_ok(data->cmd->params[0], &data->return_value, path_cmd))
+			*path_cmd = data->cmd->params[0];
+		else
+			return ;
+	}
+	else
+		*path_cmd = get_path_cmd(data->cmd->params, *path_cmd, return_value);
 }
 
 void	exec_init(t_data *data)
@@ -72,16 +80,17 @@ void	exec_init(t_data *data)
 	path_cmd = NULL;
 	while (data->cmd)
 	{
-		init(data->cmd, &path_cmd, &data->return_value);
-		if (path_cmd == NULL)
-			pid = fork();
+		// if (is_builtin())
+		// 	handle_builtin();
+		init(data, &path_cmd, &data->return_value);
+		pid = fork();
 		if (pid < 0)
 		{
 			close_fd(head_cmd);
 			print_err("ERROR: fork failed !\n");
 		}
 		else if (pid == 0)
-			init_child(data->cmd, path_cmd, data->env, head_cmd);
+			init_child(data, path_cmd, head_cmd);
 		data->cmd = data->cmd->next;
 	}
 	close_fd(head_cmd);

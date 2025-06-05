@@ -1,4 +1,5 @@
 #include "exec.h"
+#include "parsing.h"
 
 char	*get_key(char *env)
 {
@@ -59,20 +60,9 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-void	get_access(char *path, int *return_value, char **path_cmd)
-{
-	if (access(path, F_OK) == 0)
-	{
-		if (access(path, X_OK) == 0)
-			*path_cmd = path;
-		else
-			*return_value = 127;
-	}
-	else
-		*return_value = 126;
-}
 
-void	get_path_cmd(char **params, char **path_cmd, int *return_value)
+
+char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 {
 	int		i;
 	char	**path;
@@ -83,12 +73,15 @@ void	get_path_cmd(char **params, char **path_cmd, int *return_value)
 		print_err("malloc failed\n");
 	while (path[++i])
 	{
-		path[i] = ft_strjoin(path[i], "/");
-		path[i] = ft_strjoin(path[i], params[0]);
-		get_access(path[i], return_value, path_cmd);
+		path[i] = ft_strjoin_and_free(path[i], "/");
+		if (path[i] == NULL)
+			return (NULL);
+		path[i] = ft_strjoin_and_free(path[i], params[0]);
+		if (path[i] == NULL)
+			return (NULL);
+		if (is_access_ok(path[i], return_value, &path_cmd))
+			return (path_cmd);
 	}
-	i = -1;
-	while (path[++i])
-		free(path[i]);
-	free(path);
+	free_all(path);
+	return (NULL);
 }
