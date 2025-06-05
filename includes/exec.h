@@ -16,8 +16,8 @@ typedef struct s_cmd	t_cmd;
 
 //// init ////
 
-char					*init(t_cmd *cmd);
-void					init_child(t_cmd *cmd, char *path_cmd, char **env);
+void					init(t_data *data, char **path_cmd, int *return_value);
+void					init_child(t_data *data, char *path_cmd, t_cmd *head);
 char					*heredoc(char *limiter);
 
 //// add_node ////
@@ -25,17 +25,21 @@ t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
 //// getters ////
-char					*get_path_cmd(char **params);
+char					*get_path_cmd(char **params, char *path_cmd,
+							int *return_value);
 int						get_list_size(t_data *data);
 char					*get_key(char *env);
 char					*get_limiter(t_cmd *cmd);
 char					*get_random_name(char *here_doc);
 
 //// exec ////
-bool					exec_init(t_data *data);
+void					exec_init(t_data *data);
+void					wait_child(int *return_value);
 
 //// utils ////
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
+bool					is_access_ok(char *path, int *return_value,
+							char **path_cmd);
 
 #endif

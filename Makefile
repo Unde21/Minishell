@@ -24,6 +24,7 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/wildcards/get_pattern.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/utils_exec/getters.c \
+		srcs/exec/utils_exec/exec_utils.c \
 		srcs/exec/exec.c \
 		srcs/exec/child.c\
 		srcs/here_doc/here_doc_init.c \

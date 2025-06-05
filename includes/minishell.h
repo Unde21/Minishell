@@ -122,7 +122,6 @@ bool				init_cmd_args(t_cmd *cmd);
 
 // utils.c
 bool				print_err(char *str_error);
-
 void				clear_token(t_token *lst);
 void				clear_cmd(t_cmd *cmd);
 void				free_all(char **str);
