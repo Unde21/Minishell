@@ -1,7 +1,7 @@
 #include "builtins.h"
 #include "minishell.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void	ft_pwd(t_data *data)
 {

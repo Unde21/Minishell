@@ -26,7 +26,7 @@ static void	display_error(t_data *data, char *params)
 
 void	ft_cd(t_data *data, t_cmd *cmd)
 {
-	char	*home_path;
+	char *home_path;
 
 	home_path = NULL;
 	if (cmd->params[1] == NULL)

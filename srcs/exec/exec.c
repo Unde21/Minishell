@@ -1,3 +1,4 @@
+#include "builtins.h"
 #include "exec.h"
 
 void	close_fd(t_cmd *cmd)
@@ -33,23 +34,21 @@ static void	init_redir(t_cmd *cmd)
 	while (cmd->redir)
 	{
 		if (cmd->redir->type == REDIR_IN)
-			if ((cmd->fd_in = open(cmd->redir->file, O_RDONLY)) < 0)
-				print_err("ERROR: opening FD !\n");
+			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 		if (cmd->redir->type == REDIR_OUT)
-			if ((cmd->fd_out = open(cmd->redir->file,
-						O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
-				print_err("ERROR: opening FD !\n");
+			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
+					0644);
 		if (cmd->redir->type == APPEND)
-			if (((cmd->fd_out = open(cmd->redir->file,
-							O_WRONLY | O_CREAT | O_APPEND, 0644))) < 0)
-				print_err("ERROR: opening FD !\n");
+			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
+					0644);
 		if (cmd->redir->type == HERE_DOC)
 		{
 			cmd->redir->file = heredoc(get_limiter(cmd));
-			if ((cmd->fd_in = open(cmd->redir->file, O_RDONLY)) < 0)
-				print_err("ERROR: opening FD !\n");
+			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 			unlink(cmd->redir->file);
 		}
+		if (cmd->fd_in < 0 || cmd->fd_out < 0)
+			print_err("ERROR: opening FD !\n");
 		cmd->redir = cmd->redir->next;
 	}
 }
@@ -80,8 +79,11 @@ void	exec_init(t_data *data)
 	path_cmd = NULL;
 	while (data->cmd)
 	{
-		// if (is_builtin())
-		// 	handle_builtin();
+		if (is_solo_builtin(data->cmd->params) && data->cmd->next == NULL)
+		{
+			solo_builtin(data);
+			return ;
+		}
 		init(data, &path_cmd, &data->return_value);
 		pid = fork();
 		if (pid < 0)

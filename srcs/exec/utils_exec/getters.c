@@ -60,8 +60,6 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-
-
 char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 {
 	int		i;

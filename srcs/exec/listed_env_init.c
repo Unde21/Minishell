@@ -55,6 +55,7 @@ t_env	*create_node(t_data *data, int i)
 	}
 	return (next_node);
 }
+
 void	init_listed_env(t_data *data)
 {
 	t_env	*listed_env;
