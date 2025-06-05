@@ -32,17 +32,6 @@ static void	handle_input(t_data *data)
 	}
 	data->return_value = 0;
 	exec_init(data);
-	// TODO sa leak si tu lance 2 appel a readline (a voir si tu as deja fix)
-	// if (ft_strcmp(data->cmd->params[0], "env") == 0)
-	// 	ft_env(data, data->cmd);
-	// if (ft_strcmp(data->cmd->params[0], "exit") == 0)
-	// 	ft_exit(data, data->cmd); // exit
-	// else if (ft_strcmp(data->cmd->params[0], "echo") == 0)
-	// 	ft_echo(data->cmd);
-	// else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
-	// 	ft_pwd(data);
-	// else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
-	// 	ft_cd(data, data->cmd);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
