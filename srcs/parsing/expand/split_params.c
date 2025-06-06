@@ -2,60 +2,55 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static bool	need_split_params(char **params)
+static bool	split_and_cpy_params(char **final_array, char **params,
+		size_t *index, size_t *i)
 {
-	size_t	i;
+	char	**split;
 	size_t	j;
 
-	i = 0;
-	while (params[i])
+	j = 0;
+	split = ft_split(params[*i], ' ');
+	if (split == NULL)
 	{
-		j = 0;
-		while (params[i][j])
-		{
-			if (ft_isspace(params[i][j]) == true)
-				return (true);
-			++j;
-		}
-		++i;
+		free_delim(final_array, *index);
+		return (false);
 	}
-	return (false);
+	while (split[j])
+	{
+		final_array[*index] = split[j];
+		++j;
+		++*index;
+	}
+	free(split);
+	return (true);
 }
 
-static void	count_params(char **params, size_t *len)
+static bool	split_params_loop(char **final_array, char **params, size_t i,
+		size_t *index)
 {
-	size_t	i;
-	size_t	j;
-	bool	in_word;
-
-	i = 0;
-	while (params[i])
+	if (need_split_params(&params[i]) == true)
 	{
-		j = 0;
-		in_word = false;
-		while (params[i][j])
-		{
-			if (ft_isspace(params[i][j]) == false && in_word == false)
-			{
-				(*len)++;
-				in_word = true;
-			}
-			else if (ft_isspace(params[i][j]) == true)
-				in_word = false;
-			j++;
-		}
-		i++;
+		if (split_and_cpy_params(final_array, params, index, &i) == false)
+			return (false);
 	}
+	else
+	{
+		final_array[*index] = ft_strdup(params[i]);
+		if (final_array[*index] == NULL)
+		{
+			free_delim(final_array, *index);
+			return (false);
+		}
+	}
+	return (true);
 }
 
 static char	**split_params(char **params)
 {
 	size_t	i;
-	size_t	j;
 	size_t	total_len;
 	size_t	index;
 	char	**final_array;
-	char	**split;
 
 	i = 0;
 	total_len = 0;
@@ -66,53 +61,18 @@ static char	**split_params(char **params)
 		return (NULL);
 	while (params[i])
 	{
-		if (need_split_params(&params[i]) == true)
-		{
-			split = ft_split(params[i], ' ');
-			if (split == NULL)
-			{
-				while (index > 0)
-				{
-					free(final_array[index]);
-					--index;
-				}
-				free(final_array);
-				return (NULL);
-			}
-			j = 0;
-			while (split[j])
-			{
-				final_array[index] = split[j];
-				++j;
-				++index;
-			}
-			free(split);
-		}
-		else
-		{
-			final_array[index] = ft_strdup(params[i]);
-			if (final_array[index] == NULL)
-			{
-				while (index > 0)
-				{
-					free(final_array[index]);
-					--index;
-				}
-				free(final_array);
-				return (NULL);
-			}
-		}
+		if (split_params_loop(final_array, params, i, &index) == false)
+			return (NULL);
 		++i;
 	}
 	free_all(params);
 	final_array[index] = NULL;
 	return (final_array);
-	
 }
 
 bool	split_wildcards_file(t_cmd *cmd)
 {
-	t_cmd *current;
+	t_cmd	*current;
 
 	current = cmd;
 	while (current != NULL)

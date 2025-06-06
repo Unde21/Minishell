@@ -85,11 +85,17 @@ bool						fill_cmd_special_operator(t_token **current,
 
 // handle_expansion.c
 bool						replace_env_variables(t_data *data, char **params);
-void	join_without_expand(char **expanded, char c, size_t *i);
-void	join_return_value(char **expanded, size_t *i, int prev_return_value);
+void						join_without_expand(char **expanded, char c,
+								size_t *i);
+void						join_return_value(char **expanded, size_t *i,
+								int prev_return_value);
 
 // expand_redir.c
-bool expand_redir(t_data *data, t_cmd *cmd);
+bool						expand_redir(t_data *data, t_cmd *cmd);
+
+// expand_redir_utils.c
+void						join_with_expand_file(t_data *data, char **expanded,
+								char *s, size_t *i);
 
 // expand_tokens.c
 void						expand_tokens(t_cmd *current);
@@ -98,13 +104,11 @@ bool						handle_expansion(t_data *data, t_cmd *cmd);
 // expand_utils.c
 void						join_with_expand(t_data *data, char **expanded,
 								char *s, size_t *i);
-char	*get_var_name(char *s);
-char	*dup_word_splitting(char *src);
+char						*get_var_name(char *s);
+char						*dup_word_splitting(char *src);
 // expand_wildcards
 void						join_wildcards(t_data *data, char **expanded,
 								char *s, size_t *i);
-
-
 
 // wildcards_utils.c
 int							get_nb_file(char *wildcards);
@@ -126,5 +130,10 @@ bool						remove_quote(t_data *data, char **params);
 
 // split_params.c
 bool						split_wildcards_file(t_cmd *cmd);
+
+// split_params_utils.c
+void	free_delim(char **s, size_t	delim);
+void	count_params(char **params, size_t *len);
+bool	need_split_params(char **params);
 
 #endif

@@ -2,60 +2,6 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static char	*get_env_value(t_data *data, char *var_name, char **env, bool is_quote)
-{
-	char	*env_value;
-	size_t	i;
-
-	i = 0;
-	env_value = NULL;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0
-			&& env[i][ft_strlen(var_name)] == '=')
-			break ;
-		++i;
-	}
-	if (env[i] == NULL)
-	{
-		data->is_ambiguous = true;
-		return (NULL);
-	}
-	if (is_quote == true)
-		env_value = ft_strdup(ft_strchr(env[i], '=') + 1);
-	else
-		env_value = dup_word_splitting(ft_strchr(env[i], '=') + 1);
-	return (env_value);
-}
-
-static void	join_with_expand_file(t_data *data, char **expanded, char *s, size_t *i)
-{
-	char	*var_name;
-	char	*env_value;
-
-	++(*i);
-	var_name = get_var_name(&s[*i]);
-	if (var_name == NULL)
-	{
-		free(var_name);
-		ft_dprintf(2, ERR_MALLOC);
-		return ;
-	}
-	env_value = get_env_value(data, var_name, data->env, data->cmd->args->is_quote);
-	if (env_value == NULL)
-	{
-		free(var_name);
-		free(env_value);
-		if (data->is_ambiguous == false)
-			ft_dprintf(2, ERR_MALLOC);
-		return ;
-	}
-	*expanded = ft_strjoin_and_free(*expanded, env_value);
-	*i += ft_strlen(var_name);
-	free(var_name);
-	free(env_value);
-}
-
 static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 {
 	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR)
@@ -128,7 +74,7 @@ static bool	is_expand(char *file_name)
 	i = 0;
 	if (file_name == NULL)
 		return (false);
-	if(file_name[i] == ASCII_SNGL_QUOTE)
+	if (file_name[i] == ASCII_SNGL_QUOTE)
 		return (false);
 	while (file_name[i])
 	{
@@ -139,7 +85,7 @@ static bool	is_expand(char *file_name)
 	return (false);
 }
 
-bool expand_redir(t_data *data, t_cmd *cmd)
+bool	expand_redir(t_data *data, t_cmd *cmd)
 {
 	t_redir	*current_redir;
 

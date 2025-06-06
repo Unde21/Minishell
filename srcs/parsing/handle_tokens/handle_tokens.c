@@ -19,11 +19,12 @@ t_token	*new_token(char *content, t_token_type type)
 	return (token);
 }
 
-static void	save_head_and_tail_lst(t_data *data, t_token_lst *tokens, t_token *new)
+static void	save_head_and_tail_lst(t_data *data, t_token_lst *tokens,
+		t_token *new)
 {
 	if (data->return_value != 0)
 		return ;
-	if (new != NULL && new->in_list == false)
+	if (new != NULL &&new->in_list == false)
 	{
 		if (tokens->head == NULL)
 			tokens->head = new;
@@ -47,7 +48,7 @@ static size_t	skip_isspace(t_data *data, char *input)
 		++i;
 		data->had_space_before = true;
 	}
-	if (data-> last_type != WORD)
+	if (data->last_type != WORD)
 		data->had_space_before = true;
 	return (i);
 }
