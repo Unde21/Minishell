@@ -28,12 +28,7 @@ static char	*expand(char *s, char *expanded, t_data *data)
 		if (expanded == NULL)
 			break ;
 		else if (data->is_ambiguous == true)
-		{
-			ft_dprintf(2, PRINT_BASH);
-			ft_dprintf(2, " %s: ", s);
-			ft_dprintf(2, ERR_AMBIGUOUS);
 			break ;
-		}
 	}
 	free(s);
 	if (expanded == NULL)
@@ -60,10 +55,7 @@ static bool	replace_file_name(t_data *data, char **file_name)
 		return (false);
 	}
 	if (data->is_ambiguous == true)
-	{
-		data->return_value = 1;
-		return (false);
-	}
+		*file_name = NULL;
 	return (true);
 }
 

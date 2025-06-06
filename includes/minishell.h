@@ -131,6 +131,9 @@ int					wich_quote(char *input);
 void				get_input(t_data *data);
 void				clear_all_data(t_data *data);
 
+// get_prompt.c
+void				get_prompt(t_data *data, char **prompt);
+
 // handle_signal.c
 void				set_signal_action(void);
 

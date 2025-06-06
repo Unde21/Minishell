@@ -3,6 +3,7 @@ NAME = minishell
 SRCS := srcs/main.c \
 		srcs/utils.c \
 		srcs/get_input/get_input.c \
+		srcs/get_input/print_prompt.c \
 		srcs/get_input/handle_signal.c \
 		srcs/init/init.c \
 		srcs/parsing/parsing.c \
