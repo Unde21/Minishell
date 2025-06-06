@@ -70,7 +70,6 @@ typedef struct s_cmd
 	int				pipe_fd[2];
 	int				fd_in;
 	int				fd_out;
-
 	struct s_cmd	*next;
 }					t_cmd;
 ////////////////////////////
@@ -101,7 +100,9 @@ typedef struct s_data
 	char			**av;
 	char			**env;
 	bool			error_readdir;
+	bool			is_ambiguous;
 	bool			had_space_before;
+	int				last_type;
 	t_env			*listed_env;
 	t_cmd			*cmd;
 	t_redir			*redir;
@@ -129,6 +130,9 @@ int					wich_quote(char *input);
 // get_input.c
 void				get_input(t_data *data);
 void				clear_all_data(t_data *data);
+
+// get_prompt.c
+void				get_prompt(t_data *data, char **prompt);
 
 // handle_signal.c
 void				set_signal_action(void);

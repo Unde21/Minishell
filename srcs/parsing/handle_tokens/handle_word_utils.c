@@ -30,4 +30,5 @@ void	new_node_word(t_token **new, char *word, int is_quote, t_data *data)
 		*new = new_token(word, WORD);
 	if (*new == NULL)
 		data->return_value = 1;
+	data->last_type = WORD;
 }

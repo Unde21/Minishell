@@ -4,7 +4,6 @@
 #include "parsing.h"
 #include <signal.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 int			g_return_value = 0;
 
@@ -49,33 +48,6 @@ static void	exit_with_right_value(t_data *data, char *prompt)
 	ft_printf("exit\n");
 	free(data->line_read);
 	exit(data->return_value);
-}
-
-static void	get_prompt(t_data *data, char **prompt)
-{
-	char	*code;
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (path == NULL)
-	{
-		*prompt = NULL;
-		return ;
-	}
-	code = ft_itoa(data->return_value);
-	if (code != NULL)
-	{
-		if (data->return_value != 0)
-			*prompt = ft_strdup(RED CROSS);
-		else
-			*prompt = ft_strdup(GREEN CHECK);
-		*prompt = ft_strjoin_and_free(*prompt, code);
-		*prompt = ft_strjoin_and_free(*prompt, END_RED);
-		*prompt = ft_strjoin_and_free(*prompt, path);
-		*prompt = ft_strjoin_and_free(*prompt, END_COLOR);
-	}
-	free(path);
-	free(code);
 }
 
 static void	readline_loop(t_data *data)
