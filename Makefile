@@ -20,6 +20,7 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/split_params.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
+		srcs/parsing/expand/expand_redir.c \
 		srcs/parsing/expand/wildcards/expand_wildcards.c \
 		srcs/parsing/expand/wildcards/wildcards_utils.c \
 		srcs/parsing/expand/wildcards/get_pattern.c \

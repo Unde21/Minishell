@@ -100,6 +100,7 @@ typedef struct s_data
 	char			**av;
 	char			**env;
 	bool			error_readdir;
+	bool			is_ambiguous;
 	bool			had_space_before;
 	int				last_type;
 	t_env			*listed_env;

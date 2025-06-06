@@ -54,7 +54,7 @@ static char	*ft_strcdup(char *src)
 	return (dup);
 }
 
-bool	remove_quote(char **params)
+bool	remove_quote(t_data *data, char **params)
 {
 	size_t	i;
 	char	*dup;
@@ -66,6 +66,7 @@ bool	remove_quote(char **params)
 		dup = ft_strcdup(*params);
 		if (dup == NULL)
 		{
+			data->return_value = 1;
 			print_err(ERR_MALLOC);
 			return (false);
 		}

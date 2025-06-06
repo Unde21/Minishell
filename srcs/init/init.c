@@ -11,6 +11,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->last_type = 0;
 	init_listed_env(data);
 	data->error_readdir = false;
+	data->is_ambiguous = false;
 	data->line_read = NULL;
 	data->name_infile = NULL;
 	data->name_outfile = NULL;

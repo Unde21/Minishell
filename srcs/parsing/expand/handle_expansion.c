@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static void	join_return_value(char **expanded, size_t *i, int prev_return_value)
+void	join_return_value(char **expanded, size_t *i, int prev_return_value)
 {
 	char	*str_return_value;
 
@@ -18,7 +18,7 @@ static void	join_return_value(char **expanded, size_t *i, int prev_return_value)
 	free(str_return_value);
 }
 
-static void	join_without_expand(char **expanded, char c, size_t *i)
+void	join_without_expand(char **expanded, char c, size_t *i)
 {
 	char	tmp[2];
 
@@ -74,7 +74,7 @@ bool	replace_env_variables(t_data *data, char **params)
 	{
 		data->return_value = 1;
 		ft_dprintf(2, ERR_MALLOC);
-		return (NULL);
+		return (false);
 	}
 	data->cmd->args->is_quote = false;
 	*params = expand(*params, expanded, data);
