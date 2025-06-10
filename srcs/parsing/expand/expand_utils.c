@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static char	*get_var_name(char *s)
+char	*get_var_name(char *s)
 {
 	size_t	i;
 	int		len_var;
@@ -58,7 +58,7 @@ static void	word_splitting_loop(char *src, char *dup, bool is_separator)
 	dup[j] = '\0';
 }
 
-static char	*dup_word_splitting(char *src)
+char	*dup_word_splitting(char *src)
 {
 	char	*dup;
 	bool	is_separator;

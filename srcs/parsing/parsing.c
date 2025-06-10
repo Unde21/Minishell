@@ -29,9 +29,14 @@ bool	parsing(t_data *data)
 		print_lst_cmd(data->cmd);
 	if (data->return_value == 0)
 		data->return_value = prev_return_value;
-	if (handle_expansion(data, data->cmd) == false)
+	if (handle_expansion(data, data->cmd) == false
+		|| expand_redir(data, data->cmd) == false)
 		return (false);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
+	if (split_wildcards_file(data->cmd) == false)
+		return (false);
+	if (DEBUG_VALUE == 4 || DEBUG_VALUE == 5)
+		print_final_lst(data->cmd);
 	return (true);
 }

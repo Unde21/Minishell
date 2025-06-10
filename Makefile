@@ -3,6 +3,7 @@ NAME = minishell
 SRCS := srcs/main.c \
 		srcs/utils.c \
 		srcs/get_input/get_input.c \
+		srcs/get_input/print_prompt.c \
 		srcs/get_input/handle_signal.c \
 		srcs/init/init.c \
 		srcs/parsing/parsing.c \
@@ -11,15 +12,18 @@ SRCS := srcs/main.c \
 		srcs/parsing/handle_tokens/handle_tokens.c \
 		srcs/parsing/handle_tokens/create_node_for_token.c \
 		srcs/parsing/parser_srcs/parser.c \
-		srcs/parsing/parser_srcs/convert_lst_to_array.c \
 		srcs/parsing/parser_srcs/fill_cmd_lst.c \
 		srcs/parsing/parser_srcs/fill_special_operator_cmd.c \
 		srcs/parsing/handle_tokens/handle_word_utils.c \
 		srcs/parsing/clear_data.c \
 		srcs/parsing/expand/expand_tokens.c \
 		srcs/parsing/expand/handle_expansion.c \
+		srcs/parsing/expand/split_params.c \
+		srcs/parsing/expand/split_params_utils.c \
 		srcs/parsing/expand/expand_utils.c \
 		srcs/parsing/expand/remove_quote.c \
+		srcs/parsing/expand/expand_redir.c \
+		srcs/parsing/expand/expand_redir_utils.c \
 		srcs/parsing/expand/wildcards/expand_wildcards.c \
 		srcs/parsing/expand/wildcards/wildcards_utils.c \
 		srcs/parsing/expand/wildcards/get_pattern.c \
@@ -40,6 +44,7 @@ SRCS := srcs/main.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
 		srcs/debug/print_expand.c \
+		srcs/debug/print_final_lst.c \
 
 HEADER := 	includes/minishell.h \
 			includes/parsing.h \
@@ -117,7 +122,7 @@ debug:
 	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
 	$(CYAN)$(BOLD)2- $(END)Parser\n\
 	$(CYAN)$(BOLD)3- $(END)Expand\n\
-	$(CYAN)$(BOLD)4- $(END)???????\n\
+	$(CYAN)$(BOLD)4- $(END)Final list\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"
 	@read -s -n 1 value; \
 	while ! echo "$$value" | grep -Eq '^[0-5]+$$'; do \
@@ -127,7 +132,7 @@ debug:
 	$(CYAN)$(BOLD)1- $(END)Tokenizer\n\
 	$(CYAN)$(BOLD)2- $(END)Parser\n\
 	$(CYAN)$(BOLD)3- $(END)Expand\n\
-	$(CYAN)$(BOLD)4- $(END)???????\n\
+	$(CYAN)$(BOLD)4- $(END)Final list\n\
 	$(CYAN)$(BOLD)5- $(END)All\n"; \
 		read -s -n 1 value; \
 	done;\
