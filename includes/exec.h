@@ -17,7 +17,7 @@ typedef struct s_cmd	t_cmd;
 
 void					init(t_data *data, char **path_cmd, int *return_value);
 void					init_child(t_data *data, char *path_cmd, t_cmd *head);
-char					*heredoc(char *limiter);
+char					*heredoc(t_data *data, char *limiter);
 
 //// add_node ////
 t_env					*create_node(t_data *data, int i);

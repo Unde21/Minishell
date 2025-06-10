@@ -1,7 +1,7 @@
-
 #include "exec.h"
+#include "parsing.h"
 
-char	*fill_heredoc(int fd_heredoc, char *limiter)
+char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 {
 	char	*line;
 
@@ -15,11 +15,9 @@ char	*fill_heredoc(int fd_heredoc, char *limiter)
 			free(line);
 			break ;
 		}
-		if (need_expand(line))
-		{
-			
-		}
-		write(fd_heredoc, line, ft_strlen(line));
+		if (is_expand_redir(line))
+			if (replace_file_name(data, &line, HEREDOC))
+				write(fd_heredoc, line, ft_strlen(line));
 		write(fd_heredoc, "\n", 1);
 		free(line);
 	}
@@ -27,7 +25,7 @@ char	*fill_heredoc(int fd_heredoc, char *limiter)
 	return (NULL);
 }
 
-char	*heredoc(char *limiter)
+char	*heredoc(t_data *data, char *limiter)
 {
 	int		fd_heredoc;
 	char	*filename;
@@ -46,6 +44,6 @@ char	*heredoc(char *limiter)
 		free(filename);
 		return (NULL);
 	}
-	fill_heredoc(fd_heredoc, limiter);
+	fill_heredoc(data, fd_heredoc, limiter);
 	return (filename);
 }
