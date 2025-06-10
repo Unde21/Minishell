@@ -59,6 +59,7 @@ typedef struct s_args
 	char			*content;
 	bool			is_quote;
 	bool			need_expand;
+	bool			is_wildcards;
 }					t_args;
 
 typedef struct s_cmd

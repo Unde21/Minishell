@@ -21,6 +21,8 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/split_params.c \
 		srcs/parsing/expand/split_params_utils.c \
 		srcs/parsing/expand/expand_utils.c \
+		srcs/parsing/expand/split_after_expand_utils.c \
+		srcs/parsing/expand/split_after_expand.c \
 		srcs/parsing/expand/remove_quote.c \
 		srcs/parsing/expand/expand_redir.c \
 		srcs/parsing/expand/expand_redir_utils.c \

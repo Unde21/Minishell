@@ -25,26 +25,6 @@ static bool	split_and_cpy_params(char **final_array, char **params,
 	return (true);
 }
 
-static bool	split_params_loop(char **final_array, char **params, size_t i,
-		size_t *index)
-{
-	if (need_split_params(&params[i]) == true)
-	{
-		if (split_and_cpy_params(final_array, params, index, &i) == false)
-			return (false);
-	}
-	else
-	{
-		final_array[*index] = ft_strdup(params[i]);
-		if (final_array[*index] == NULL)
-		{
-			free_delim(final_array, *index);
-			return (false);
-		}
-	}
-	return (true);
-}
-
 static char	**split_params(char **params)
 {
 	size_t	i;
@@ -61,7 +41,7 @@ static char	**split_params(char **params)
 		return (NULL);
 	while (params[i])
 	{
-		if (split_params_loop(final_array, params, i, &index) == false)
+		if (split_and_cpy_params(final_array, params, &index, &i) == false)
 			return (NULL);
 		++i;
 	}
@@ -77,7 +57,7 @@ bool	split_wildcards_file(t_cmd *cmd)
 	current = cmd;
 	while (current != NULL)
 	{
-		if (need_split_params(current->params) == true)
+		if (need_split_params(cmd, current->params) == true)
 		{
 			current->params = split_params(current->params);
 			if (current->params == NULL)
@@ -90,3 +70,4 @@ bool	split_wildcards_file(t_cmd *cmd)
 	}
 	return (true);
 }
+

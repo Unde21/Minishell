@@ -2,76 +2,45 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static bool	is_quote_need_remove(char *src, size_t i)
-{
-	size_t	index;
-	int		first_quote;
-
-	index = 0;
-	first_quote = NO_QUOTE;
-	while (src[index])
-	{
-		if (src[index] == ASCII_DBLE_QUOTE)
-		{
-			first_quote = ASCII_DBLE_QUOTE;
-			break ;
-		}
-		else if (src[index] == ASCII_SNGL_QUOTE)
-		{
-			first_quote = ASCII_SNGL_QUOTE;
-			break ;
-		}
-		++index;
-	}
-	if (first_quote != src[i])
-		return (false);
-	return (true);
-}
-
-static char	*ft_strcdup(char *src)
-{
-	size_t	i;
-	size_t	j;
-	size_t	len_s;
-	char	*dup;
-
-	i = 0;
-	j = 0;
-	len_s = ft_strlen(src) - 2;
-	dup = malloc(sizeof(char) * (len_s + 1));
-	if (dup == NULL)
-		return (NULL);
-	while (src[i])
-	{
-		if (is_quote_need_remove(src, i) == false)
-		{
-			dup[j] = src[i];
-			++j;
-		}
-		++i;
-	}
-	dup[j] = '\0';
-	return (dup);
-}
-
 bool	remove_quote(t_data *data, char **params)
 {
 	size_t	i;
 	char	*dup;
+	int		is_quote;
+	char	*str;
+	bool	in_quote;
+	char	tab[2];
 
-	dup = NULL;
-	i = 0;
-	if (wich_quote(*params) != NO_QUOTE)
+	is_quote = NO_QUOTE;
+	in_quote = false;
+	dup = ft_strdup("");
+	if (dup == NULL)
 	{
-		dup = ft_strcdup(*params);
-		if (dup == NULL)
-		{
-			data->return_value = 1;
-			print_err(ERR_MALLOC);
-			return (false);
-		}
-		free(*params);
-		*params = dup;
+		data->return_value = 1;
+		return (false);
 	}
+	i = 0;
+	str = *params;
+	while (str[i])
+	{
+		if (in_quote == false && (str[i] == ASCII_DBLE_QUOTE || str[i] == ASCII_SNGL_QUOTE))
+		{
+			is_quote = str[i];
+			in_quote = true;
+		}
+		else if (in_quote == true && str[i] == is_quote)
+		{
+			in_quote = false;
+			is_quote = NO_QUOTE;
+		}
+		else
+		{
+			tab[0] = str[i];
+			tab[1] = '\0';
+			dup = ft_strjoin_and_free(dup, tab);
+		}
+		++i;
+	}
+	*params = dup;
 	return (true);
 }
