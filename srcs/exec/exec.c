@@ -31,24 +31,41 @@ static void	set_pipe(t_cmd *cmd)
 
 static void	init_redir(t_cmd *cmd)
 {
+	/*if fichier == NULL msg erreur : ambiguous redirection(discord)*/
 	while (cmd->redir)
 	{
 		if (cmd->redir->type == REDIR_IN)
+		{
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
+			if (cmd->fd_in < 0)
+			{
+				close(cmd->fd_in);
+				print_err("ERROR: opening FD !\n");
+			}
+		}
 		if (cmd->redir->type == REDIR_OUT)
-			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
+		{
+			cmd->fd_out = -open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
 					0644);
+			if (cmd->fd_out < 0)
+				close(cmd->fd_out);
+		}
 		if (cmd->redir->type == APPEND)
+		{
 			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
 					0644);
+			if (cmd->fd_out < 0)
+				print_err("ERROR: opening FD !\n");
+		}
 		if (cmd->redir->type == HERE_DOC)
 		{
 			cmd->redir->file = heredoc(get_limiter(cmd));
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
+			if (cmd->fd_in < 0)
+				print_err("ERROR: opening FD !\n");
 			unlink(cmd->redir->file);
+			free(cmd->redir->file);
 		}
-		if (cmd->fd_in < 0 || cmd->fd_out < 0)
-			print_err("ERROR: opening FD !\n");
 		cmd->redir = cmd->redir->next;
 	}
 }
@@ -58,15 +75,20 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
 	init_redir(data->cmd);
-	if (data->env[0] == NULL || data->cmd->params[0][0] == '/')
+	if (data->cmd->params[0])
 	{
-		if (is_access_ok(data->cmd->params[0], &data->return_value, path_cmd))
-			*path_cmd = data->cmd->params[0];
+		if (data->env[0] == NULL || data->cmd->params[0][0] == '/')
+		{
+			if (is_access_ok(data->cmd->params[0], &data->return_value,
+					path_cmd))
+				*path_cmd = data->cmd->params[0];
+			else
+				return ;
+		}
 		else
-			return ;
+			*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
+					return_value);
 	}
-	else
-		*path_cmd = get_path_cmd(data->cmd->params, *path_cmd, return_value);
 }
 
 void	exec_init(t_data *data)
@@ -77,13 +99,10 @@ void	exec_init(t_data *data)
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
+	if (solo_builtin(data) && data->cmd->next == NULL)
+		return ;
 	while (data->cmd)
 	{
-		if (is_solo_builtin(data->cmd->params) && data->cmd->next == NULL)
-		{
-			solo_builtin(data);
-			return ;
-		}
 		init(data, &path_cmd, &data->return_value);
 		pid = fork();
 		if (pid < 0)

@@ -36,13 +36,14 @@ void					exec_init(t_data *data);
 void					wait_child(int *return_value);
 
 //// utils ////
+void					clear_exec(t_data *data);
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
-bool					is_access_ok(char *path, int *return_value,
-							char **path_cmd);
 bool					is_solo_builtin(char **params);
 bool					is_child_builtin(char **params);
 bool					child_builtin(t_data *data);
 bool					solo_builtin(t_data *data);
+bool					is_access_ok(char *path, int *return_value,
+							char **path_cmd);
 
 #endif

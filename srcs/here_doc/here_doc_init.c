@@ -15,6 +15,10 @@ char	*fill_heredoc(int fd_heredoc, char *limiter)
 			free(line);
 			break ;
 		}
+		if (need_expand(line))
+		{
+			
+		}
 		write(fd_heredoc, line, ft_strlen(line));
 		write(fd_heredoc, "\n", 1);
 		free(line);

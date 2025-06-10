@@ -7,10 +7,10 @@ bool	solo_builtin(t_data *data)
 	{
 		if (ft_strcmp(data->cmd->params[0], "cd") == 0)
 			ft_cd(data, data->cmd);
-		// else if (ft_strcmp(data->cmd->params[0], "export") == 0)
-		// 	ft_export();
-		// else if (ft_strcmp(data->cmd->params[0], "unset") == 0)
-		// 	ft_unset();
+		else if (ft_strcmp(data->cmd->params[0], "export") == 0)
+			ft_export(data);
+		else if (ft_strcmp(data->cmd->params[0], "unset") == 0)
+			ft_unset(&data->listed_env, data->cmd);
 		return (true);
 	}
 	else
@@ -44,12 +44,15 @@ bool	is_solo_builtin(char **params)
 	builtin[0] = "cd";
 	builtin[1] = "export";
 	builtin[2] = "unset";
-	while (i < 3)
+	if (params[0])
 	{
-		if (ft_strcmp(params[0], builtin[i]) == 0)
-			return (true);
-		else
-			i++;
+		while (i < 3)
+		{
+			if (ft_strcmp(params[0], builtin[i]) == 0)
+				return (true);
+			else
+				i++;
+		}
 	}
 	return (false);
 }

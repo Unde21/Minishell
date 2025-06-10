@@ -25,7 +25,7 @@ void	add_back(t_env *new_node, t_env **listed_env)
 		(*listed_env) = new_node;
 	else
 	{
-		while (tmp_node->next != NULL && tmp_node->next != *listed_env)
+		while (tmp_node->next != NULL)
 			tmp_node = tmp_node->next;
 		tmp_node->next = new_node;
 		new_node->next = NULL;
