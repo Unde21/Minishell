@@ -8,7 +8,6 @@ static void	signal_handler(int signal)
 	if (signal == SIGINT)
 	{
 		g_return_value = CODE_SIGINT;
-		// ft_dprintf(0, "^C");
 		if (rl_readline_state & RL_STATE_COMPLETING)
 		{
 			rl_pending_input = 'n';

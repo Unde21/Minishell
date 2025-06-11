@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-void count_params_expand(char **params, size_t *len)
+void	count_params_expand(char **params, size_t *len)
 {
 	size_t	i;
 	size_t	j;

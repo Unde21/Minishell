@@ -30,17 +30,17 @@
 # define HEREDOC 42
 # define NO_HERDOC 43
 
-struct s_cmd;
-struct s_data;
-struct s_token;
-struct s_token_lst;
-enum e_token_type;
+struct							s_cmd;
+struct							s_data;
+struct							s_token;
+struct							s_token_lst;
+enum							e_token_type;
 
-typedef struct s_cmd		t_cmd;
-typedef struct s_data		t_data;
-typedef struct s_token		t_token;
-typedef struct s_token_lst	t_token_lst;
-typedef enum e_token_type	t_token_type;
+typedef struct s_cmd			t_cmd;
+typedef struct s_data			t_data;
+typedef struct s_token			t_token;
+typedef struct s_token_lst		t_token_lst;
+typedef enum e_token_type		t_token_type;
 
 // parsing.c
 bool						parsing(t_data *data);
@@ -86,14 +86,16 @@ bool						fill_cmd_special_operator(t_token **current,
 								t_cmd *current_cmd);
 
 // handle_expansion.c
-bool						replace_env_variables(t_data *data, char **params, size_t i);
+bool						replace_env_variables(t_data *data, char **params,
+								size_t i);
 void						join_without_expand(char **expanded, char c,
 								size_t *i);
 void						join_return_value(char **expanded, size_t *i,
 								int prev_return_value);
 
 // expand_redir.c
-bool						replace_file_name(t_data *data, char **file_name, int is_heredoc);
+bool						replace_file_name(t_data *data, char **file_name,
+								int is_heredoc);
 bool						expand_redir(t_data *data, t_cmd *cmd);
 bool						is_expand_redir(char *file_name);
 
@@ -136,15 +138,15 @@ bool						remove_quote(t_data *data, char **params);
 bool						split_wildcards_file(t_cmd *cmd);
 
 // split_params_utils.c
-void	free_delim(char **s, size_t	delim);
-void	count_params(char **params, size_t *len);
-bool	need_split_params(t_cmd *cmd, char **params);
+void						free_delim(char **s, size_t delim);
+void						count_params(char **params, size_t *len);
+bool						need_split_params(t_cmd *cmd, char **params);
 
-// split_after_expand.c 
-bool	handle_split_expand(t_cmd *cmd);
+// split_after_expand.c
+bool						handle_split_expand(t_cmd *cmd);
 
-// split_after_expand_utils.c 
-char	**ft_split_with_charset(char *s);
-void count_params_expand(char **params, size_t *len);
+// split_after_expand_utils.c
+char						**ft_split_with_charset(char *s);
+void						count_params_expand(char **params, size_t *len);
 
 #endif
