@@ -16,8 +16,13 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 			break ;
 		}
 		if (is_expand_redir(line))
-			if (replace_file_name(data, &line, HEREDOC))
-				write(fd_heredoc, line, ft_strlen(line));
+			if (!replace_file_name(data, &line, HEREDOC))
+			{
+				data->return_value = 1;
+				free(line);
+				break ;
+			}
+		write(fd_heredoc, line, ft_strlen(line));
 		write(fd_heredoc, "\n", 1);
 		free(line);
 	}

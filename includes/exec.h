@@ -33,7 +33,7 @@ char					*get_random_name(char *here_doc);
 
 //// exec ////
 void					exec_init(t_data *data);
-void					wait_child(int *return_value);
+void					wait_child(pid_t last_pid, int *return_value);
 
 //// utils ////
 void					clear_exec(t_data *data);

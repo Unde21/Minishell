@@ -61,7 +61,6 @@ static void	readline_loop(t_data *data)
 		if (prompt == NULL)
 		{
 			prompt = ft_strdup(RED "SEGFAULT$ " END_COLOR);
-			// TODO je sais pas quoi mettre mais c est drole
 			if (prompt == NULL)
 			{
 				ft_dprintf(2, ERR_MALLOC);
