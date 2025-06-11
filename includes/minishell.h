@@ -94,6 +94,7 @@ typedef struct s_env
 typedef struct s_data
 {
 	char			*line_read;
+	char			*ambiguous_file;
 	int				ac;
 	int				return_value;
 	char			*name_infile;

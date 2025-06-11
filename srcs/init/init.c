@@ -15,6 +15,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->line_read = NULL;
 	data->name_infile = NULL;
 	data->name_outfile = NULL;
+	data->ambiguous_file = NULL;
 }
 
 bool	init_cmd_args(t_cmd *cmd)
