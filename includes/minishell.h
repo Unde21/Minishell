@@ -59,6 +59,7 @@ typedef struct s_args
 	char			*content;
 	bool			is_quote;
 	bool			need_expand;
+	bool			is_wildcards;
 }					t_args;
 
 typedef struct s_cmd
@@ -93,6 +94,7 @@ typedef struct s_env
 typedef struct s_data
 {
 	char			*line_read;
+	char			*ambiguous_file;
 	int				ac;
 	int				return_value;
 	char			*name_infile;

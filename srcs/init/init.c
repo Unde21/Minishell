@@ -15,10 +15,14 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->line_read = NULL;
 	data->name_infile = NULL;
 	data->name_outfile = NULL;
+	data->ambiguous_file = NULL;
 }
 
 bool	init_cmd_args(t_cmd *cmd)
 {
+	size_t	i;
+
+	i = 0;
 	cmd->params = malloc(sizeof(char *) * (cmd->nb_args + 1));
 	if (cmd->params == NULL)
 	{
@@ -31,7 +35,13 @@ bool	init_cmd_args(t_cmd *cmd)
 		print_err(ERR_MALLOC);
 		return (false);
 	}
-	cmd->args->need_expand = false;
+	while (i <= cmd->nb_args)
+    {
+        cmd->args[i].is_wildcards = false;
+        cmd->args[i].need_expand = false;
+        cmd->args[i].content = NULL;
+        ++i;
+    }
 	if (cmd->nb_args == 0)
 		cmd->args[0].content = NULL;
 	return (true);

@@ -86,7 +86,7 @@ bool						fill_cmd_special_operator(t_token **current,
 								t_cmd *current_cmd);
 
 // handle_expansion.c
-bool						replace_env_variables(t_data *data, char **params);
+bool						replace_env_variables(t_data *data, char **params, size_t i);
 void						join_without_expand(char **expanded, char c,
 								size_t *i);
 void						join_return_value(char **expanded, size_t *i,
@@ -136,8 +136,15 @@ bool						remove_quote(t_data *data, char **params);
 bool						split_wildcards_file(t_cmd *cmd);
 
 // split_params_utils.c
-void						free_delim(char **s, size_t delim);
-void						count_params(char **params, size_t *len);
-bool						need_split_params(char **params);
+void	free_delim(char **s, size_t	delim);
+void	count_params(char **params, size_t *len);
+bool	need_split_params(t_cmd *cmd, char **params);
+
+// split_after_expand.c 
+bool	handle_split_expand(t_cmd *cmd);
+
+// split_after_expand_utils.c 
+char	**ft_split_with_charset(char const *s);
+void count_params_expand(char **params, size_t *len);
 
 #endif

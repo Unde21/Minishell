@@ -71,26 +71,27 @@ char	*dup_word_splitting(char *src)
 	return (dup);
 }
 
-static char	*get_env_value(char *var_name, char **env, bool is_quote)
+static char	*get_env_value(char *var_name, t_env *listed_env, bool is_quote)
 {
 	char	*env_value;
 	size_t	i;
+	t_env	*current;
 
+	current = listed_env;
 	i = 0;
 	env_value = NULL;
-	while (env[i])
+	while (current != NULL)
 	{
-		if (ft_strncmp(env[i], var_name, ft_strlen(var_name)) == 0
-			&& env[i][ft_strlen(var_name)] == '=')
+		if (ft_strncmp(current->key, var_name, ft_strlen(var_name)) == 0)
 			break ;
-		++i;
+		current = current->next;
 	}
-	if (env[i] == NULL)
+	if (current == NULL)
 		return (ft_strdup(""));
 	if (is_quote == true)
-		env_value = ft_strdup(ft_strchr(env[i], '=') + 1);
+		env_value = ft_strdup(ft_strchr(current->full_line, '=') + 1);
 	else
-		env_value = dup_word_splitting(ft_strchr(env[i], '=') + 1);
+		env_value = dup_word_splitting(ft_strchr(current->full_line, '=') + 1);
 	return (env_value);
 }
 
@@ -107,7 +108,7 @@ void	join_with_expand(t_data *data, char **expanded, char *s, size_t *i)
 		ft_dprintf(2, ERR_MALLOC);
 		return ;
 	}
-	env_value = get_env_value(var_name, data->env, data->cmd->args->is_quote);
+	env_value = get_env_value(var_name, data->listed_env, data->cmd->args->is_quote);
 	if (env_value == NULL)
 	{
 		free(var_name);

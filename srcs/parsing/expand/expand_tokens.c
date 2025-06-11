@@ -23,6 +23,8 @@ static void	is_expand(t_cmd *cmd)
 				&& cmd->args[i].is_quote == true)
 				|| cmd->params[i][j] == '*')
 				cmd->args[i].need_expand = true;
+			if (cmd->params[i][j] == '*')
+				cmd->args[i].is_wildcards = true;
 			++j;
 		}
 		++i;
@@ -56,7 +58,7 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 			if (current_cmd->args[i].need_expand == true)
 			{
 				if (replace_env_variables(data,
-						&current_cmd->params[i]) == false
+						&current_cmd->params[i], i) == false
 					&& current_cmd->args[i].need_expand == true)
 					return (false);
 			}
