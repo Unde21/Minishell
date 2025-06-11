@@ -9,7 +9,7 @@ static bool	split_and_cpy_params(char **final_array, char **params,
 	size_t	j;
 
 	j = 0;
-	split = ft_split(params[*i], ' ');
+	split = ft_split(params[*i], '/');
 	if (split == NULL)
 	{
 		free_delim(final_array, *index);
@@ -70,4 +70,3 @@ bool	split_wildcards_file(t_cmd *cmd)
 	}
 	return (true);
 }
-

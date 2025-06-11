@@ -42,7 +42,7 @@ static char	*sort_file_name(char *cpy_file)
 
 	i = -1;
 	tmp = NULL;
-	split_file = ft_split(cpy_file, ' ');
+	split_file = ft_split(cpy_file, '/');
 	if (split_file == NULL)
 	{
 		ft_dprintf(2, ERR_MALLOC);
@@ -105,6 +105,6 @@ void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i)
 		return ;
 	}
 	expand_wildcards(expanded, cpy_file, wildcards, len_expanded);
-	*i = ft_strlen(wildcards);
+	*i += ft_strlen(wildcards);
 	free(wildcards);
 }

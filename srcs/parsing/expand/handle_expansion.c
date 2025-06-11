@@ -30,7 +30,8 @@ void	join_without_expand(char **expanded, char c, size_t *i)
 
 static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 {
-	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR)
+	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR
+		&& data->cmd->args->is_quote == false)
 	{
 		if (s[*i + 1] == '?')
 			join_return_value(expanded, i, data->return_value);

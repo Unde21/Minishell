@@ -36,12 +36,12 @@ bool	init_cmd_args(t_cmd *cmd)
 		return (false);
 	}
 	while (i <= cmd->nb_args)
-    {
-        cmd->args[i].is_wildcards = false;
-        cmd->args[i].need_expand = false;
-        cmd->args[i].content = NULL;
-        ++i;
-    }
+	{
+		cmd->args[i].is_wildcards = false;
+		cmd->args[i].need_expand = false;
+		cmd->args[i].content = NULL;
+		++i;
+	}
 	if (cmd->nb_args == 0)
 		cmd->args[0].content = NULL;
 	return (true);

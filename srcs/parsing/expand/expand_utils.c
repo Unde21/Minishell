@@ -108,7 +108,8 @@ void	join_with_expand(t_data *data, char **expanded, char *s, size_t *i)
 		ft_dprintf(2, ERR_MALLOC);
 		return ;
 	}
-	env_value = get_env_value(var_name, data->listed_env, data->cmd->args->is_quote);
+	env_value = get_env_value(var_name, data->listed_env,
+			data->cmd->args->is_quote);
 	if (env_value == NULL)
 	{
 		free(var_name);

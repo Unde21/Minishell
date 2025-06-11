@@ -9,12 +9,6 @@ int			g_return_value = 0;
 
 static void	handle_input(t_data *data)
 {
-	if (g_return_value == CODE_SIGINT)
-	{
-		data->return_value = CODE_SIGINT;
-		g_return_value = 0;
-		return ;
-	}
 	if (ft_strcmp(data->line_read, "") == 0)
 		return ;
 	if (init_lst(data) == false)
@@ -57,6 +51,7 @@ static void	readline_loop(t_data *data)
 	prompt = NULL;
 	while (1)
 	{
+		set_signal_action();
 		get_prompt(data, &prompt);
 		if (prompt == NULL)
 		{
@@ -68,6 +63,7 @@ static void	readline_loop(t_data *data)
 			}
 		}
 		data->line_read = readline(prompt);
+		data->return_value = g_return_value;
 		if (data->line_read == NULL)
 			exit_with_right_value(data, prompt);
 		add_history(data->line_read);
@@ -81,7 +77,6 @@ void	get_input(t_data *data)
 {
 	rl_catch_signals = 0;
 	rl_event_hook = do_nothing;
-	set_signal_action();
 	readline_loop(data);
 	rl_clear_history();
 }

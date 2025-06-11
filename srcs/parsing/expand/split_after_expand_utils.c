@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-void count_params_expand(char **params, size_t *len)
+void	count_params_expand(char **params, size_t *len)
 {
 	size_t	i;
 	size_t	j;
@@ -15,21 +15,22 @@ void count_params_expand(char **params, size_t *len)
 		in_word = false;
 		while (params[i][j])
 		{
-			if (ft_isspace(params[i][j]) == false && in_word == false
-			&& is_special_operator(params[i][j], NO_QUOTE) == false)
+			if (is_special_operator(params[i][j], NO_QUOTE) == true)
+				++(*len);
+			else if (ft_isspace(params[i][j]) == false && in_word == false)
 			{
-				(*len)++;
+				++(*len);
 				in_word = true;
 			}
-			else if (ft_isspace(params[i][j]) == true || is_special_operator(params[i][j], NO_QUOTE) == true)
+			else if (ft_isspace(params[i][j]) == true)
 				in_word = false;
-			j++;
+			++j;
 		}
-		i++;
+		++i;
 	}
 }
 
-static size_t	count_words_expand(char const *s)
+static size_t	count_words_expand(char *s)
 {
 	bool	in_word;
 	size_t	i;
@@ -42,12 +43,14 @@ static size_t	count_words_expand(char const *s)
 		return (0);
 	while (s[i])
 	{
-		if (is_special_operator(s[i], NO_QUOTE) == false && in_word == false)
+		if (is_special_operator(s[i], NO_QUOTE) == true)
+			++count;
+		else if (ft_isspace(s[i]) == false && in_word == false)
 		{
 			in_word = true;
 			++count;
 		}
-		else if (is_special_operator(s[i], NO_QUOTE) == true && in_word == true)
+		else if (ft_isspace(s[i]) == true && in_word == true)
 			in_word = false;
 		++i;
 	}
@@ -70,7 +73,7 @@ static void	*free_all_delim(char **s, size_t len)
 	return (NULL);
 }
 
-char	**ft_split_with_charset(char const *s)
+char	**ft_split_with_charset(char *s)
 {
 	char	**split;
 	size_t	i;
@@ -86,10 +89,10 @@ char	**ft_split_with_charset(char const *s)
 	start = 0;
 	while (s[start] && i < nb_words)
 	{
-		while (s[start] && is_special_operator(s[start], NO_QUOTE) == true)
+		while (s[start] && ft_isspace(s[start]) == true)
 			++start;
 		end = start;
-		while (s[end] && is_special_operator(s[end], NO_QUOTE) == false)
+		while (s[end] && ft_isspace(s[end]) == false)
 			++end;
 		split[i++] = ft_substr(s, start, (end - start));
 		if (!split[i - 1])

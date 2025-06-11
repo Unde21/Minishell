@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static char *handle_ambiguous_file(t_data *data, char *var_name)
+static char	*handle_ambiguous_file(t_data *data, char *var_name)
 {
 	data->ambiguous_file = ft_strdup("$");
 	if (data->ambiguous_file == NULL)

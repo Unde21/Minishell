@@ -1,4 +1,16 @@
 #include "exec.h"
+#include "parsing.h"
+#include <signal.h>
+static void set_signal_action_child(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
 
 void	wait_child(pid_t last_pid, int *return_value)
 {
@@ -39,6 +51,7 @@ void	dup_child(t_cmd *cmd)
 
 void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 {
+	set_signal_action_child();
 	dup_child(data->cmd);
 	close_fd(head);
 	if (data->return_value != 0)

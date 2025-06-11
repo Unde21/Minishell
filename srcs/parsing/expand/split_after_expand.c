@@ -2,33 +2,30 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-
-
-
 static bool	split_and_cpy_expand(char **final_array, char **params,
-	size_t *index, size_t *i)
+		size_t *index, size_t *i)
 {
-char	**split;
-size_t	j;
+	char	**split;
+	size_t	j;
 
-j = 0;
-split = ft_split_with_charset(params[*i]);
-if (split == NULL)
-{
-	free_delim(final_array, *index);
-	return (false);
-}
-while (split[j])
-{
-	final_array[*index] = split[j];
-	++j;
-	++*index;
-}
-free(split);
-return (true);
+	j = 0;
+	split = ft_split_with_charset(params[*i]);
+	if (split == NULL)
+	{
+		free_delim(final_array, *index);
+		return (false);
+	}
+	while (split[j])
+	{
+		final_array[*index] = split[j];
+		++j;
+		++*index;
+	}
+	free(split);
+	return (true);
 }
 
-static char **split_expand(char **params)
+static char	**split_expand(char **params)
 {
 	size_t	i;
 	size_t	total_len;
@@ -53,7 +50,7 @@ static char **split_expand(char **params)
 	return (final_array);
 }
 
-static bool need_split_expand(t_cmd *cmd, char **params)
+static bool	need_split_expand(t_cmd *cmd, char **params)
 {
 	size_t	i;
 
@@ -69,7 +66,7 @@ static bool need_split_expand(t_cmd *cmd, char **params)
 
 bool	handle_split_expand(t_cmd *cmd)
 {
-	t_cmd *current;
+	t_cmd	*current;
 
 	current = cmd;
 	while (current != NULL)

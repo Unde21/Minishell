@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 13:45:35 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/02 10:44:11 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/06/11 18:02:37 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define HEX_UPPER "0123456789ABCDEF"
 
 /* ************************************************************************** */
-/*						Part 1: Libc functions									*/
+/*						Part 1: Libc functions								  */
 /* ************************************************************************** */
 
 void				ft_bzero(void *s, size_t n);
@@ -54,7 +54,7 @@ char				*ft_strchr(const char *s, int c);
 void				ft_swap_array(char **s1, char **s2);
 
 /* ************************************************************************** */
-/*						Part 2: Additional functions							*/
+/*						Part 2: Additional functions						  */
 /* ************************************************************************** */
 
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
@@ -70,7 +70,7 @@ char				*ft_itoa(int n);
 char				**ft_split(char const *s, char c);
 
 /* ************************************************************************** */
-/*								Bonus part										*/
+/*								Bonus part									  */
 /* ************************************************************************** */
 
 typedef struct s_list
@@ -93,7 +93,7 @@ void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 
 /* ************************************************************************** */
-/*								ft_printf										*/
+/*								ft_printf								      */
 /* ************************************************************************** */
 
 int					ft_printf(const char *format,
@@ -107,7 +107,7 @@ int					print_hexa(unsigned int n, const char *base, int count);
 int					check_format(va_list *params, char format);
 
 /* ************************************************************************** */
-/*								ft_dprintf										*/
+/*								ft_dprintf									  */
 /* ************************************************************************** */
 
 int					ft_dprintf(int fd, const char *format,
@@ -121,7 +121,7 @@ int					dprint_hexa(unsigned int n, const char *base, int nb_char,
 						int fd);
 
 /* ************************************************************************** */
-/*								get_next_line									*/
+/*								get_next_line								  */
 /* ************************************************************************** */
 
 # ifndef BUFFER_SIZE

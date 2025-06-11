@@ -12,7 +12,7 @@ bool	need_split_params(t_cmd *cmd, char **params)
 		j = 0;
 		while (params[i][j])
 		{
-			if (ft_isspace(params[i][j]) == true && cmd->args[i].is_wildcards == true)
+			if (params[i][j] == '/' && cmd->args[i].is_wildcards == true)
 				return (true);
 			++j;
 		}
@@ -34,12 +34,12 @@ void	count_params(char **params, size_t *len)
 		in_word = false;
 		while (params[i][j])
 		{
-			if (ft_isspace(params[i][j]) == false && in_word == false)
+			if (params[i][j] != '/' && in_word == false)
 			{
 				(*len)++;
 				in_word = true;
 			}
-			else if (ft_isspace(params[i][j]) == true)
+			else if (params[i][j] == '/')
 				in_word = false;
 			j++;
 		}

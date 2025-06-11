@@ -20,8 +20,7 @@ static void	is_expand(t_cmd *cmd)
 		while (cmd->params[i][j])
 		{
 			if ((cmd->params[i][j] == ASCII_DOLLAR
-				&& cmd->args[i].is_quote == true)
-				|| cmd->params[i][j] == '*')
+				&& cmd->args[i].is_quote == true) || cmd->params[i][j] == '*')
 				cmd->args[i].need_expand = true;
 			if (cmd->params[i][j] == '*')
 				cmd->args[i].is_wildcards = true;
