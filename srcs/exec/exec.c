@@ -37,7 +37,7 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 		if (cmd->redir->file == NULL)
 		{
 			ft_dprintf(2, PRINT_BASH);
-			write(2, " ", 1);
+			ft_dprintf(2, " %s: ", data->ambiguous_file);
 			ft_dprintf(2, ERR_AMBIGUOUS);
 			data->return_value = 1;
 			return (false);
