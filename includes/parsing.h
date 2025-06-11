@@ -144,7 +144,7 @@ bool	need_split_params(t_cmd *cmd, char **params);
 bool	handle_split_expand(t_cmd *cmd);
 
 // split_after_expand_utils.c 
-char	**ft_split_with_charset(char const *s);
+char	**ft_split_with_charset(char *s);
 void count_params_expand(char **params, size_t *len);
 
 #endif

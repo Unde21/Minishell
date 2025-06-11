@@ -3,8 +3,6 @@
 #include <stdlib.h>
 
 
-
-
 static bool	split_and_cpy_expand(char **final_array, char **params,
 	size_t *index, size_t *i)
 {

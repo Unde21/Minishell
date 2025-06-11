@@ -64,7 +64,7 @@ bool	is_file_name_valid(char *file_name, char *wildcards, char **cpy_file,
 		if (*nb_file > 0)
 		{
 			--*nb_file;
-			*cpy_file = ft_strjoin_and_free(*cpy_file, " ");
+			*cpy_file = ft_strjoin_and_free(*cpy_file, "/");
 			if (*cpy_file == NULL)
 				return (false);
 		}
