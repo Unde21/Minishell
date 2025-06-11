@@ -2,18 +2,6 @@
 #include "exec.h"
 #include "parsing.h"
 
-void	close_fd(t_cmd *cmd)
-{
-	while (cmd)
-	{
-		if (cmd->pipe_fd[0] != -1)
-			close(cmd->pipe_fd[0]);
-		if (cmd->pipe_fd[1] != -1)
-			close(cmd->pipe_fd[1]);
-		cmd = cmd->next;
-	}
-}
-
 static void	set_pipe(t_cmd *cmd)
 {
 	t_cmd	*head;
@@ -30,7 +18,7 @@ static void	set_pipe(t_cmd *cmd)
 		cmd->next->fd_in = cmd->pipe_fd[0];
 }
 
-static bool	init_redir(t_data *data, t_cmd *cmd)
+static bool	init_redir_out(t_data *data, t_cmd *cmd)
 {
 	while (cmd->redir)
 	{
@@ -41,12 +29,6 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 			ft_dprintf(2, ERR_AMBIGUOUS);
 			data->return_value = 1;
 			return (false);
-		}
-		if (cmd->redir->type == REDIR_IN)
-		{
-			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
-			if (cmd->fd_in < 0)
-				return (print_err("ERROR: opening FD !\n"));
 		}
 		if (cmd->redir->type == REDIR_OUT)
 		{
@@ -62,14 +44,34 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 			if (cmd->fd_out < 0)
 				return (print_err("ERROR: opening FD !\n"));
 		}
-		if (cmd->redir->type == HERE_DOC)
+		cmd->redir = cmd->redir->next;
+	}
+	return (true);
+}
+
+static bool	init_redir_in(t_data *data, t_cmd *cmd)
+{
+	while (cmd->redir)
+	{
+		if (cmd->redir->type == REDIR_IN)
 		{
-			cmd->redir->file = heredoc(data, get_limiter(cmd));
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 			if (cmd->fd_in < 0)
 				return (print_err("ERROR: opening FD !\n"));
-			unlink(cmd->redir->file);
-			free(cmd->redir->file);
+		}
+		if (cmd->redir->type == HERE_DOC)
+		{
+			cmd->redir->file = heredoc(data, get_limiter(cmd));
+			if (cmd->redir->file != NULL)
+			{
+				cmd->fd_in = open(cmd->redir->file, O_RDONLY);
+				if (cmd->fd_in < 0)
+					return (print_err("ERROR: opening FD !\n"));
+				unlink(cmd->redir->file);
+				free(cmd->redir->file);
+			}
+			else
+				return (false);
 		}
 		cmd->redir = cmd->redir->next;
 	}
@@ -80,7 +82,7 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
-	if (init_redir(data, data->cmd))
+	if (init_redir_in(data, data->cmd) || init_redir_out(data, data->cmd))
 	{
 		if (data->cmd->params[0])
 		{
@@ -98,13 +100,17 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 		}
 	}
 	else
+	{
+		*return_value = 1;
 		return ;
+	}
 }
 
 void	exec_init(t_data *data)
 {
 	char	*path_cmd;
 	t_cmd	*head_cmd;
+	pid_t	last_pid;
 	pid_t	pid;
 
 	head_cmd = data->cmd;
@@ -113,17 +119,23 @@ void	exec_init(t_data *data)
 		return ;
 	while (data->cmd)
 	{
+		data->return_value = 0;
 		init(data, &path_cmd, &data->return_value);
-		pid = fork();
-		if (pid < 0)
+		if (data->return_value == 0)
 		{
-			close_fd(head_cmd);
-			print_err("ERROR: fork failed !\n");
+			pid = fork();
+			if (pid < 0)
+			{
+				close_fd(head_cmd);
+				print_err("ERROR: fork failed !\n");
+			}
+			else if (pid == 0)
+				init_child(data, path_cmd, head_cmd);
+			if (data->cmd->next == NULL)
+				last_pid = pid;
 		}
-		else if (pid == 0)
-			init_child(data, path_cmd, head_cmd);
 		data->cmd = data->cmd->next;
 	}
+	wait_child(last_pid, &data->return_value);
 	close_fd(head_cmd);
-	wait_child(&data->return_value);
 }

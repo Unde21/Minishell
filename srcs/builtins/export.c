@@ -34,9 +34,8 @@ bool	is_valid_key(char *params)
 	i = -1;
 	while (params[++i])
 	{
-		if (ft_isalnum(params[i]) == 0 && params[i] != '_' && params[i] != '=')
-			return (false);
-		if (ft_strchr(params, '=') == NULL)
+		if (ft_isalnum(params[i]) == 0 && params[i] != '_' && params[i] != '='
+			&& (ft_strchr(params, '=') == NULL))
 			return (false);
 	}
 	return (true);

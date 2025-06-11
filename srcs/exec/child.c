@@ -1,20 +1,19 @@
 #include "exec.h"
 
-void	wait_child(int *return_value)
+void	wait_child(pid_t last_pid, int *return_value)
 {
-	pid_t	end_pid;
+	pid_t	pid;
 	int		status;
 
-	status = 0;
-	while (1)
+	while ((pid = waitpid(-1, &status, 0)) > 0)
 	{
-		end_pid = wait(&status);
-		if (end_pid < 0)
-			break ;
-		if (WIFEXITED(status))
-			*return_value = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			*return_value = WIFSTOPPED(status);
+		if (pid == last_pid)
+		{
+			if (WIFEXITED(status))
+				*return_value = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				*return_value = 128 + WTERMSIG(status);
+		}
 	}
 }
 

@@ -17,7 +17,17 @@ static void	clear_listed_env(t_env **listed_env)
 		head = head->next;
 	}
 }
-
+void	close_fd(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->pipe_fd[0] != -1)
+			close(cmd->pipe_fd[0]);
+		if (cmd->pipe_fd[1] != -1)
+			close(cmd->pipe_fd[1]);
+		cmd = cmd->next;
+	}
+}
 void	clear_exec(t_data *data)
 {
 	clear_listed_env(&data->listed_env);
