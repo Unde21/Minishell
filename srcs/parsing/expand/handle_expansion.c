@@ -46,13 +46,16 @@ static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 		join_without_expand(expanded, s[*i], i);
 }
 
-static char	*expand(char *s, char *expanded, t_data *data)
+static char	*expand(char *s, char *expanded, t_data *data, size_t pos)
 {
 	size_t	i;
 
 	i = 0;
 	if (s[i] == ASCII_DBLE_QUOTE)
+	{
 		data->cmd->args->is_quote = true;
+		data->cmd->args[pos].is_quote = true;
+	}
 	while (s[i])
 	{
 		expand_loop(s, &expanded, data, &i);
@@ -65,7 +68,7 @@ static char	*expand(char *s, char *expanded, t_data *data)
 	return (expanded);
 }
 
-bool	replace_env_variables(t_data *data, char **params)
+bool	replace_env_variables(t_data *data, char **params, size_t i)
 {
 	char	*expanded;
 
@@ -77,7 +80,7 @@ bool	replace_env_variables(t_data *data, char **params)
 		return (false);
 	}
 	data->cmd->args->is_quote = false;
-	*params = expand(*params, expanded, data);
+	*params = expand(*params, expanded, data, i);
 	if (*params == NULL)
 	{
 		data->return_value = 1;

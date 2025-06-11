@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:26:41 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/02 10:44:11 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/06/10 17:20:05 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,4 @@ char	*clear_buffer(char *buffer)
 	}
 	return (buffer);
 }
+
