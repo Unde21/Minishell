@@ -6,7 +6,8 @@
 # define EXIT_ERROR "bash: exit: "
 # define EXIT_TOO_MANY "exit\nbash: exit: too many arguments\n"
 # define ERR_NUM_ARG ": numeric argument required\n"
-# define ENV_TOO_MANY "‘: No such file or directory\n\
+# define ENV_TOO_MANY \
+	"‘: No such file or directory\n\
 env: use -[v]S to pass options in shebang lines\n"
 # define ERR_ENV "env: ‘"
 # define ENV_NO_FILE "No such file or directory\n"
@@ -28,7 +29,12 @@ void	ft_env(t_data *data, t_cmd *cmd);
 void	ft_pwd(t_data *data);
 
 // ft_cd.c
-
 void	ft_cd(t_data *data, t_cmd *cmd);
+
+// ft_export.c
+void	ft_export(t_data *data);
+
+// ft_unset.c
+void	ft_unset(t_env **listed_env, t_cmd *cmd);
 
 #endif

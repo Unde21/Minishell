@@ -20,7 +20,7 @@ static char	*get_env_value(t_data *data, char *var_name, char **env,
 	if (env[i] == NULL)
 	{
 		data->is_ambiguous = true;
-		return (NULL);
+		return (ft_strdup(""));
 	}
 	if (is_quote == true)
 		env_value = ft_strdup(ft_strchr(env[i], '=') + 1);

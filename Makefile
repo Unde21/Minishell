@@ -27,9 +27,10 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/wildcards/expand_wildcards.c \
 		srcs/parsing/expand/wildcards/wildcards_utils.c \
 		srcs/parsing/expand/wildcards/get_pattern.c \
-		srcs/exec/listed_env_init.c \
 		srcs/exec/utils_exec/getters.c \
 		srcs/exec/utils_exec/exec_utils.c \
+		srcs/exec/utils_exec/clear_exec.c\
+		srcs/exec/listed_env_init.c \
 		srcs/exec/exec.c \
 		srcs/exec/child.c\
 		srcs/here_doc/here_doc_init.c \
@@ -38,6 +39,8 @@ SRCS := srcs/main.c \
 		srcs/builtins/env.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/cd.c \
+		srcs/builtins/export.c \
+		srcs/builtins/unset.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
 		srcs/debug/print_expand.c \

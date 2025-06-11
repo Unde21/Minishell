@@ -1,4 +1,6 @@
+#include "builtins.h"
 #include "exec.h"
+#include "parsing.h"
 
 void	close_fd(t_cmd *cmd)
 {
@@ -28,46 +30,75 @@ static void	set_pipe(t_cmd *cmd)
 		cmd->next->fd_in = cmd->pipe_fd[0];
 }
 
-static void	init_redir(t_cmd *cmd)
+static bool	init_redir(t_data *data, t_cmd *cmd)
 {
 	while (cmd->redir)
 	{
+		if (cmd->redir->file == NULL)
+		{
+			ft_dprintf(2, PRINT_BASH);
+			write(2, " ", 1);
+			ft_dprintf(2, ERR_AMBIGUOUS);
+			data->return_value = 1;
+			return (false);
+		}
 		if (cmd->redir->type == REDIR_IN)
-			if ((cmd->fd_in = open(cmd->redir->file, O_RDONLY)) < 0)
-				print_err("ERROR: opening FD !\n");
+		{
+			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
+			if (cmd->fd_in < 0)
+				return (print_err("ERROR: opening FD !\n"));
+		}
 		if (cmd->redir->type == REDIR_OUT)
-			if ((cmd->fd_out = open(cmd->redir->file,
-						O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
-				print_err("ERROR: opening FD !\n");
+		{
+			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
+					0644);
+			if (cmd->fd_out < 0)
+				return (print_err("ERROR: opening FD !\n"));
+		}
 		if (cmd->redir->type == APPEND)
-			if (((cmd->fd_out = open(cmd->redir->file,
-							O_WRONLY | O_CREAT | O_APPEND, 0644))) < 0)
-				print_err("ERROR: opening FD !\n");
+		{
+			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
+					0644);
+			if (cmd->fd_out < 0)
+				return (print_err("ERROR: opening FD !\n"));
+		}
 		if (cmd->redir->type == HERE_DOC)
 		{
-			cmd->redir->file = heredoc(get_limiter(cmd));
-			if ((cmd->fd_in = open(cmd->redir->file, O_RDONLY)) < 0)
-				print_err("ERROR: opening FD !\n");
+			cmd->redir->file = heredoc(data, get_limiter(cmd));
+			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
+			if (cmd->fd_in < 0)
+				return (print_err("ERROR: opening FD !\n"));
 			unlink(cmd->redir->file);
+			free(cmd->redir->file);
 		}
 		cmd->redir = cmd->redir->next;
 	}
+	return (true);
 }
 
 void	init(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
-	init_redir(data->cmd);
-	if (data->env[0] == NULL || data->cmd->params[0][0] == '/')
+	if (init_redir(data, data->cmd))
 	{
-		if (is_access_ok(data->cmd->params[0], &data->return_value, path_cmd))
-			*path_cmd = data->cmd->params[0];
-		else
-			return ;
+		if (data->cmd->params[0])
+		{
+			if (data->env[0] == NULL || data->cmd->params[0][0] == '/')
+			{
+				if (is_access_ok(data->cmd->params[0], &data->return_value,
+						path_cmd))
+					*path_cmd = data->cmd->params[0];
+				else
+					return ;
+			}
+			else
+				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
+						return_value);
+		}
 	}
 	else
-		*path_cmd = get_path_cmd(data->cmd->params, *path_cmd, return_value);
+		return ;
 }
 
 void	exec_init(t_data *data)
@@ -78,10 +109,10 @@ void	exec_init(t_data *data)
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
+	if (solo_builtin(data) && data->cmd->next == NULL)
+		return ;
 	while (data->cmd)
 	{
-		// if (is_builtin())
-		// 	handle_builtin();
 		init(data, &path_cmd, &data->return_value);
 		pid = fork();
 		if (pid < 0)

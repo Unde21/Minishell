@@ -60,8 +60,6 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-
-
 char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 {
 	int		i;
@@ -84,4 +82,19 @@ char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 	}
 	free_all(path);
 	return (NULL);
+}
+
+int	get_list_size(t_data *data)
+{
+	int		list_lize;
+	t_env	*head;
+
+	list_lize = 0;
+	head = data->listed_env;
+	while (head)
+	{
+		list_lize++;
+		head = head->next;
+	}
+	return (list_lize);
 }

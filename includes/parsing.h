@@ -27,6 +27,8 @@
 # define CURRENT_DIRECTORY "."
 # define QUESTION_MARK '?'
 # define DOT '.'
+# define HEREDOC 42
+# define NO_HERDOC 43
 
 struct s_cmd;
 struct s_data;
@@ -91,7 +93,9 @@ void						join_return_value(char **expanded, size_t *i,
 								int prev_return_value);
 
 // expand_redir.c
+bool						replace_file_name(t_data *data, char **file_name, int is_heredoc);
 bool						expand_redir(t_data *data, t_cmd *cmd);
+bool						is_expand_redir(char *file_name);
 
 // expand_redir_utils.c
 void						join_with_expand_file(t_data *data, char **expanded,
@@ -132,8 +136,8 @@ bool						remove_quote(t_data *data, char **params);
 bool						split_wildcards_file(t_cmd *cmd);
 
 // split_params_utils.c
-void	free_delim(char **s, size_t	delim);
-void	count_params(char **params, size_t *len);
-bool	need_split_params(char **params);
+void						free_delim(char **s, size_t delim);
+void						count_params(char **params, size_t *len);
+bool						need_split_params(char **params);
 
 #endif
