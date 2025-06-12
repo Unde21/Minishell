@@ -41,6 +41,7 @@ SRCS := srcs/main.c \
 		srcs/builtins/env.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/cd.c \
+		srcs/builtins/cd_utils.c \
 		srcs/builtins/export.c \
 		srcs/builtins/unset.c \
 		srcs/debug/print_tokenizer.c \

@@ -115,11 +115,11 @@ void	exec_init(t_data *data)
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
-	if (solo_builtin(data) && data->cmd->next == NULL)
-		return ;
 	while (data->cmd)
 	{
 		data->return_value = 0;
+		if (solo_builtin(data) && data->cmd->next == NULL)
+			return ;
 		init(data, &path_cmd, &data->return_value);
 		if (data->return_value == 0)
 		{

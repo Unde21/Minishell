@@ -33,16 +33,17 @@ static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 	while (current != NULL)
 	{
 		len_var_name = ft_strlen(var_name);
-		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name) == 0)
+		if (len_var_name != 0 && ft_strncmp(current->key,
+				var_name, len_var_name) == 0)
 			break ;
 		current = current->next;
 	}
 	if (current == NULL)
 		return (handle_ambiguous_file(data, var_name));
 	if (is_quote == true)
-		env_value = ft_strdup(ft_strchr(current->full_line, '=') + 1);
+		env_value = ft_strdup(current->value);
 	else
-		env_value = dup_word_splitting(ft_strchr(current->full_line, '=') + 1);
+		env_value = dup_word_splitting(ft_strdup(current->value));
 	return (env_value);
 }
 

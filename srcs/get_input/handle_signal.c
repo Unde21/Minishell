@@ -22,7 +22,6 @@ void	set_signal_action(void)
 {
 	struct sigaction	sa;
 
-	g_return_value = 0;
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &signal_handler;
@@ -42,7 +41,6 @@ void	reset_signal(void)
 {
 	struct sigaction	sa;
 
-	g_return_value = 0;
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &signal_handler_child;
