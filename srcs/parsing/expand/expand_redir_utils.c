@@ -25,13 +25,15 @@ static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 	char	*env_value;
 	size_t	i;
 	t_env	*current;
+	size_t	len_var_name;
 
 	current = data->listed_env;
 	i = 0;
 	env_value = NULL;
 	while (current != NULL)
 	{
-		if (ft_strncmp(current->key, var_name, ft_strlen(var_name)) == 0)
+		len_var_name = ft_strlen(var_name);
+		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name) == 0)
 			break ;
 		current = current->next;
 	}

@@ -4,7 +4,8 @@
 
 static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 {
-	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR)
+	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR
+		&& s[*i + 1] != '\0')
 	{
 		if (s[*i + 1] == '?')
 			join_return_value(expanded, i, data->return_value);
