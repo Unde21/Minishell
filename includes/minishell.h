@@ -8,10 +8,11 @@
 # define BLUE "\001\033[1;34m\002"
 # define RED "\001\033[1;31m\002"
 # define GREEN "\001\033[1;32m\002"
-# define END_RED "] \001\033[0m\002\001\033[1;34m\002"
+# define END_BLUE "] \001\033[0m\002\001\033[1;34m\002"
 # define END_COLOR "$ \001\033[0m\002"
 # define CROSS "\001❌\002 ["
 # define CHECK "\001✅\002 ["
+# define SEGFAULT "[1] 🤯   25589 segmentation fault (core dumped)  ./minishell "
 
 ////////////////////////////
 ///////* list parsing */////

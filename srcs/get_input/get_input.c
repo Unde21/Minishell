@@ -23,7 +23,6 @@ static void	handle_input(t_data *data)
 		free(data->token_lst);
 		return ;
 	}
-	data->return_value = 0;
 	exec_init(data);
 	clear_cmd(data->cmd);
 	clear_token(data->token_lst->head);
@@ -44,6 +43,20 @@ static void	exit_with_right_value(t_data *data, char *prompt)
 	exit(data->return_value);
 }
 
+static bool	check_prompt_error(char **prompt)
+{
+	if (*prompt == NULL)
+	{
+		*prompt = ft_strdup(SEGFAULT);
+		if (*prompt == NULL)
+		{
+			ft_dprintf(2, ERR_MALLOC);
+			return (false);
+		}
+	}
+	return (true);
+}
+
 static void	readline_loop(t_data *data)
 {
 	char	*prompt;
@@ -53,20 +66,17 @@ static void	readline_loop(t_data *data)
 	{
 		set_signal_action();
 		get_prompt(data, &prompt);
-		if (prompt == NULL)
-		{
-			prompt = ft_strdup(RED "SEGFAULT$ " END_COLOR);
-			if (prompt == NULL)
-			{
-				ft_dprintf(2, ERR_MALLOC);
-				return ;
-			}
-		}
+		if (check_prompt_error(&prompt) == false)
+			return ;
 		data->line_read = readline(prompt);
-		data->return_value = g_return_value;
 		if (data->line_read == NULL)
 			exit_with_right_value(data, prompt);
 		add_history(data->line_read);
+		if (g_return_value != 0)
+		{
+			data->return_value = g_return_value;
+			g_return_value = 0;
+		}
 		handle_input(data);
 		free(prompt);
 		free(data->line_read);

@@ -15,6 +15,8 @@ env: use -[v]S to pass options in shebang lines\n"
 # define CD_ERR "bash: cd: "
 # define CD_NO_DIR "No such file or directory\n"
 # define ERR_PWD "pwd: No such file or directory\n"
+# define OLDPWD "OLDPWD"
+# define PWD "PWD"
 
 // ft_exit.c
 int		ft_exit(t_data *data, t_cmd *cmd);
@@ -30,6 +32,9 @@ void	ft_pwd(t_data *data);
 
 // ft_cd.c
 void	ft_cd(t_data *data, t_cmd *cmd);
+
+// cd_utils.c
+void	display_error(t_data *data, char *params);
 
 // ft_export.c
 void	ft_export(t_data *data);
