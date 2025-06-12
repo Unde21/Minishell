@@ -26,7 +26,6 @@ static bool	manage_expansion(t_data *data, int prev_return_value)
 		return (false);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
-	expand_tokens(data->cmd);
 	if (handle_expansion(data, data->cmd) == false
 		|| expand_redir(data, data->cmd) == false)
 		return (false);
