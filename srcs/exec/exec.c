@@ -136,6 +136,7 @@ void	exec_init(t_data *data)
 		}
 		data->cmd = data->cmd->next;
 	}
+	reset_signal();
 	wait_child(last_pid, &data->return_value);
 	close_fd(head_cmd);
 }
