@@ -138,5 +138,6 @@ void				get_prompt(t_data *data, char **prompt);
 
 // handle_signal.c
 void				set_signal_action(void);
+void				reset_signal(void);
 
 #endif
