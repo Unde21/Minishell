@@ -6,8 +6,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define ERR_MALLOC "malloc failed\n"
-// Modifier les msg d error en fonction de bash
+# define ERR_MALLOC "error: malloc failed\n"
 # define MISS_DBLE_QUOTE "syntax error: missing closing double quote\n"
 # define MISS_SNGL_QUOTE "syntax error: missing closing single quote\n"
 # define ERR_MULTIPLE_PIPE "syntax error: multiple pipe in a row\n"

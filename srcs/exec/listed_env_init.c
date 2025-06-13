@@ -1,4 +1,5 @@
 #include "exec.h"
+#include "parsing.h"
 
 void	free_listed_env(t_data *data)
 {
@@ -67,14 +68,14 @@ void	init_listed_env(t_data *data)
 	listed_env = NULL;
 	data->listed_env = create_node(data, 0);
 	if (data->env == NULL)
-		print_err("ERROR : fill_listed_env 01");
+		print_err(ERR_MALLOC);
 	while (data->env[i])
 	{
 		next_node = create_node(data, i++);
 		if (next_node == NULL)
 		{
 			free_listed_env(data);
-			print_err("ERROR : fill_listed_env 02\n");
+			print_err(ERR_MALLOC);
 			return ;
 		}
 		else

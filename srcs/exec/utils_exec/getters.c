@@ -29,12 +29,12 @@ char	*get_random_name(char *here_doc)
 	i = 0;
 	here_doc = malloc(sizeof(char) * 26);
 	if (!here_doc)
-		if (print_err("ERROR: malloc failed !\n") == false)
+		if (print_err(ERR_MALLOC) == false)
 			return (NULL);
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
 	{
-		print_err("ERROR : opening /dev/random in get_random_name !\n");
+		print_err(ERR_OP_FD);
 		free(here_doc);
 		return (NULL);
 	}
@@ -68,7 +68,7 @@ char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 	i = -1;
 	path = ft_split(getenv("PATH"), ':');
 	if (!path)
-		print_err("malloc failed\n");
+		print_err(ERR_MALLOC);
 	while (path[++i])
 	{
 		path[i] = ft_strjoin_and_free(path[i], "/");

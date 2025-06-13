@@ -10,7 +10,7 @@ static void	set_pipe(t_cmd *cmd)
 	if (pipe(cmd->pipe_fd) < 0)
 	{
 		close_fd(head);
-		print_err("ERROR: pipe failed !\n");
+		print_err(ERR_PIPE);
 	}
 	if (cmd->fd_out == STDOUT_FILENO)
 		cmd->fd_out = cmd->pipe_fd[1];
@@ -35,14 +35,14 @@ static bool	init_redir_out(t_data *data, t_cmd *cmd)
 			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
 					0644);
 			if (cmd->fd_out < 0)
-				return (print_err("ERROR: opening FD !\n"));
+				return (print_err(ERR_OP_FD));
 		}
 		if (cmd->redir->type == APPEND)
 		{
 			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
 					0644);
 			if (cmd->fd_out < 0)
-				return (print_err("ERROR: opening FD !\n"));
+				return (print_err(ERR_OP_FD));
 		}
 		cmd->redir = cmd->redir->next;
 	}
@@ -57,7 +57,7 @@ static bool	init_redir_in(t_data *data, t_cmd *cmd)
 		{
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 			if (cmd->fd_in < 0)
-				return (print_err("ERROR: opening FD !\n"));
+				return (print_err(ERR_OP_FD));
 		}
 		if (cmd->redir->type == HERE_DOC)
 		{
@@ -66,7 +66,7 @@ static bool	init_redir_in(t_data *data, t_cmd *cmd)
 			{
 				cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 				if (cmd->fd_in < 0)
-					return (print_err("ERROR: opening FD !\n"));
+					return (print_err(ERR_OP_FD));
 				unlink(cmd->redir->file);
 				free(cmd->redir->file);
 			}
@@ -86,24 +86,22 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 	{
 		if (data->cmd->params[0])
 		{
-			if (data->env[0] == NULL || data->cmd->params[0][0] == '/')
+			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
+					'/') != NULL)
 			{
 				if (is_access_ok(data->cmd->params[0], &data->return_value,
 						path_cmd))
 					*path_cmd = data->cmd->params[0];
-				else
-					return ;
 			}
 			else
 				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
 						return_value);
+			if (*path_cmd == NULL)
+				print_access_error(data->cmd->params[0]);
+			return ;
 		}
 	}
-	else
-	{
-		*return_value = 1;
-		return ;
-	}
+	*return_value = 1;
 }
 
 void	exec_init(t_data *data)
@@ -127,7 +125,7 @@ void	exec_init(t_data *data)
 			if (pid < 0)
 			{
 				close_fd(head_cmd);
-				print_err("ERROR: fork failed !\n");
+				print_err(ERR_FORK);
 			}
 			else if (pid == 0)
 				init_child(data, path_cmd, head_cmd);
@@ -137,6 +135,6 @@ void	exec_init(t_data *data)
 		data->cmd = data->cmd->next;
 	}
 	reset_signal();
-	wait_child(last_pid, &data->return_value);
 	close_fd(head_cmd);
+	wait_child(last_pid, &data->return_value);
 }

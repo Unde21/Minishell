@@ -12,7 +12,7 @@
 # define END_COLOR "$ \001\033[0m\002"
 # define CROSS "\001❌\002 ["
 # define CHECK "\001✅\002 ["
-# define SEGFAULT "[1] 🤯   25589 segmentation fault (core dumped)  ./minishell "
+# define PATH_ERROR "\001🤯\002 path_error: "
 
 ////////////////////////////
 ///////* list parsing */////
@@ -125,6 +125,10 @@ bool				init_cmd_args(t_cmd *cmd);
 
 // utils.c
 bool				print_err(char *str_error);
+void				reset_g_return_value(t_data *data);
+void				print_access_error(char *params);
+
+// clear_data.c
 void				clear_token(t_token *lst);
 void				clear_cmd(t_cmd *cmd);
 void				free_all(char **str);

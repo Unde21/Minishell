@@ -7,7 +7,7 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 
 	while (1)
 	{
-		line = readline("> ");
+		line = readline(PROMPT_HERE_DOC);
 		if (!line)
 			break ;
 		if (ft_strcmp(line, limiter) == 0)
@@ -38,14 +38,11 @@ char	*heredoc(t_data *data, char *limiter)
 	filename = NULL;
 	filename = get_random_name(filename);
 	if (!filename)
-	{
-		print_err("ERROR: heredoc creation failed !\n");
 		return (NULL);
-	}
 	fd_heredoc = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd_heredoc == -1)
 	{
-		print_err("ERROR : opening HEREDOC!\n");
+		print_err(ERR_OP_FD);
 		free(filename);
 		return (NULL);
 	}

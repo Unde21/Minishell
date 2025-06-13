@@ -47,7 +47,7 @@ static bool	check_prompt_error(char **prompt)
 {
 	if (*prompt == NULL)
 	{
-		*prompt = ft_strdup(SEGFAULT);
+		*prompt = ft_strdup(PATH_ERROR);
 		if (*prompt == NULL)
 		{
 			ft_dprintf(2, ERR_MALLOC);
@@ -72,11 +72,7 @@ static void	readline_loop(t_data *data)
 		if (data->line_read == NULL)
 			exit_with_right_value(data, prompt);
 		add_history(data->line_read);
-		if (g_return_value != 0)
-		{
-			data->return_value = g_return_value;
-			g_return_value = 0;
-		}
+		reset_g_return_value(data);
 		handle_input(data);
 		free(prompt);
 		free(data->line_read);
