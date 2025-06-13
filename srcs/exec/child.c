@@ -1,7 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
 #include <signal.h>
-static void set_signal_action_child(void)
+
+static void	set_signal_action_child(void)
 {
 	struct sigaction	sa;
 
@@ -51,14 +52,31 @@ void	dup_child(t_cmd *cmd)
 
 void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 {
+	char	**params_cpy;
+	int		i;
+
+	params_cpy = malloc(sizeof(char *) * (data->cmd->nb_args + 1));
+	// secure;
+	i = 0;
+	while (data->cmd->params[i])
+	{
+		params_cpy[i] = ft_strdup(data->cmd->params[i]);
+		// secure;
+		++i;
+	}
+	params_cpy[i] = NULL;
 	set_signal_action_child();
 	dup_child(data->cmd);
 	close_fd(head);
 	if (data->return_value != 0)
 		exit(data->return_value);
 	if (child_builtin(data))
+	{
+		free(path_cmd);
 		exit(data->return_value);
-	execve(path_cmd, data->cmd->params, data->env);
+	}
+	clear_cmd(head);
+	execve(path_cmd, params_cpy, data->env);
 	perror(ERR_EXECVE);
 	exit(127);
 }
