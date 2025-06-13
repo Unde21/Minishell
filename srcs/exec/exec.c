@@ -135,6 +135,7 @@ void	exec_init(t_data *data)
 			if (data->cmd->next == NULL)
 				last_pid = pid;
 		}
+		free(path_cmd);
 		data->cmd = data->cmd->next;
 	}
 	data->cmd = head_cmd;
