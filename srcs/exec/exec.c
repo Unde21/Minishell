@@ -117,7 +117,10 @@ void	exec_init(t_data *data)
 	{
 		data->return_value = 0;
 		if (solo_builtin(data) && data->cmd->next == NULL)
+		{
+			data->cmd = head_cmd;
 			return ;
+		}
 		init(data, &path_cmd, &data->return_value);
 		if (data->return_value == 0)
 		{
@@ -134,6 +137,7 @@ void	exec_init(t_data *data)
 		}
 		data->cmd = data->cmd->next;
 	}
+	data->cmd = head_cmd;
 	reset_signal();
 	close_fd(head_cmd);
 	wait_child(last_pid, &data->return_value);

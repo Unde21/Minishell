@@ -45,7 +45,6 @@ void	clear_cmd(t_cmd *cmd)
 			free_all(cmd->params);
 		}
 		free(cmd);
-		cmd = NULL;
 		cmd = tmp;
 	}
 	cmd = NULL;
