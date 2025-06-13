@@ -34,13 +34,13 @@ void	dup_child(t_cmd *cmd)
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 	{
 		close(cmd->fd_in);
-		print_err("ERROR: dup child stdin !\n");
+		print_err(ERR_DUP);
 		exit(1);
 	}
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
 	{
 		close(cmd->fd_out);
-		print_err("ERROR: dup child stdout !\n");
+		print_err(ERR_DUP);
 		exit(1);
 	}
 	if (cmd->pipe_fd[0] != STDIN_FILENO && cmd->pipe_fd[0] != -1)
@@ -59,6 +59,6 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	if (child_builtin(data))
 		exit(data->return_value);
 	execve(path_cmd, data->cmd->params, data->env);
-	perror("ERROR: execve failed !\n");
+	perror(ERR_EXECVE);
 	exit(127);
 }

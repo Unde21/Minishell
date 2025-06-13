@@ -11,6 +11,13 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define PROMPT_HERE_DOC "> "
+# define ERR_OP_FD "error: failed to open file\n"
+# define ERR_CREAT_PIPE "error: pipe failed\n"
+# define ERR_FORK "error: fork failed\n"
+# define ERR_DUP "error: dup failed\n"
+# define ERR_EXECVE "error: execve failed\n"
+
 typedef struct s_env	t_env;
 typedef struct s_cmd	t_cmd;
 //// init ////
