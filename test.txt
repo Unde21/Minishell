@@ -1,1 +1,12 @@
+includes
+libft
+Makefile
+minishell
+readline.supp
+README.md
+srcs
+test.txt
 bonjour
+erbuffet
+salut
+;ldjf

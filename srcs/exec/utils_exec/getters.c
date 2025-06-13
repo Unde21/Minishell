@@ -1,6 +1,35 @@
 #include "exec.h"
 #include "parsing.h"
 
+char	*get_value(char *params)
+{
+	char	*value;
+	int		start;
+	int		len;
+	int		i;
+	int		j;
+
+	if (!params)
+		return (NULL);
+	i = 0;
+	while (params[i] && params[i] != '=')
+		i++;
+	if (!params[i] || params[i + 1] == '\0')
+		return (ft_strdup(""));
+	start = i + 1;
+	len = 0;
+	while (params[start + len])
+		len++;
+	value = malloc(len + 1);
+	if (!value)
+		return (NULL);
+	j = 0;
+	while (params[start])
+		value[j++] = params[start++];
+	value[j] = '\0';
+	return (value);
+}
+
 char	*get_key(char *env)
 {
 	char	*key;
@@ -8,13 +37,15 @@ char	*get_key(char *env)
 
 	key = NULL;
 	i = 0;
-	while (env[i] != '=')
+	while (env[i] && env[i] != '=' && env[i] != '+')
 		i++;
+	if (env[i] == '\0')
+		return (ft_strdup(env));
 	key = malloc(i + 1);
 	if (!key)
 		return (NULL);
 	i = -1;
-	while (env[++i] != '=')
+	while (env[++i] && env[i] != '=' && env[i] != '+')
 		key[i] = env[i];
 	key[i] = '\0';
 	return (key);
@@ -64,9 +95,11 @@ char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 {
 	int		i;
 	char	**path;
+	char	*path_value;
 
 	i = -1;
-	path = ft_split(getenv("PATH"), ':');
+	path_value = get_value("PATH");
+	path = ft_split(path_value, ':');
 	if (!path)
 		print_err("malloc failed\n");
 	while (path[++i])
@@ -84,13 +117,11 @@ char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 	return (NULL);
 }
 
-int	get_list_size(t_data *data)
+int	get_list_size(t_list *head)
 {
-	int		list_lize;
-	t_env	*head;
+	int	list_lize;
 
 	list_lize = 0;
-	head = data->listed_env;
 	while (head)
 	{
 		list_lize++;

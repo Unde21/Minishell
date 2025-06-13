@@ -28,6 +28,7 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/wildcards/wildcards_utils.c \
 		srcs/parsing/expand/wildcards/get_pattern.c \
 		srcs/exec/utils_exec/getters.c \
+		srcs/exec/utils_exec/redir_utils.c\
 		srcs/exec/utils_exec/exec_utils.c \
 		srcs/exec/utils_exec/clear_exec.c\
 		srcs/exec/listed_env_init.c \

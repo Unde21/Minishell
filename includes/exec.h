@@ -26,7 +26,8 @@ void					add_back(t_env *new_node, t_env **stack);
 //// getters ////
 char					*get_path_cmd(char **params, char *path_cmd,
 							int *return_value);
-int						get_list_size(t_data *data);
+char					*get_value(char *params);
+int						get_list_size(t_list *head);
 char					*get_key(char *env);
 char					*get_limiter(t_cmd *cmd);
 char					*get_random_name(char *here_doc);
@@ -36,6 +37,8 @@ void					exec_init(t_data *data);
 void					wait_child(pid_t last_pid, int *return_value);
 
 //// utils ////
+
+bool					init_redir(t_data *data, t_cmd *cmd);
 void					clear_exec(t_data *data);
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
