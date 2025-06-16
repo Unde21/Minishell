@@ -57,9 +57,10 @@ bool	remove_quote_loop(char **params, char **dup)
 		j = 0;
 		while (params[i][j])
 		{
+
 			if (params[i][j++] == ASCII_DBLE_QUOTE)
 			{
-				dup[i] = ft_strndup(&params[i][j], &j);
+				ft_strjoin_and_free(dup[i], ft_strndup(&params[i][j], &j));
 				if (dup[i] == NULL)
 				{
 					free_delim(dup, i);
@@ -67,6 +68,21 @@ bool	remove_quote_loop(char **params, char **dup)
 				}
 				free(params[i]);
 				params[i] = dup[i];
+			}
+			else
+			{
+				size_t k = j;
+				while (params[i][k])
+					++k;
+				dup[i] = malloc(sizeof(char) * (k +1));
+				// secure
+				k =0;
+				while (params[i][j])
+				{
+					dup[i][k] = params[i][j];
+					++j;
+					++k;
+				}
 			}
 			++j;
 		}
