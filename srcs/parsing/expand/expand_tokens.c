@@ -42,7 +42,7 @@ void	expand_tokens(t_cmd *cmd)
 	}
 }
 
-bool	handle_expansion(t_data *data, t_cmd *cmd, bool need_remove_quote)
+bool	handle_expansion(t_data *data, t_cmd *cmd)
 {
 	t_cmd	*current_cmd;
 	size_t	i;
@@ -61,8 +61,7 @@ bool	handle_expansion(t_data *data, t_cmd *cmd, bool need_remove_quote)
 					&& current_cmd->args[i].need_expand == true)
 					return (false);
 			}
-			else if (need_remove_quote == true)
-				if (remove_quote(data, &current_cmd->params[i]) == false)
+			if (remove_quote(data, &current_cmd->params[i]) == false)
 					return (false);
 			++i;
 		}
