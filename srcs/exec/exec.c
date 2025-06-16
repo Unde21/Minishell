@@ -22,11 +22,9 @@ static bool	init_redir_out(t_data *data, t_cmd *cmd)
 {
 	while (cmd->redir)
 	{
-		if (cmd->redir->file == NULL)
+		if (cmd->redir->is_ambiguous)
 		{
-			ft_dprintf(2, PRINT_BASH);
-			ft_dprintf(2, " %s: ", data->ambiguous_file);
-			ft_dprintf(2, ERR_AMBIGUOUS);
+			print_ambiguous(data->ambiguous_file);
 			data->return_value = 1;
 			return (false);
 		}
@@ -69,9 +67,9 @@ static bool	init_redir_in(t_data *data, t_cmd *cmd)
 					return (print_err(ERR_OP_FD));
 				unlink(cmd->redir->file);
 				free(cmd->redir->file);
+				return (true);
 			}
-			else
-				return (false);
+			return (false);
 		}
 		cmd->redir = cmd->redir->next;
 	}
@@ -82,7 +80,7 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
-	if (init_redir_in(data, data->cmd) || init_redir_out(data, data->cmd))
+	if (init_redir_in(data, data->cmd) && init_redir_out(data, data->cmd))
 	{
 		if (data->cmd->params[0])
 		{
@@ -98,8 +96,8 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 						return_value);
 			if (*path_cmd == NULL)
 				print_access_error(data->cmd->params[0]);
-			return ;
 		}
+		return ;
 	}
 	*return_value = 1;
 }
@@ -122,7 +120,7 @@ void	exec_init(t_data *data)
 			return ;
 		}
 		init(data, &path_cmd, &data->return_value);
-		if (data->return_value == 0)
+		if (data->return_value == 0 && path_cmd != NULL)
 		{
 			pid = fork();
 			if (pid < 0)

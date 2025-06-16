@@ -18,9 +18,12 @@ void	wait_child(pid_t last_pid, int *return_value)
 	pid_t	pid;
 	int		status;
 
-	while ((pid = waitpid(-1, &status, 0)) > 0)
+	while (1)
 	{
-		if (pid == last_pid)
+		pid = waitpid(-1, &status, 0);
+		if (pid < 0)
+			break ;
+		else if (pid == last_pid)
 		{
 			if (WIFEXITED(status))
 				*return_value = WEXITSTATUS(status);

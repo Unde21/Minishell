@@ -94,7 +94,7 @@ void						join_return_value(char **expanded, size_t *i,
 
 // expand_redir.c
 bool						replace_file_name(t_data *data, char **file_name,
-								int is_heredoc);
+								int is_heredoc, t_redir *redir);
 bool						expand_redir(t_data *data, t_cmd *cmd);
 bool						is_expand_redir(char *file_name);
 
@@ -104,7 +104,7 @@ void						join_with_expand_file(t_data *data, char **expanded,
 
 // expand_tokens.c
 void						expand_tokens(t_cmd *current);
-bool						handle_expansion(t_data *data, t_cmd *cmd);
+bool						handle_expansion(t_data *data, t_cmd *cmd, bool need_remove_quote);
 
 // expand_utils.c
 void						join_with_expand(t_data *data, char **expanded,
