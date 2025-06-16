@@ -82,6 +82,7 @@ bool	remove_quote(t_data *data, char **params)
 			free(dup);
 		return (print_err(ERR_MALLOC));
 	}
+	free(*params);
 	*params = dup;
 	return (true);
 }
