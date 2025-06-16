@@ -104,7 +104,7 @@ void	exec_init(t_data *data)
 	while (data->cmd)
 	{
 		data->return_value = 0;
-		if (solo_builtin(data) && data->cmd->next == NULL)
+		if (data->cmd->next == NULL && solo_builtin(data))
 		{
 			data->cmd = head_cmd;
 			return ;

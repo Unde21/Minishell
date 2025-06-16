@@ -43,7 +43,7 @@ void	ft_env(t_data *data, t_cmd *cmd)
 	}
 	while (current != NULL)
 	{
-		ft_printf("%s\n", current->full_line);
+		ft_dprintf(cmd->fd_out, "%s\n", current->full_line);
 		current = current->next;
 	}
 }

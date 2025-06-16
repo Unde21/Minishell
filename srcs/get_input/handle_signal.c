@@ -11,11 +11,16 @@ static void	signal_handler(int signal)
 		if (rl_readline_state & RL_STATE_COMPLETING)
 		{
 			rl_pending_input = 'n';
-			rl_replace_line("", 0);
 		}
+		rl_replace_line("", 0);
 		ft_printf("^C");
 		rl_done = 1;
 	}
+}
+
+int	do_nothing(void)
+{
+	return (0);
 }
 
 void	set_signal_action(void)
@@ -33,7 +38,6 @@ static void	signal_handler_child(int signal)
 {
 	(void)signal;
 }
-
 
 void	reset_signal(void)
 {
