@@ -5,7 +5,7 @@
 char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 {
 	char	*line;
-
+	
 	while (1)
 	{
 		line = readline(PROMPT_HERE_DOC);
@@ -19,7 +19,7 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 		{
 			free(line);
 			data->return_value = 0;
-			ft_printf("> bash: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+			ft_printf("> bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n", limiter);
 			break ;
 		}
 		if (!line)

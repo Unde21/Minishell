@@ -104,7 +104,7 @@ void						join_with_expand_file(t_data *data, char **expanded,
 
 // expand_tokens.c
 void						expand_tokens(t_cmd *current);
-bool						handle_expansion(t_data *data, t_cmd *cmd, bool need_remove_quote);
+bool						handle_expansion(t_data *data, t_cmd *cmd);
 
 // expand_utils.c
 void						join_with_expand(t_data *data, char **expanded,
