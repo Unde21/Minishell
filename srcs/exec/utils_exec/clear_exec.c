@@ -14,7 +14,8 @@ static void	clear_listed_env(t_env **listed_env)
 		free(head->value);
 		free(head->full_line);
 		free(head);
-		head = head->next;
+		*listed_env = (*listed_env)->next;
+		head = *listed_env;
 	}
 }
 void	close_fd(t_cmd *cmd)

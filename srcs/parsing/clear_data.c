@@ -41,9 +41,7 @@ void	clear_cmd(t_cmd *cmd)
 		}
 		free(cmd->args);
 		if (cmd->params != NULL)
-		{
 			free_all(cmd->params);
-		}
 		free(cmd);
 		cmd = tmp;
 	}
