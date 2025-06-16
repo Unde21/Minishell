@@ -1,7 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
 #include <signal.h>
-static void set_signal_action_child(void)
+
+static void	set_signal_action_child(void)
 {
 	struct sigaction	sa;
 

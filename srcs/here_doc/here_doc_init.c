@@ -1,5 +1,6 @@
 #include "exec.h"
 #include "parsing.h"
+#include <signal.h>
 
 char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 {
@@ -8,9 +9,22 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 	while (1)
 	{
 		line = readline(PROMPT_HERE_DOC);
+		if (g_return_value == 130)
+		{
+			free(line);
+			data->return_value = 130;
+			break ;
+		}
+		if (g_return_value == 0)
+		{
+			free(line);
+			data->return_value = 0;
+			ft_printf("> bash: warning: here-document at line 1 delimited by end-of-file (wanted `EOF')\n");
+			break ;
+		}
 		if (!line)
 			break ;
-		if (ft_strcmp(line, limiter) == 0)
+		if (!ft_strcmp(line, limiter))
 		{
 			free(line);
 			break ;
@@ -35,6 +49,7 @@ char	*heredoc(t_data *data, char *limiter)
 	int		fd_heredoc;
 	char	*filename;
 
+	set_signal_action();
 	filename = NULL;
 	filename = get_random_name(filename);
 	if (!filename)

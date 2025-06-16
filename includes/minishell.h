@@ -84,6 +84,7 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	char			*full_line;
+	int				printed;
 
 	struct s_env	*next;
 }					t_env;

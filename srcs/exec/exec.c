@@ -18,7 +18,7 @@ static void	set_pipe(t_cmd *cmd)
 		cmd->next->fd_in = cmd->pipe_fd[0];
 }
 
-static bool	init_redir_out(t_data *data, t_cmd *cmd)
+static bool	init_redir(t_data *data, t_cmd *cmd)
 {
 	while (cmd->redir)
 	{
@@ -44,15 +44,6 @@ static bool	init_redir_out(t_data *data, t_cmd *cmd)
 			if (cmd->fd_out < 0)
 				return (print_err(ERR_OP_FD));
 		}
-		cmd->redir = cmd->redir->next;
-	}
-	return (true);
-}
-
-static bool	init_redir_in(t_data *data, t_cmd *cmd)
-{
-	while (cmd->redir)
-	{
 		if (cmd->redir->type == REDIR_IN)
 		{
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
@@ -62,6 +53,7 @@ static bool	init_redir_in(t_data *data, t_cmd *cmd)
 		if (cmd->redir->type == HERE_DOC)
 		{
 			cmd->redir->file = heredoc(data, get_limiter(cmd));
+			reset_signal();
 			if (cmd->redir->file != NULL)
 			{
 				cmd->fd_in = open(cmd->redir->file, O_RDONLY);
@@ -82,9 +74,9 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
-	if (init_redir_in(data, data->cmd) || init_redir_out(data, data->cmd))
+	if (init_redir(data, data->cmd))
 	{
-		if (data->cmd->params[0])
+		if (data->cmd->params[0] && g_return_value == 0)
 		{
 			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 					'/') != NULL)
@@ -98,8 +90,8 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 						return_value);
 			if (*path_cmd == NULL)
 				print_access_error(data->cmd->params[0]);
-			return ;
 		}
+		return ;
 	}
 	*return_value = 1;
 }
@@ -119,7 +111,7 @@ void	exec_init(t_data *data)
 		if (solo_builtin(data) && data->cmd->next == NULL)
 			return ;
 		init(data, &path_cmd, &data->return_value);
-		if (data->return_value == 0)
+		if (data->return_value == 0 && g_return_value == 0)
 		{
 			pid = fork();
 			if (pid < 0)
@@ -127,7 +119,7 @@ void	exec_init(t_data *data)
 				close_fd(head_cmd);
 				print_err(ERR_FORK);
 			}
-			else if (pid == 0)
+			else if (pid == 0 && path_cmd != NULL)
 				init_child(data, path_cmd, head_cmd);
 			if (data->cmd->next == NULL)
 				last_pid = pid;
