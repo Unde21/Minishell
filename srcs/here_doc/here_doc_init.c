@@ -15,11 +15,11 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 			data->return_value = 130;
 			break ;
 		}
-		if (g_return_value == 0)
+		if (!line && g_return_value == 0)
 		{
 			free(line);
 			data->return_value = 0;
-			ft_printf("> bash: warning: here-document at line 1 delimited by end-of-file (wanted `EOF')\n");
+			ft_printf("> bash: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
 			break ;
 		}
 		if (!line)

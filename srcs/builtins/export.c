@@ -170,7 +170,6 @@ void	ft_export(t_data *data)
 		export_no_argument(data->listed_env);
 	while (data->cmd->params[++i])
 	{
-		printf("%s\n", data->cmd->params[1]);
 		if (!is_key_valid(data->cmd->params[i]))
 		{
 			ft_putstr_fd("export: `", STDERR_FILENO);

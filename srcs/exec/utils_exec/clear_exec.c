@@ -1,19 +1,7 @@
 #include "builtins.h"
 #include "exec.h"
 
-void	free_list(t_token *head)
-{
-	t_token	*tmp;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		if (tmp->full_line)
-			free(tmp->full_line);
-		free(tmp);
-	}
-}
 
 void	close_fd(t_cmd *cmd)
 {
@@ -26,9 +14,8 @@ void	close_fd(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
-void	clear_exec(t_data *data)
-{
-	close_fd(data->cmd);
-	free_list((t_token *)data->cmd);
-	free_list((t_token *)data->listed_env);
-}
+// void	clear_exec(t_data *data)
+// {
+// 	close_fd(data->cmd);
+// 	free_listed_env();
+// }
