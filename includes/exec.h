@@ -17,6 +17,7 @@
 # define ERR_FORK "error: fork failed\n"
 # define ERR_DUP "error: dup failed\n"
 # define ERR_EXECVE "error: execve failed\n"
+// # define PATH "PATH=/home/erbuffet/bin:/home/erbuffet/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/erbuffet/.dotnet/tools"
 
 typedef struct s_env	t_env;
 typedef struct s_cmd	t_cmd;
@@ -35,6 +36,7 @@ char					*get_path_cmd(char **params, char *path_cmd,
 							int *return_value);
 int						get_list_size(t_data *data);
 char					*get_key(char *env);
+char					*get_value(char *params);
 char					*get_limiter(t_cmd *cmd);
 char					*get_random_name(char *here_doc);
 

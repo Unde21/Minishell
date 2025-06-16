@@ -59,14 +59,9 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	int		i;
 
 	params_cpy = malloc(sizeof(char *) * (data->cmd->nb_args + 1));
-	// secure;
-	i = 0;
-	while (data->cmd->params[i])
-	{
+	i = -1;
+	while (data->cmd->params[++i])
 		params_cpy[i] = ft_strdup(data->cmd->params[i]);
-		// secure;
-		++i;
-	}
 	params_cpy[i] = NULL;
 	set_signal_action_child();
 	dup_child(data->cmd);

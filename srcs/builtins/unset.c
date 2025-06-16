@@ -1,4 +1,5 @@
 #include "builtins.h"
+#include "exec.h"
 #include "minishell.h"
 #include <stdlib.h>
 
@@ -6,26 +7,26 @@ void	ft_unset(t_env **listed_env, t_cmd *cmd)
 {
 	t_env	*head;
 	t_env	*prev;
+	char	*key;
+	int		i;
 
-	head = *listed_env;
-	prev = NULL;
-	if (head == NULL || cmd->params[1] == NULL)
-		return ;
-	while (head)
+	i = 0;
+	while (cmd->params[++i])
 	{
-		if (ft_strcmp(head->key, cmd->params[1]) == 0)
+		prev = NULL;
+		head = *listed_env;
+		key = get_key(cmd->params[i]);
+		while (head)
 		{
-			if (prev == NULL)
-				*listed_env = head->next;
-			else
-				prev->next = head->next;
-			free(head->key);
-			free(head->value);
-			free(head->full_line);
-			free(head);
-			return ;
+			if (ft_strcmp(head->key, key) == 0)
+			{
+				if (prev)
+					prev->next = head->next;
+				else
+					*listed_env = head->next;
+			}
+			prev = head;
+			head = head->next;
 		}
-		prev = head;
-		head = head->next;
 	}
 }
