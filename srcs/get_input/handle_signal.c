@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "parsing.h"
-#include <signal.h>
 #include <fcntl.h>
+#include <signal.h>
 
 static void	signal_handler(int signal)
 {
@@ -36,6 +36,7 @@ static void	signal_handler_child(int signal)
 	if (signal == SIGQUIT)
 		ft_printf("Quit (core dumped)\n");
 }
+
 
 void	reset_signal(void)
 {

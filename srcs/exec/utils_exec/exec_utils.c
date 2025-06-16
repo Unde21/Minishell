@@ -83,7 +83,7 @@ bool	is_access_ok(char *path, int *return_value, char **path_cmd)
 	{
 		if (access(path, X_OK) == 0)
 		{
-			*path_cmd = path;
+			*path_cmd = ft_strdup(path);
 			*return_value = 0;
 			return (true);
 		}

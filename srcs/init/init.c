@@ -16,6 +16,9 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->name_infile = NULL;
 	data->name_outfile = NULL;
 	data->ambiguous_file = NULL;
+	data->cmd = NULL;
+	data->token_lst = NULL;
+	data->token = NULL;
 }
 
 bool	init_cmd_args(t_cmd *cmd)
@@ -40,6 +43,7 @@ bool	init_cmd_args(t_cmd *cmd)
 		cmd->args[i].is_wildcards = false;
 		cmd->args[i].need_expand = false;
 		cmd->args[i].content = NULL;
+		cmd->args[i].is_quote = false;
 		++i;
 	}
 	if (cmd->nb_args == 0)
@@ -97,6 +101,7 @@ bool	init_lst(t_data *data)
 	{
 		clear_token(data->token_lst->head);
 		free(data->token_lst);
+		data->token_lst = NULL;
 		return (false);
 	}
 	data->had_space_before = true;
