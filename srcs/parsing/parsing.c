@@ -26,9 +26,6 @@ static bool	manage_expansion(t_data *data, int prev_return_value)
 		return (false);
 	if (DEBUG_VALUE == 3 || DEBUG_VALUE == 5)
 		print_lst_cmd_expand(data->cmd);
-	// if (handle_expansion(data, data->cmd, true) == false
-	// 	|| expand_redir(data, data->cmd) == false)
-	// 	return (false);
 	if (split_wildcards_file(data->cmd) == false
 		|| handle_split_expand(data->cmd) == false)
 		return (false);

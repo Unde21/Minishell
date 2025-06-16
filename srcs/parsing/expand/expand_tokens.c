@@ -61,7 +61,7 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 					&& current_cmd->args[i].need_expand == true)
 					return (false);
 			}
-			if (remove_quote(data, &current_cmd->params[i]) == false)
+			else if (remove_quote(data, &current_cmd->params[i]) == false)
 					return (false);
 			++i;
 		}
