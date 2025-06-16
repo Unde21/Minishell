@@ -50,14 +50,14 @@ bool	remove_quote_loop(char **params, char **dup)
 {
 	size_t	i;
 	size_t	j;
+	size_t	k;
 
 	i = 0;
-	while(params[i])
+	while (params[i])
 	{
 		j = 0;
 		while (params[i][j])
 		{
-
 			if (params[i][j++] == ASCII_DBLE_QUOTE)
 			{
 				ft_strjoin_and_free(dup[i], ft_strndup(&params[i][j], &j));
@@ -71,12 +71,11 @@ bool	remove_quote_loop(char **params, char **dup)
 			}
 			else
 			{
-				size_t k = j;
+				k = j;
 				while (params[i][k])
 					++k;
-				dup[i] = malloc(sizeof(char) * (k +1));
-				// secure
-				k =0;
+				dup[i] = malloc(sizeof(char) * (k + 1));
+				k = 0;
 				while (params[i][j])
 				{
 					dup[i][k] = params[i][j];
@@ -94,7 +93,7 @@ bool	remove_quote_loop(char **params, char **dup)
 bool	remove_quote(t_data *data, char **params)
 {
 	size_t	len;
-	char 	**tmp;
+	char	**tmp;
 	char	**dup;
 
 	tmp = params;
@@ -105,11 +104,12 @@ bool	remove_quote(t_data *data, char **params)
 		data->return_value = 1;
 		return (print_err(ERR_MALLOC));
 	}
-	if(remove_quote_loop(params, dup) == false)
+	if (remove_quote_loop(params, dup) == false)
 	{
 		data->return_value = 1;
 		ft_dprintf(2, ERR_MALLOC);
 		return (false);
 	}
+	free(dup);
 	return (true);
 }

@@ -1,1 +1,3 @@
-salut
+bonjour
+a vous
+je vous aime\n

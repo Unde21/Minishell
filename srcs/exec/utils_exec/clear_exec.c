@@ -1,22 +1,20 @@
 #include "builtins.h"
 #include "exec.h"
 
-static void	clear_listed_env(t_env **listed_env)
+void	free_list(t_token *head)
 {
-	t_env	*head;
+	t_token	*tmp;
 
-	head = *listed_env;
-	if (head == NULL)
-		return ;
 	while (head)
 	{
-		free(head->key);
-		free(head->value);
-		free(head->full_line);
-		free(head);
+		tmp = head;
 		head = head->next;
+		if (tmp->full_line)
+			free(tmp->full_line);
+		free(tmp);
 	}
 }
+
 void	close_fd(t_cmd *cmd)
 {
 	while (cmd)
@@ -30,5 +28,7 @@ void	close_fd(t_cmd *cmd)
 }
 void	clear_exec(t_data *data)
 {
-	clear_listed_env(&data->listed_env);
+	close_fd(data->cmd);
+	free_list((t_token *)data->cmd);
+	free_list((t_token *)data->listed_env);
 }
