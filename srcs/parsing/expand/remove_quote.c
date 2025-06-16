@@ -18,6 +18,34 @@ size_t	new_length(char *s)
 	return (len);
 }
 
+bool	duplicate_params(size_t *i, int quote, char *params, char **dup)
+{
+	size_t	index;
+	char	*tmp;
+
+	index = *i;
+	while (params[index] != quote && params[index])
+		++index;
+	tmp = malloc(sizeof(char) * (index + 1));
+	if (tmp == NULL)
+		return (false);
+	index = 0;
+	while (params[*i] != quote && params[*i])
+	{
+		tmp[index] = params[*i];
+		++(*i);
+		++index;
+	}
+	tmp[index] = '\0';
+	*dup = ft_strjoin_and_free(*dup, tmp);
+	if (*dup == NULL)
+	{
+		free(tmp);
+		return (false);
+	}
+	free(tmp);
+	return (true);
+}
 bool	remove_quote_loop(char *params, char **dup)
 {
 	size_t	i;
@@ -31,24 +59,8 @@ bool	remove_quote_loop(char *params, char **dup)
 	{
 		if (params[i] != quote)
 		{
-			size_t k = i;
-			while (params[k] != quote && params[k])
-			{	
-				++k;
-			}
-			tmp = malloc(sizeof(char) * (k + 1));
-			// secure
-			k = 0;
-			while (params[i] != quote && params[i])
-			{
-				tmp[k] = params[i];
-				++i;
-				++k;
-			}
-			tmp[k] = '\0';
-			*dup = ft_strjoin_and_free(*dup, tmp);
-			//secure
-			free(tmp);
+			if (duplicate_params(&i, quote, params, dup) == false)
+				return (false);
 		}
 		else
 			++i;
@@ -58,20 +70,19 @@ bool	remove_quote_loop(char *params, char **dup)
 
 bool	remove_quote(t_data *data, char **params)
 {
-	size_t	len;
-	char 	*tmp;
 	char	*dup;
 
-	tmp = *params;
 	dup = ft_strdup("");
-	//secure
-	len = ft_strlen(*params);
+	if (dup == NULL)
+		return (print_err(ERR_MALLOC));
 	if(remove_quote_loop(*params, &dup) == false)
 	{
 		data->return_value = 1;
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
+		if (dup != NULL)
+			free(dup);
+		return (print_err(ERR_MALLOC));
 	}
+	free(*params);
 	*params = dup;
 	return (true);
 }

@@ -28,7 +28,11 @@ void	wait_child(pid_t last_pid, int *return_value)
 			if (WIFEXITED(status))
 				*return_value = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
 				*return_value = 128 + WTERMSIG(status);
+				if (*return_value == 131)
+					ft_printf("Quit (core dumped)\n");
+			}
 		}
 	}
 }
@@ -58,23 +62,32 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	char	**params_cpy;
 	int		i;
 
-	params_cpy = malloc(sizeof(char *) * (data->cmd->nb_args + 1));
-	i = -1;
-	while (data->cmd->params[++i])
-		params_cpy[i] = ft_strdup(data->cmd->params[i]);
-	params_cpy[i] = NULL;
-	set_signal_action_child();
-	dup_child(data->cmd);
-	close_fd(head);
-	if (data->return_value != 0)
-		exit(data->return_value);
+	i = 0;
 	if (child_builtin(data))
 	{
 		free(path_cmd);
 		exit(data->return_value);
 	}
-	clear_cmd(head);
+	while (data->cmd->params[i])
+		++i;
+	params_cpy = malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (data->cmd->params[++i])
+	params_cpy[i] = ft_strdup(data->cmd->params[i]);
+	params_cpy[i] = NULL;
+	set_signal_action_child();
+	dup_child(data->cmd);
+	close_fd(head);
+	if (data->return_value != 0)
+	{
+		free(path_cmd);
+		free_all(params_cpy	);
+		exit(data->return_value);
+	}
 	execve(path_cmd, params_cpy, data->env);
 	perror(ERR_EXECVE);
+	free(path_cmd);
+	free_all(params_cpy);
+	clear_cmd(data->cmd);
 	exit(127);
 }

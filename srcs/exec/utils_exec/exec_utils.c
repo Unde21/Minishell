@@ -77,13 +77,12 @@ bool	is_child_builtin(char **params)
 	return (false);
 }
 
-bool	is_access_ok(char *path, int *return_value, char **path_cmd)
+bool	is_access_ok(char *path, int *return_value)
 {
 	if (access(path, F_OK) == 0)
 	{
 		if (access(path, X_OK) == 0)
 		{
-			*path_cmd = ft_strdup(path);
 			*return_value = 0;
 			return (true);
 		}
