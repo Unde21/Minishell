@@ -38,10 +38,8 @@ static char	*sort_file_name(char *cpy_file)
 	char	**split_file;
 	int		i;
 	int		j;
-	char	*tmp;
 
 	i = -1;
-	tmp = NULL;
 	split_file = ft_split(cpy_file, '/');
 	if (split_file == NULL)
 	{

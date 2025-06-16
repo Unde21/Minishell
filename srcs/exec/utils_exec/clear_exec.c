@@ -18,6 +18,7 @@ static void	clear_listed_env(t_env **listed_env)
 		head = *listed_env;
 	}
 }
+
 void	close_fd(t_cmd *cmd)
 {
 	while (cmd)
@@ -29,6 +30,7 @@ void	close_fd(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
+
 void	clear_exec(t_data *data)
 {
 	clear_listed_env(&data->listed_env);

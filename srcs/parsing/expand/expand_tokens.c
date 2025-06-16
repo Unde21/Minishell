@@ -62,7 +62,7 @@ bool	handle_expansion(t_data *data, t_cmd *cmd)
 					return (false);
 			}
 			else if (remove_quote(data, &current_cmd->params[i]) == false)
-					return (false);
+				return (false);
 			++i;
 		}
 		current_cmd = current_cmd->next;

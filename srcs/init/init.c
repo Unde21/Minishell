@@ -34,10 +34,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	}
 	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));
 	if (cmd->args == NULL)
-	{
-		print_err(ERR_MALLOC);
-		return (false);
-	}
+		return (print_err(ERR_MALLOC));
 	while (i <= cmd->nb_args)
 	{
 		cmd->args[i].is_wildcards = false;

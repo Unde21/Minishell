@@ -23,12 +23,10 @@ static char	*handle_ambiguous_file(t_data *data, char *var_name)
 static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 {
 	char	*env_value;
-	size_t	i;
 	t_env	*current;
 	size_t	len_var_name;
 
 	current = data->listed_env;
-	i = 0;
 	env_value = NULL;
 	while (current != NULL)
 	{

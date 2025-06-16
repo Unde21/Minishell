@@ -46,16 +46,15 @@ bool	duplicate_params(size_t *i, int quote, char *params, char **dup)
 	free(tmp);
 	return (true);
 }
+
 bool	remove_quote_loop(char *params, char **dup)
 {
 	size_t	i;
-	char	*tmp;
 	int		quote;
 
-	tmp = NULL;
 	i = 0;
 	quote = wich_quote(params);
-	while(params[i])
+	while (params[i])
 	{
 		if (params[i] != quote)
 		{
@@ -75,7 +74,7 @@ bool	remove_quote(t_data *data, char **params)
 	dup = ft_strdup("");
 	if (dup == NULL)
 		return (print_err(ERR_MALLOC));
-	if(remove_quote_loop(*params, &dup) == false)
+	if (remove_quote_loop(*params, &dup) == false)
 	{
 		data->return_value = 1;
 		if (dup != NULL)
