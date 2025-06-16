@@ -34,6 +34,7 @@ bool	fill_cmd_special_operator(t_token **current, t_cmd *current_cmd)
 			return (print_err(ERR_MALLOC));
 		new_redir->type = type;
 		new_redir->file = ft_strdup((*current)->content);
+		new_redir->is_ambiguous = false;
 		if (new_redir->file == NULL)
 		{
 			free(new_redir);

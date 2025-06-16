@@ -38,7 +38,7 @@ static char	*expand(char *s, char *expanded, t_data *data, int is_heredoc)
 	return (expanded);
 }
 
-bool	replace_file_name(t_data *data, char **file_name, int is_heredoc)
+bool	replace_file_name(t_data *data, char **file_name, int is_heredoc, t_redir *redir)
 {
 	char	*expanded;
 
@@ -57,7 +57,11 @@ bool	replace_file_name(t_data *data, char **file_name, int is_heredoc)
 		return (false);
 	}
 	if (data->is_ambiguous == true && is_heredoc != HEREDOC)
-		*file_name = NULL;
+	{
+		// *file_name = NULL;
+		redir->is_ambiguous = true;
+		data->is_ambiguous = false;
+	}
 	return (true);
 }
 
@@ -90,7 +94,7 @@ bool	expand_redir(t_data *data, t_cmd *cmd)
 			&& is_expand_redir(current_redir->file) == true)
 		{
 			if (replace_file_name(data, &current_redir->file,
-					NO_HERDOC) == false)
+					NO_HERDOC, data->cmd->redir) == false)
 				return (false);
 		}
 		else if (remove_quote(data, &current_redir->file) == false)

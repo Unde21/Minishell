@@ -51,6 +51,7 @@ typedef struct s_token_lst
 typedef struct s_redir
 {
 	t_token_type	type;
+	bool			is_ambiguous;
 	char			*file;
 	struct s_redir	*next;
 }					t_redir;
@@ -127,6 +128,7 @@ bool				init_cmd_args(t_cmd *cmd);
 bool				print_err(char *str_error);
 void				reset_g_return_value(t_data *data);
 void				print_access_error(char *params);
+void				print_ambiguous(char *s);
 
 // clear_data.c
 void				clear_token(t_token *lst);

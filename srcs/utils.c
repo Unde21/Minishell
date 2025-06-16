@@ -21,3 +21,10 @@ void	print_access_error(char *params)
 	ft_dprintf(2, "bash: %s: ", params);
 	ft_dprintf(2, "command not found\n");
 }
+
+void	print_ambiguous(char *s)
+{
+	ft_dprintf(2, PRINT_BASH);
+	ft_dprintf(2, " %s: ", s);
+	ft_dprintf(2, ERR_AMBIGUOUS);
+}
