@@ -30,7 +30,7 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 			break ;
 		}
 		if (is_expand_redir(line))
-			if (!replace_file_name(data, &line, HEREDOC))
+			if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
 			{
 				data->return_value = 1;
 				free(line);

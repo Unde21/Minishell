@@ -2,53 +2,98 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-static void	remove_quote_condition(size_t i, char *str, char **dup)
+size_t	new_length(char *s)
 {
-	bool	in_quote;
-	int		is_quote;
-	char	tab[2];
+	size_t	len;
+	size_t	i;
 
-	is_quote = NO_QUOTE;
+	i = 0;
+	len = 0;
+	while (s[i])
+	{
+		if (s[i] != ASCII_DBLE_QUOTE)
+			++len;
+		++i;
+	}
+	return (len);
+}
+
+char	*ft_strndup(char *s, size_t *j)
+{
+	size_t	i;
+	size_t	len;
+	char	*dup;
+	bool	in_quote;
+
 	in_quote = false;
-	if (in_quote == false
-		&& (str[i] == ASCII_DBLE_QUOTE || str[i] == ASCII_SNGL_QUOTE))
+	len = new_length(s);
+	dup = malloc(sizeof(char) * (len + 1));
+	if (dup == NULL)
+		return (NULL);
+	i = 0;
+	len = 0;
+	while (s[i])
 	{
-		is_quote = str[i];
-		in_quote = true;
+		if (s[i] != ASCII_DBLE_QUOTE)
+		{
+			dup[len] = s[i];
+			++len;
+		}
+		++i;
 	}
-	else if (in_quote == true && str[i] == is_quote)
+	dup[len] = '\0';
+	*j += i;
+	return (dup);
+}
+
+bool	remove_quote_loop(char **params, char **dup)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while(params[i])
 	{
-		in_quote = false;
-		is_quote = NO_QUOTE;
+		j = 0;
+		while (params[i][j])
+		{
+			if (params[i][j++] == ASCII_DBLE_QUOTE)
+			{
+				dup[i] = ft_strndup(&params[i][j], &j);
+				if (dup[i] == NULL)
+				{
+					free_delim(dup, i);
+					return (false);
+				}
+				free(params[i]);
+				params[i] = dup[i];
+			}
+			++j;
+		}
+		++i;
 	}
-	else
-	{
-		tab[0] = str[i];
-		tab[1] = '\0';
-		*dup = ft_strjoin_and_free(*dup, tab);
-	}
+	return (true);
 }
 
 bool	remove_quote(t_data *data, char **params)
 {
-	size_t	i;
-	char	*dup;
-	char	*str;
+	size_t	len;
+	char 	**tmp;
+	char	**dup;
 
-	dup = ft_strdup("");
+	tmp = params;
+	len = ft_strlen(*params);
+	dup = malloc(sizeof(char *) * (len + 1));
 	if (dup == NULL)
 	{
 		data->return_value = 1;
+		return (print_err(ERR_MALLOC));
+	}
+	if(remove_quote_loop(params, dup) == false)
+	{
+		data->return_value = 1;
+		ft_dprintf(2, ERR_MALLOC);
 		return (false);
 	}
-	i = 0;
-	str = *params;
-	while (str[i])
-	{
-		remove_quote_condition(i, str, &dup);
-		++i;
-	}
-	free(*params);
-	*params = dup;
 	return (true);
 }

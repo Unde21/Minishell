@@ -109,7 +109,10 @@ char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 		if (path[i] == NULL)
 			return (NULL);
 		if (is_access_ok(path[i], return_value, &path_cmd))
+		{
+			free_all(path);
 			return (path_cmd);
+		}
 	}
 	free_all(path);
 	return (NULL);

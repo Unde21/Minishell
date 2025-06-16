@@ -22,11 +22,9 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 {
 	while (cmd->redir)
 	{
-		if (cmd->redir->file == NULL)
+		if (cmd->redir->is_ambiguous)
 		{
-			ft_dprintf(2, PRINT_BASH);
-			ft_dprintf(2, " %s: ", data->ambiguous_file);
-			ft_dprintf(2, ERR_AMBIGUOUS);
+			print_ambiguous(data->ambiguous_file);
 			data->return_value = 1;
 			return (false);
 		}
@@ -60,10 +58,9 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 				if (cmd->fd_in < 0)
 					return (print_err(ERR_OP_FD));
 				unlink(cmd->redir->file);
-				free(cmd->redir->file);
+				return (true);
 			}
-			else
-				return (false);
+			return (false);
 		}
 		cmd->redir = cmd->redir->next;
 	}
@@ -109,9 +106,12 @@ void	exec_init(t_data *data)
 	{
 		data->return_value = 0;
 		if (solo_builtin(data) && data->cmd->next == NULL)
+		{
+			data->cmd = head_cmd;
 			return ;
+		}
 		init(data, &path_cmd, &data->return_value);
-		if (data->return_value == 0 && g_return_value == 0)
+		if (data->return_value == 0 && path_cmd != NULL)
 		{
 			pid = fork();
 			if (pid < 0)
@@ -124,8 +124,10 @@ void	exec_init(t_data *data)
 			if (data->cmd->next == NULL)
 				last_pid = pid;
 		}
+		free(path_cmd);
 		data->cmd = data->cmd->next;
 	}
+	data->cmd = head_cmd;
 	reset_signal();
 	close_fd(head_cmd);
 	wait_child(last_pid, &data->return_value);
