@@ -28,7 +28,11 @@ void	wait_child(pid_t last_pid, int *return_value)
 			if (WIFEXITED(status))
 				*return_value = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
 				*return_value = 128 + WTERMSIG(status);
+				if (*return_value == 131)
+					ft_printf("Quit (core dumped)\n");
+			}
 		}
 	}
 }

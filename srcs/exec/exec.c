@@ -78,9 +78,8 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 					'/') != NULL)
 			{
-				if (is_access_ok(data->cmd->params[0], &data->return_value,
-						path_cmd))
-					*path_cmd = data->cmd->params[0];
+				if (is_access_ok(data->cmd->params[0], &data->return_value))
+					*path_cmd = ft_strdup(data->cmd->params[0]);
 			}
 			else
 				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
