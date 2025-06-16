@@ -60,13 +60,11 @@ t_env	*create_node(t_data *data, int i)
 
 void	init_listed_env(t_data *data)
 {
-	t_env	*listed_env;
 	t_env	*next_node;
 	int		i;
 
 	i = 1;
 	next_node = NULL;
-	listed_env = NULL;
 	data->listed_env = create_node(data, 0);
 	if (data->env == NULL)
 		print_err("ERROR : fill_listed_env 01");

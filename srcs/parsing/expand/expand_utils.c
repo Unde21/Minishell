@@ -74,12 +74,10 @@ char	*dup_word_splitting(char *src)
 static char	*get_env_value(char *var_name, t_env *listed_env, bool is_quote)
 {
 	char	*env_value;
-	size_t	i;
 	t_env	*current;
 	size_t	len_var_name;
 
 	current = listed_env;
-	i = 0;
 	env_value = NULL;
 	while (current != NULL)
 	{

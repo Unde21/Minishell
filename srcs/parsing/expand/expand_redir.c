@@ -38,7 +38,8 @@ static char	*expand(char *s, char *expanded, t_data *data, int is_heredoc)
 	return (expanded);
 }
 
-bool	replace_file_name(t_data *data, char **file_name, int is_heredoc, t_redir *redir)
+bool	replace_file_name(t_data *data, char **file_name,
+	int is_heredoc, t_redir *redir)
 {
 	char	*expanded;
 
