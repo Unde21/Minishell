@@ -11,6 +11,7 @@
 # define ERR_DUP "error: dup failed\n"
 # define ERR_EXECVE "error: execve failed\n"
 # define QUIT "Quit (core dumped)\n"
+# define WARNING_HEREDOC "> bash: warning: here-document delimited by end-of-file (wanted "
 
 typedef struct s_env	t_env;
 typedef struct s_cmd	t_cmd;
@@ -44,6 +45,7 @@ void					execute_builtins(t_data *data);
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
 bool					is_builtin(t_data *data);
+void					execute_builtins(t_data *data);
 bool					is_access_ok(char *path, int *return_value,
 							char **params);
 size_t					get_total_length(char **params);

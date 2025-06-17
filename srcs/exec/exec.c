@@ -43,6 +43,43 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 	}
 }
 
+bool	err_dup_parent(t_data *data, t_cmd *cmd, int save_stdin, int save_stdout)
+{
+	if (save_stdin != -1)
+		close(save_stdin);
+	if (save_stdout != -1)
+		close(save_stdout);
+	if (cmd->fd_in != -1)
+		close(cmd->fd_in);
+	if (cmd->fd_out != -1)
+	close(cmd->fd_out);
+	print_err(ERR_DUP);
+	data->return_value = 1;
+	return (false);
+}
+
+static bool dup_parent_builtins(t_data *data, t_cmd *cmd)
+{
+	int	save_stdin;
+	int	save_stdout;
+
+	save_stdin = dup(STDIN_FILENO);
+	save_stdout = dup(STDOUT_FILENO);
+
+	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
+	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
+	execute_builtins(data);
+	if (dup2(save_stdin, STDIN_FILENO) == -1)
+		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
+	if (dup2(save_stdout, STDOUT_FILENO) == -1)
+		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
+	close(save_stdin);
+	close(save_stdout);
+	return (true);
+}
+
 void	exec_init(t_data *data)
 {
 	char	*path_cmd;
@@ -68,7 +105,11 @@ void	exec_init(t_data *data)
 		if (data->cmd->next == NULL && data->return_value == 0
 			&& is_builtin(data))
 			{
-				execute_builtins(data);
+				dup_parent_builtins(data, data->cmd);
+				if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
+					close(data->cmd->fd_in);
+				if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
+					close(data->cmd->fd_out);
 				data->cmd = head_cmd;
 				return ;
 			}

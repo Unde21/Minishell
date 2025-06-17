@@ -39,6 +39,8 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 			if (cmd->fd_in < 0)
 				return (print_err_false(ERR_OP_FD));
+			close(cmd->fd_in);
+			cmd->fd_in = 0;
 			unlink(cmd->redir->file);
 			return (true);
 		}
@@ -49,6 +51,9 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 
 bool	init_redir(t_data *data, t_cmd *cmd)
 {
+	t_redir	*head;
+
+	head = cmd->redir;
 	while (cmd->redir)
 	{
 		if (cmd->redir->is_ambiguous)
@@ -58,10 +63,17 @@ bool	init_redir(t_data *data, t_cmd *cmd)
 			return (false);
 		}
 		if (redir_out(cmd) == false)
+		{
+			cmd->redir = head;
 			return (false);
+		}
 		if (redir_in(data, cmd) == false)
+		{
+			cmd->redir = head;
 			return (false);
+		}
 		cmd->redir = cmd->redir->next;
 	}
+	cmd->redir = head;
 	return (true);
 }
