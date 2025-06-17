@@ -27,8 +27,7 @@ t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
 //// getters ////
-char					*get_path_cmd(t_data *data, char **params,
-							char *path_cmd, int *return_value);
+char					*get_path_cmd(t_data *data, char **params, int *return_value);
 char					**listed_env_to_array(t_data *data, t_env *listed_env);
 int						get_list_size(t_data *data);
 char					*get_value(char *params);
@@ -44,11 +43,11 @@ void					wait_child(pid_t last_pid, int *return_value);
 void					clear_exec(t_data *data);
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
-bool					is_solo_builtin(char **params);
-bool					is_child_builtin(char **params);
-bool					child_builtin(t_data *data);
-bool					solo_builtin(t_data *data);
-bool					is_access_ok(char *path, int *return_value);
+// bool					is_solo_builtin(char **params);
+// bool					is_child_builtin(char **params);
+// bool					child_builtin(t_data *data);
+bool					is_builtin(t_data *data);
+bool					is_access_ok(char *path, int *return_value, char **params);
 size_t					get_total_length(char **params);
 
 #endif

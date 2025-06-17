@@ -2,7 +2,7 @@
 #include "minishell.h"
 #include <unistd.h>
 
-void	ft_echo(t_cmd *cmd)
+bool	ft_echo(t_cmd *cmd)
 {
 	size_t	i;
 	bool	new_line;
@@ -24,4 +24,5 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (new_line == true)
 		ft_dprintf(STDOUT_FILENO, "\n");
+	return (true);
 }

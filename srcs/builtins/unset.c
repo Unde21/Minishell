@@ -3,7 +3,7 @@
 #include "minishell.h"
 #include <stdlib.h>
 
-void	ft_unset(t_env **listed_env, t_cmd *cmd)
+bool	ft_unset(t_env **listed_env, t_cmd *cmd)
 {
 	t_env	*head;
 	t_env	*prev;
@@ -29,4 +29,5 @@ void	ft_unset(t_env **listed_env, t_cmd *cmd)
 			head = head->next;
 		}
 	}
+	return (true);
 }

@@ -85,7 +85,7 @@ static void	update_listed_env(t_data *data, t_env *env)
 	update_pwd(data, pwd_env);
 }
 
-void	ft_cd(t_data *data, t_cmd *cmd)
+bool	ft_cd(t_data *data, t_cmd *cmd)
 {
 	char	*home_path;
 
@@ -98,18 +98,19 @@ void	ft_cd(t_data *data, t_cmd *cmd)
 			ft_dprintf(2, CD_ERR);
 			ft_dprintf(2, CD_NO_DIR);
 			data->return_value = 1;
-			return ;
+			return (true);
 		}
 		if (chdir(home_path) == -1)
 		{
 			display_error(data, cmd->params[1]);
-			return ;
+			return (true);
 		}
 	}
 	else if (chdir(cmd->params[1]) == -1)
 	{
 		display_error(data, cmd->params[1]);
-		return ;
+		return (true);
 	}
 	update_listed_env(data, data->listed_env);
+	return (true);
 }
