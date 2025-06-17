@@ -32,7 +32,7 @@ static bool	print_error_env(t_cmd *cmd)
 	return (true);
 }
 
-void	ft_env(t_data *data, t_cmd *cmd)
+bool	ft_env(t_data *data, t_cmd *cmd)
 {
 	t_env	*current;
 
@@ -40,11 +40,12 @@ void	ft_env(t_data *data, t_cmd *cmd)
 	if (print_error_env(cmd) == false)
 	{
 		data->return_value = 127;
-		return ;
+		return (true);
 	}
 	while (current != NULL)
 	{
 		ft_dprintf(STDOUT_FILENO, "%s\n", current->full_line);
 		current = current->next;
 	}
+	return (true);
 }

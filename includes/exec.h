@@ -44,10 +44,10 @@ void					wait_child(pid_t last_pid, int *return_value);
 void					clear_exec(t_data *data);
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
-bool					is_solo_builtin(char **params);
-bool					is_child_builtin(char **params);
-bool					child_builtin(t_data *data);
-bool					solo_builtin(t_data *data);
+// bool					is_solo_builtin(char **params);
+// bool					is_child_builtin(char **params);
+// bool					child_builtin(t_data *data);
+bool					is_builtin(t_data *data);
 bool					is_access_ok(char *path, int *return_value);
 size_t					get_total_length(char **params);
 

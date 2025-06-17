@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	ft_pwd(t_data *data)
+bool	ft_pwd(t_data *data)
 {
 	char	*path;
 
@@ -12,8 +12,9 @@ void	ft_pwd(t_data *data)
 	{
 		ft_dprintf(2, ERR_PWD);
 		data->return_value = 1;
-		return ;
+		return (true);
 	}
 	ft_dprintf(STDOUT_FILENO, "%s\n", path);
 	free(path);
+	return (true);
 }
