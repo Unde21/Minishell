@@ -2,7 +2,6 @@
 # define MINISHELL_H
 
 # include "libft.h"
-# include <stdio.h>
 
 # define CODE_SIGINT 130
 # define BLUE "\001\033[1;34m\002"
@@ -104,6 +103,7 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	char			**env_array;
 	bool			error_readdir;
 	bool			is_ambiguous;
 	bool			had_space_before;
@@ -148,5 +148,6 @@ void				get_prompt(t_data *data, char **prompt);
 int					do_nothing(void);
 void				set_signal_action(void);
 void				reset_signal(void);
+void	set_signal_action_child(void);
 
 #endif

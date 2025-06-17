@@ -1,5 +1,6 @@
 #include "parsing.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 char	*get_var_name(char *s)
 {
@@ -18,7 +19,7 @@ char	*get_var_name(char *s)
 	var_name = malloc(sizeof(char) * (len_var + 1));
 	if (var_name == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
 	}
 	while (s[i] && (int)i < len_var)
@@ -106,7 +107,7 @@ void	join_with_expand(t_data *data, char **expanded, char *s, size_t *i)
 	if (var_name == NULL)
 	{
 		free(var_name);
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return ;
 	}
 	env_value = get_env_value(var_name, data->listed_env,
@@ -115,7 +116,7 @@ void	join_with_expand(t_data *data, char **expanded, char *s, size_t *i)
 	{
 		free(var_name);
 		free(env_value);
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return ;
 	}
 	*expanded = ft_strjoin_and_free(*expanded, env_value);

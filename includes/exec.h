@@ -2,13 +2,6 @@
 # define EXEC_H
 
 # include "minishell.h"
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 # include <unistd.h>
 
 # define PROMPT_HERE_DOC "> "
@@ -23,9 +16,9 @@ typedef struct s_env	t_env;
 typedef struct s_cmd	t_cmd;
 //// init ////
 
-void					init(char **env_array, t_data *data, char **path_cmd,
+void					init(t_data *data, char **path_cmd,
 							int *return_value);
-void					init_child(char **env_array, t_data *data,
+void					init_child(t_data *data,
 							char *path_cmd, t_cmd *head);
 char					*heredoc(t_data *data, char *limiter);
 
@@ -34,9 +27,9 @@ t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
 //// getters ////
-char					*get_path_cmd(char **env_array, char **params,
+char					*get_path_cmd(t_data *data, char **params,
 							char *path_cmd, int *return_value);
-char					**listed_env_to_array(t_env *listed_env);
+char					**listed_env_to_array(t_data *data, t_env *listed_env);
 int						get_list_size(t_data *data);
 char					*get_value(char *params);
 char					*get_key(char *env);
@@ -56,5 +49,6 @@ bool					is_child_builtin(char **params);
 bool					child_builtin(t_data *data);
 bool					solo_builtin(t_data *data);
 bool					is_access_ok(char *path, int *return_value);
+size_t					get_total_length(char **params);
 
 #endif

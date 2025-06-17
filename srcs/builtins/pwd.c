@@ -14,6 +14,6 @@ void	ft_pwd(t_data *data)
 		data->return_value = 1;
 		return ;
 	}
-	ft_dprintf(data->cmd->fd_out, "%s\n", path);
+	ft_dprintf(STDOUT_FILENO, "%s\n", path);
 	free(path);
 }

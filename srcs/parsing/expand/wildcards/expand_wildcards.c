@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static int	bash_strcmp(const char *s1, const char *s2)
 {
@@ -43,7 +44,7 @@ static char	*sort_file_name(char *cpy_file)
 	split_file = ft_split(cpy_file, '/');
 	if (split_file == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
 	}
 	while (split_file[++i])
@@ -67,7 +68,7 @@ static void	expand_wildcards(char **expanded, char *cpy_file, char *wildcards,
 	if (cpy_file == NULL)
 	{
 		free(wildcards);
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		*expanded = NULL;
 		return ;
 	}

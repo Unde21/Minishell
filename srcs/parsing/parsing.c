@@ -12,7 +12,6 @@ static bool	tokenizer(t_data *data)
 	if (DEBUG_VALUE == 1 || DEBUG_VALUE == 5)
 		print_lst(data->token_lst->head);
 	return (true);
-
 }
 
 static bool	manage_expansion(t_data *data, int prev_return_value)

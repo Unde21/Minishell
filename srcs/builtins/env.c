@@ -1,6 +1,7 @@
 #include "builtins.h"
 #include "minishell.h"
 #include "parsing.h"
+#include <unistd.h>
 
 static bool	print_error_env(t_cmd *cmd)
 {
@@ -43,7 +44,7 @@ void	ft_env(t_data *data, t_cmd *cmd)
 	}
 	while (current != NULL)
 	{
-		ft_dprintf(cmd->fd_out, "%s\n", current->full_line);
+		ft_dprintf(STDOUT_FILENO, "%s\n", current->full_line);
 		current = current->next;
 	}
 }

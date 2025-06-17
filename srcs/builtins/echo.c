@@ -1,5 +1,6 @@
 #include "builtins.h"
 #include "minishell.h"
+#include <unistd.h>
 
 void	ft_echo(t_cmd *cmd)
 {
@@ -16,11 +17,11 @@ void	ft_echo(t_cmd *cmd)
 	}
 	while (cmd->params[i])
 	{
-		ft_dprintf(cmd->fd_out, "%s", cmd->params[i]);
+		ft_dprintf(STDOUT_FILENO, "%s", cmd->params[i]);
 		if (cmd->params[i + 1] != NULL)
-			ft_dprintf(cmd->fd_out, " ");
+			ft_dprintf(STDOUT_FILENO, " ");
 		++i;
 	}
 	if (new_line == true)
-		ft_dprintf(cmd->fd_out, "\n");
+		ft_dprintf(STDOUT_FILENO, "\n");
 }

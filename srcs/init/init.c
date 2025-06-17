@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	init_data(t_data *data, int ac, char **av, char **env)
 {
@@ -19,6 +20,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->cmd = NULL;
 	data->token_lst = NULL;
 	data->token = NULL;
+	data->env_array = NULL;
 }
 
 bool	init_cmd_args(t_cmd *cmd)
@@ -28,10 +30,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	i = 0;
 	cmd->params = malloc(sizeof(char *) * (cmd->nb_args + 1));
 	if (cmd->params == NULL)
-	{
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
-	}
+		return (print_err(ERR_MALLOC));
 	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));
 	if (cmd->args == NULL)
 		return (print_err(ERR_MALLOC));

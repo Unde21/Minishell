@@ -1,6 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
-#include <signal.h>
+#include <unistd.h>
+#include <stdlib.h>
+# include <fcntl.h>
 
 char	*get_random_name(char *here_doc)
 {

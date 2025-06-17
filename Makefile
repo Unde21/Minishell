@@ -35,6 +35,7 @@ SRCS := srcs/main.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/exec.c \
 		srcs/exec/child.c\
+		srcs/exec/child_utils.c\
 		srcs/here_doc/here_doc_init.c \
 		srcs/builtins/exit.c \
 		srcs/builtins/echo.c \
