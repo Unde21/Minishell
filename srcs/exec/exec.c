@@ -112,7 +112,7 @@ void	exec_init(t_data *data)
 	{
 		data->return_value = 0;
 		data->env_array = listed_env_to_array(data, data->listed_env);
-		if (data->cmd->next == NULL && solo_builtin(data))
+		if (data->cmd->next == NULL && is_builtin(data))
 		{
 			data->cmd = head_cmd;
 			return ;

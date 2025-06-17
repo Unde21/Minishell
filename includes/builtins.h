@@ -23,22 +23,22 @@ env: use -[v]S to pass options in shebang lines\n"
 int		ft_exit(t_data *data, t_cmd *cmd);
 
 // ft_echo.c
-void	ft_echo(t_cmd *cmd);
+bool	ft_echo(t_cmd *cmd);
 
 // ft_env.c
-void	ft_env(t_data *data, t_cmd *cmd);
+bool	ft_env(t_data *data, t_cmd *cmd);
 
 // ft_pwd.c
-void	ft_pwd(t_data *data);
+bool	ft_pwd(t_data *data);
 
 // ft_cd.c
-void	ft_cd(t_data *data, t_cmd *cmd);
+bool	ft_cd(t_data *data, t_cmd *cmd);
 
 // cd_utils.c
 void	display_error(t_data *data, char *params);
 
 // ft_export.c
-void	ft_export(t_data *data);
+bool	ft_export(t_data *data);
 
 // export_utils.c
 int	export_type(char *params, t_env *listed_env);
@@ -48,6 +48,6 @@ void	reset(t_env *listed_env);
 bool	append_export(t_env *listed_env, char *params);
 
 // ft_unset.c
-void	ft_unset(t_env **listed_env, t_cmd *cmd);
+bool	ft_unset(t_env **listed_env, t_cmd *cmd);
 
 #endif
