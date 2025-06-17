@@ -51,55 +51,26 @@ char	*get_key(char *env)
 	return (key);
 }
 
-char	*get_random_name(char *here_doc)
-{
-	char	c;
-	int		i;
-	int		fd;
 
-	i = 0;
-	here_doc = malloc(sizeof(char) * 26);
-	if (!here_doc)
-		if (print_err("ERROR: malloc failed !\n") == false)
-			return (NULL);
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
-	{
-		print_err("ERROR : opening /dev/random in get_random_name !\n");
-		free(here_doc);
-		return (NULL);
-	}
-	while (i < 25)
-	{
-		read(fd, &c, 1);
-		if (ft_isprint(c) && c != '/')
-			here_doc[i++] = c;
-	}
-	here_doc[i] = '\0';
-	close(fd);
-	return (here_doc);
-}
 
-char	*get_limiter(t_cmd *cmd)
-{
-	while (cmd->redir != NULL)
-	{
-		if (cmd->redir->type == HERE_DOC)
-			return (cmd->redir->file);
-		cmd->redir = cmd->redir->next;
-	}
-	return (NULL);
-}
-
-char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
+char	*get_path_cmd(char **env_array, char **params, char *path_cmd,
+		int *return_value)
 {
 	int		i;
+	char	*path_value;
 	char	**path;
 
-	i = -1;
-	path = ft_split(getenv("PATH"), ':');
+	i = 0;
+	path_value = NULL;
+	while (env_array[++i])
+		if (ft_strncmp(env_array[i], "PATH", 4) == 0)
+			path_value = get_value(env_array[i]);
+	if (!path_value)
+		return (NULL);
+	path = ft_split(path_value, ':');
 	if (!path)
-		print_err("malloc failed\n");
+		return (NULL);
+	i = -1;
 	while (path[++i])
 	{
 		path[i] = ft_strjoin_and_free(path[i], "/");
@@ -111,6 +82,7 @@ char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
 		if (is_access_ok(path[i], return_value, &path_cmd))
 		{
 			free_all(path);
+			free(path_value);
 			return (path_cmd);
 		}
 	}

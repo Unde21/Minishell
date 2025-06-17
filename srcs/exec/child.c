@@ -53,7 +53,7 @@ void	dup_child(t_cmd *cmd)
 		close(cmd->pipe_fd[1]);
 }
 
-void	init_child(t_data *data, char *path_cmd, t_cmd *head)
+void	init_child(t_data *data, char *path_cmd, t_cmd *head, char **env_array)
 {
 	char	**params_cpy;
 	int		i;
@@ -74,7 +74,7 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 		exit(data->return_value);
 	}
 	clear_cmd(head);
-	execve(path_cmd, params_cpy, data->env);
+	execve(path_cmd, params_cpy, env_array);
 	perror(ERR_EXECVE);
 	exit(127);
 }

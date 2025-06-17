@@ -1,8 +1,6 @@
 #include "builtins.h"
 #include "exec.h"
 
-
-
 void	close_fd(t_cmd *cmd)
 {
 	while (cmd)
@@ -14,8 +12,3 @@ void	close_fd(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
-// void	clear_exec(t_data *data)
-// {
-// 	close_fd(data->cmd);
-// 	free_listed_env();
-// }

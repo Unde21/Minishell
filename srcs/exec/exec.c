@@ -67,7 +67,7 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 	return (true);
 }
 
-void	init(t_data *data, char **path_cmd, int *return_value)
+void	init(char **env_array, t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
@@ -80,10 +80,12 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			{
 				if (is_access_ok(data->cmd->params[0], &data->return_value,
 						path_cmd))
-					*path_cmd = data->cmd->params[0];
+					*path_cmd = ft_strdup(data->cmd->params[0]);
+				if (!path_cmd)
+					return ;
 			}
 			else
-				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
+				*path_cmd = get_path_cmd(env_array, data->cmd->params, *path_cmd,
 						return_value);
 			if (*path_cmd == NULL)
 				print_access_error(data->cmd->params[0]);
@@ -95,6 +97,7 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 
 void	exec_init(t_data *data)
 {
+	char	**env_array;
 	char	*path_cmd;
 	t_cmd	*head_cmd;
 	pid_t	last_pid;
@@ -104,13 +107,14 @@ void	exec_init(t_data *data)
 	path_cmd = NULL;
 	while (data->cmd)
 	{
+		env_array = listed_env_to_array(data->listed_env);
 		data->return_value = 0;
 		if (solo_builtin(data) && data->cmd->next == NULL)
 		{
 			data->cmd = head_cmd;
 			return ;
 		}
-		init(data, &path_cmd, &data->return_value);
+		init(env_array, data, &path_cmd, &data->return_value);
 		if (data->return_value == 0 && path_cmd != NULL)
 		{
 			pid = fork();
@@ -120,11 +124,12 @@ void	exec_init(t_data *data)
 				print_err(ERR_FORK);
 			}
 			else if (pid == 0 && path_cmd != NULL)
-				init_child(data, path_cmd, head_cmd);
+				init_child(data, path_cmd, head_cmd, env_array);
 			if (data->cmd->next == NULL)
 				last_pid = pid;
 		}
-		free(path_cmd);
+		if (data->env == NULL && path_cmd == NULL)
+			free(path_cmd);
 		data->cmd = data->cmd->next;
 	}
 	data->cmd = head_cmd;

@@ -23,8 +23,9 @@ typedef struct s_env	t_env;
 typedef struct s_cmd	t_cmd;
 //// init ////
 
-void					init(t_data *data, char **path_cmd, int *return_value);
-void					init_child(t_data *data, char *path_cmd, t_cmd *head);
+void					init(char **env_array, t_data *data, char **path_cmd, int *return_value);
+void					init_child(t_data *data, char *path_cmd, t_cmd *head,
+							char **env_array);
 char					*heredoc(t_data *data, char *limiter);
 
 //// add_node ////
@@ -32,7 +33,7 @@ t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
 //// getters ////
-char					*get_path_cmd(char **params, char *path_cmd,
+char					*get_path_cmd(char **env_array, char **params, char *path_cmd,
 							int *return_value);
 int						get_list_size(t_data *data);
 char					*get_key(char *env);

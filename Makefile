@@ -35,13 +35,15 @@ SRCS := srcs/main.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/exec.c \
 		srcs/exec/child.c\
-		srcs/here_doc/here_doc_init.c \
+		srcs/heredoc/heredoc_init.c \
+		srcs/heredoc/heredoc_utils.c \
 		srcs/builtins/exit.c \
 		srcs/builtins/echo.c \
 		srcs/builtins/env.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/cd.c \
 		srcs/builtins/cd_utils.c \
+		srcs/builtins/export_utils.c\
 		srcs/builtins/export.c \
 		srcs/builtins/unset.c \
 		srcs/debug/print_tokenizer.c \
@@ -60,7 +62,7 @@ CFLAGS := -Wall -Wextra -Werror -g3
 CPPFFLAGS := -MMD -MP
 SHELL = /bin/bash
 
-DEBUGFLAGS := valgrind --leak-check=full  --trace-children=yes --track-fds=yes
+DEBUGFLAGS := valgrind --leak-check=full  --trace-children=yes --track-fds=yes --track-origins=yes
 DEBUG_VALUE ?= 0
 DEBUG_FILE := .debug_value
 CFLAGS += -DDEBUG_VALUE=$(DEBUG_VALUE)

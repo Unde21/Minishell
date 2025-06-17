@@ -36,8 +36,13 @@ void	ft_cd(t_data *data, t_cmd *cmd);
 // cd_utils.c
 void	display_error(t_data *data, char *params);
 
-// ft_export.c
+// ft_export.c / export_utils.c
+int		export_type(char *params, t_env *listed_env);
+int		lst_size(t_env *head);
+bool	is_key_valid(char *params);
+void	reset(t_env *listed_env);
 void	ft_export(t_data *data);
+char	**listed_env_to_array(t_env *listed_env);
 
 // ft_unset.c
 void	ft_unset(t_env **listed_env, t_cmd *cmd);
