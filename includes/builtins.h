@@ -35,15 +35,15 @@ bool	ft_pwd(t_data *data);
 bool	ft_cd(t_data *data, t_cmd *cmd);
 
 // cd_utils.c
-void	display_error(t_data *data, char *params);
+bool	display_error(t_data *data, char *params);
 
 // ft_export.c
 bool	ft_export(t_data *data);
 
 // export_utils.c
-int	export_type(char *params, t_env *listed_env);
+int		export_type(char *params, t_env *listed_env);
 bool	is_key_valid(char *params);
-int	lst_size(t_env *head);
+int		lst_size(t_env *head);
 void	reset(t_env *listed_env);
 bool	append_export(t_env *listed_env, char *params);
 

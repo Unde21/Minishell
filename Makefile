@@ -63,7 +63,7 @@ CFLAGS := -Wall -Wextra -Werror -g3
 CPPFFLAGS := -MMD -MP
 SHELL = /bin/bash
 
-DEBUGFLAGS := valgrind --leak-check=full  --trace-children=yes --track-fds=yes --show-leak-kinds=all
+DEBUGFLAGS := valgrind --leak-check=full  --trace-children=yes --track-fds=yes
 DEBUG_VALUE ?= 0
 DEBUG_FILE := .debug_value
 CFLAGS += -DDEBUG_VALUE=$(DEBUG_VALUE)

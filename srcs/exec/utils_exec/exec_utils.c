@@ -17,9 +17,7 @@ bool	is_builtin(t_data *data)
 	else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
 		return (true);
 	else if (ft_strcmp(data->cmd->params[0], "export") == 0)
-	{
 		return (true);
-	}
 	else if (ft_strcmp(data->cmd->params[0], "unset") == 0)
 		return (true);
 	return (false);

@@ -1,7 +1,7 @@
 #include "exec.h"
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/wait.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 void	wait_child(pid_t last_pid, int *return_value)
