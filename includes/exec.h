@@ -17,9 +17,9 @@ typedef struct s_env	t_env;
 typedef struct s_cmd	t_cmd;
 //// init ////
 
-void					init(t_data *data, char **path_cmd, int *return_value);
-void					init_child(t_data *data, char *path_cmd, t_cmd *head);
+void					child(t_data *data, char *path_cmd, t_cmd *head);
 char					*heredoc(t_data *data, char *limiter);
+pid_t	init_child(t_data *data, t_cmd *head_cmd, char *path_cmd);
 
 //// add_node ////
 t_env					*create_node(t_data *data, int i);
@@ -36,7 +36,7 @@ char					*get_limiter(t_cmd *cmd);
 char					*get_random_name(char *here_doc);
 
 //// exec ////
-void					exec_init(t_data *data);
+void					exec(t_data *data);
 void					wait_child(pid_t last_pid, int *return_value);
 
 //// utils ////
@@ -49,6 +49,7 @@ void					execute_builtins(t_data *data);
 bool					is_access_ok(char *path, int *return_value,
 							char **params);
 size_t					get_total_length(char **params);
+bool	err_dup_parent(t_data *data, t_cmd *cmd, int save_stdin, int save_stdout);
 
 // redir.c
 bool					init_redir(t_data *data, t_cmd *cmd);

@@ -18,11 +18,6 @@ static void	signal_handler(int signal)
 	}
 }
 
-int	do_nothing(void)
-{
-	return (0);
-}
-
 void	set_signal_action(void)
 {
 	struct sigaction	sa;
@@ -43,11 +38,6 @@ void	set_signal_action_child(void)
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
-}
-
-static void	signal_handler_child(int signal)
-{
-	(void)signal;
 }
 
 void	reset_signal(void)

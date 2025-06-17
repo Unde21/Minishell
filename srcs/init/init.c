@@ -3,24 +3,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	init_data(t_data *data, int ac, char **av, char **env)
+bool	init_data(t_data *data, int ac, char **av, char **env)
 {
+	ft_memset(data, 0, sizeof(t_data));
 	data->ac = ac;
 	data->av = av;
-	data->return_value = 0;
 	data->env = env;
-	data->last_type = 0;
 	init_listed_env(data);
-	data->error_readdir = false;
-	data->is_ambiguous = false;
-	data->line_read = NULL;
-	data->name_infile = NULL;
-	data->name_outfile = NULL;
-	data->ambiguous_file = NULL;
-	data->cmd = NULL;
-	data->token_lst = NULL;
-	data->token = NULL;
-	data->env_array = NULL;
+	if (data->return_value != 0)
+		return (false);
+	return (true);
 }
 
 bool	init_cmd_args(t_cmd *cmd)
@@ -54,15 +46,10 @@ static bool	init_cmd(t_data *data)
 	cmd = malloc(sizeof(t_cmd));
 	if (cmd == NULL)
 		return (print_err_false(ERR_MALLOC));
-	cmd->nb_args = 0;
-	cmd->fd_in = 0;
+	ft_memset(cmd, 0, sizeof(t_cmd));
 	cmd->fd_out = 1;
 	cmd->pipe_fd[0] = -1;
 	cmd->pipe_fd[1] = -1;
-	cmd->redir = NULL;
-	cmd->args = NULL;
-	cmd->params = NULL;
-	cmd->next = NULL;
 	data->cmd = cmd;
 	return (true);
 }

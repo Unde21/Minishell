@@ -50,12 +50,12 @@ bool	fill_heredoc_loop(char *line, char *limiter, t_data *data)
 		data->return_value = 0;
 		ft_printf(WARNING_HEREDOC);
 		ft_printf("`%s')\n", limiter);
-		return (false) ;
+		return (false);
 	}
 	if (!ft_strcmp(line, limiter))
 	{
 		free(line);
-		return (false) ;
+		return (false);
 	}
 	if (is_expand_redir(line))
 	{
@@ -63,7 +63,7 @@ bool	fill_heredoc_loop(char *line, char *limiter, t_data *data)
 		{
 			data->return_value = 1;
 			free(line);
-			return (false) ;
+			return (false);
 		}
 	}
 	return (true);

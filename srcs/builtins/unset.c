@@ -14,6 +14,11 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 	i = 0;
 	free_all(data->env_array);
 	data->env_array = listed_env_to_array(data, data->listed_env);
+	if (data->env_array == NULL)
+	{
+		data->return_value = 1;
+		return (print_err_false(ERR_MALLOC));
+	}
 	while (cmd->params[++i])
 	{
 		prev = NULL;

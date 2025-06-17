@@ -121,7 +121,7 @@ extern int			g_return_value;
 // init.c
 void				init_listed_env(t_data *data);
 
-void				init_data(t_data *data, int ac, char **av, char **env);
+bool				init_data(t_data *data, int ac, char **av, char **env);
 bool				init_lst(t_data *data);
 bool				init_cmd_args(t_cmd *cmd);
 
@@ -150,5 +150,8 @@ int					do_nothing(void);
 void				set_signal_action(void);
 void				reset_signal(void);
 void				set_signal_action_child(void);
+
+// signal_utils.c
+void				signal_handler_child(int signal);
 
 #endif

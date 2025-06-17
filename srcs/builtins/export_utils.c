@@ -83,7 +83,9 @@ bool	append_export(t_env *listed_env, char *params)
 	int		len_key;
 
 	key = get_key(params); // Leak si MALLOC == NULL
-	value = get_value(params); // Leak si MALLOC == NULL
+	value = get_value(params);
+	if (value == NULL)
+		return (print_err_false(ERR_MALLOC));
 	len_key = ft_strlen(key);
 	while (listed_env)
 	{

@@ -109,7 +109,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 	return (true);
 }
 
-bool	ft_export(t_data *data)
+void	ft_export(t_data *data)
 {
 	int	i;
 	int	type;
@@ -134,8 +134,8 @@ bool	ft_export(t_data *data)
 			data->return_value = 1; // surement des trucs a free ici avant
 			free_all(data->env_array);
 			data->env_array = listed_env_to_array(data, data->listed_env);
-			return (true);
+			if (data->env_array == NULL)
+				print_err_false(ERR_MALLOC);
 		}
 	}
-	return (true);
 }

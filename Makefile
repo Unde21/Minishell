@@ -5,6 +5,7 @@ SRCS := srcs/main.c \
 		srcs/get_input/get_input.c \
 		srcs/get_input/print_prompt.c \
 		srcs/get_input/handle_signal.c \
+		srcs/get_input/signal_utils.c \
 		srcs/init/init.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/utils_parsing.c \
@@ -34,9 +35,11 @@ SRCS := srcs/main.c \
 		srcs/exec/utils_exec/clear_exec.c\
 		srcs/exec/redir.c \
 		srcs/exec/listed_env_init.c \
+		srcs/exec/env_to_array.c \
 		srcs/exec/exec.c \
-		srcs/exec/child.c\
-		srcs/exec/child_utils.c\
+		srcs/exec/handle_err_dup.c \
+		srcs/exec/handle_child/child.c\
+		srcs/exec/handle_child/child_utils.c\
 		srcs/here_doc/here_doc_init.c \
 		srcs/builtins/exit.c \
 		srcs/builtins/echo.c \

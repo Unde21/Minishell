@@ -38,7 +38,7 @@ bool	ft_cd(t_data *data, t_cmd *cmd);
 bool	display_error(t_data *data, char *params);
 
 // ft_export.c
-bool	ft_export(t_data *data);
+void	ft_export(t_data *data);
 
 // export_utils.c
 int		export_type(char *params, t_env *listed_env);

@@ -32,8 +32,7 @@ static char	*extract_word(char *input, size_t word_size)
 	i = 0;
 	word = malloc(sizeof(char) * (word_size + 1));
 	if (word == NULL)
-		return(print_err_null(ERR_MALLOC));
-
+		return (print_err_null(ERR_MALLOC));
 	while (*input != '\0' && i < word_size)
 	{
 		word[i] = *(input + i);

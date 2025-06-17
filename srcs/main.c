@@ -8,7 +8,8 @@ int	main(int ac, char **av, char **env)
 
 	if (!isatty(STDIN_FILENO) || !isatty(STDOUT_FILENO))
 		exit(1);
-	init_data(&data, ac, av, env);
+	if (init_data(&data, ac, av, env) == false)
+		return (1);
 	get_input(&data);
 	return (0);
 }

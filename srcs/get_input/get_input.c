@@ -25,8 +25,7 @@ static void	handle_input(t_data *data)
 	}
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
-	exec_init(data);
-	// clear_exec(data);
+	exec(data);
 	clear_cmd(data->cmd);
 }
 
