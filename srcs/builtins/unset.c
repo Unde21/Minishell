@@ -15,7 +15,7 @@ void	ft_unset(t_env **listed_env, t_cmd *cmd)
 	{
 		prev = NULL;
 		head = *listed_env;
-		key = get_key(cmd->params[i]);
+		key = get_key(cmd->params[i]); // Leak si MALLOC == NULL
 		while (head)
 		{
 			if (ft_strcmp(head->key, key) == 0)

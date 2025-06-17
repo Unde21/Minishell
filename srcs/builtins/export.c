@@ -28,10 +28,8 @@ static bool	export_new(t_env *listed_env, char *params)
 	return (true);
 }
 
-static bool	export_old(t_env *listed_env, char *params)
+static bool	export_old(t_env *listed_env, char *params, char *key)
 {
-	char	*key;
-
 	key = get_key(params);
 	if (key == NULL)
 		return (false);
@@ -41,17 +39,22 @@ static bool	export_old(t_env *listed_env, char *params)
 		{
 			listed_env->value = get_value(key); // Leak si MALLOC == NULL
 			if (listed_env->value == NULL)
+			{
+				free(key);
 				return (print_err(ERR_MALLOC));
+			}
 			listed_env->full_line = ft_strdup(params); // Leak si MALLOC == NULL
 			if (listed_env->full_line == NULL)
+			{
+				free(key);
 				return (print_err(ERR_MALLOC));
+			}
 		}
 		listed_env = listed_env->next;
 	}
+	free(key);
 	return (true);
 }
-
-
 
 static void	export_no_argument(t_env *listed_env, t_cmd *cmd)
 {
@@ -84,6 +87,9 @@ static void	export_no_argument(t_env *listed_env, t_cmd *cmd)
 
 static bool	export_right_type(t_data *data, int i, int type)
 {
+	char	*key;
+
+	key = NULL;
 	if (type == 1)
 	{
 		if (export_new(data->listed_env, data->cmd->params[i]) == false)
@@ -91,7 +97,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 	}
 	else if (type == 2)
 	{
-		if (export_old(data->listed_env, data->cmd->params[i]) == false)
+		if (export_old(data->listed_env, data->cmd->params[i], key) == false)
 			return (false);
 	}
 	else if (type == 3)

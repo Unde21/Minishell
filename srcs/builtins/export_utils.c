@@ -53,7 +53,7 @@ int	export_type(char *params, t_env *listed_env)
 	char	*key;
 
 	if (!params || !params[0])
-		return (0);
+		return (0); // Error return 0 ?
 	key = get_key(params);
 	if (!key)
 		return (0); // Error return 0 ?

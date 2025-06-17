@@ -15,7 +15,7 @@ char	*get_value(char *params)
 	while (params[i] && params[i] != '=')
 		i++;
 	if (!params[i] || params[i + 1] == '\0')
-		return (ft_strdup(""));
+		return (ft_strdup("")); // faut checker si il foirre dans tout les appels de get_value
 	start = i + 1;
 	len = 0;
 	while (params[start + len])
