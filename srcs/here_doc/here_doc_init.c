@@ -8,14 +8,14 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 	
 	while (1)
 	{
-		line = readline(PROMPT_HERE_DOC);
+		line = readline(PROMPT_HERE_DOC); // secure readline
 		if (g_return_value == 130)
 		{
 			free(line);
 			data->return_value = 130;
 			break ;
 		}
-		if (!line && g_return_value == 0)
+		if (!line && g_return_value == 0) // Leak de fd dans ce cas la + leak de params
 		{
 			free(line);
 			data->return_value = 0;
@@ -30,14 +30,15 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 			break ;
 		}
 		if (is_expand_redir(line))
+		{
 			if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
 			{
 				data->return_value = 1;
 				free(line);
 				break ;
 			}
-		write(fd_heredoc, line, ft_strlen(line));
-		write(fd_heredoc, "\n", 1);
+		}
+		ft_dprintf(fd_heredoc, "%s\n", line);
 		free(line);
 	}
 	close(fd_heredoc);
