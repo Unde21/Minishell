@@ -64,7 +64,6 @@ void	exec_init(t_data *data)
 	// CONFLIT
 	while (data->cmd)
 	{
-		data->env_array = listed_env_to_array(data, data->listed_env);
 		init(data, &path_cmd, &data->return_value);
 		if (data->cmd->next == NULL && data->return_value == 0
 			&& is_builtin(data))
