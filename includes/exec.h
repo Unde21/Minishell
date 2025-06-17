@@ -27,8 +27,7 @@ t_env					*create_node(t_data *data, int i);
 void					add_back(t_env *new_node, t_env **stack);
 
 //// getters ////
-char					*get_path_cmd(t_data *data, char **params,
-							char *path_cmd, int *return_value);
+char					*get_path_cmd(t_data *data, char **params, int *return_value);
 char					**listed_env_to_array(t_data *data, t_env *listed_env);
 int						get_list_size(t_data *data);
 char					*get_value(char *params);

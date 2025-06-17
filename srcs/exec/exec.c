@@ -1,9 +1,9 @@
 #include "builtins.h"
 #include "exec.h"
 #include "parsing.h"
-#include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
-# include <fcntl.h>
+#include <unistd.h>
 
 static void	set_pipe(t_cmd *cmd)
 {
@@ -83,14 +83,13 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			{
 				if (is_access_ok(data->cmd->params[0], &data->return_value))
 				{
-					*path_cmd = ft_strdup(data->cmd->params[0]); // execve foire si le malloc est NULL il devrait pas aller jusqu
+					*path_cmd = ft_strdup(data->cmd->params[0]);
 					if (*path_cmd == NULL)
 						*return_value = 1;
 				}
 			}
 			else
-				*path_cmd = get_path_cmd(data, data->cmd->params,
-						*path_cmd, return_value);
+				*path_cmd = get_path_cmd(data, data->cmd->params, return_value);
 			if (*path_cmd == NULL)
 				print_access_error(data->cmd->params[0], data);
 		}
@@ -108,10 +107,11 @@ void	exec_init(t_data *data)
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
+	data->env_array = listed_env_to_array(data, data->listed_env);
 	while (data->cmd)
 	{
 		data->return_value = 0;
-		data->env_array = listed_env_to_array(data, data->listed_env);
+		
 		if (data->cmd->next == NULL && solo_builtin(data))
 		{
 			data->cmd = head_cmd;
@@ -137,5 +137,6 @@ void	exec_init(t_data *data)
 	data->cmd = head_cmd;
 	reset_signal();
 	close_fd(head_cmd);
+	free_all(data->env_array);
 	wait_child(last_pid, &data->return_value);
 }
