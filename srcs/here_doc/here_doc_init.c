@@ -1,8 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
-#include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
-# include <fcntl.h>
+#include <unistd.h>
 
 char	*get_random_name(char *here_doc)
 {
@@ -13,16 +13,12 @@ char	*get_random_name(char *here_doc)
 	i = 0;
 	here_doc = malloc(sizeof(char) * 26);
 	if (!here_doc)
-	{
-		print_err(ERR_MALLOC);
-		return (NULL);
-	}
+		return (print_err_null(ERR_MALLOC));
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
 	{
-		print_err(ERR_OP_FD);
 		free(here_doc);
-		return (NULL);
+		return (print_err_null(ERR_OP_FD));
 	}
 	while (i < 25)
 	{
@@ -59,14 +55,14 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 			data->return_value = 130;
 			break ;
 		}
-		if (!line && g_return_value == 0) // Leak de fd dans ce cas la + leak de params
-		{
-			free(line);
-			data->return_value = 0;
-			ft_printf("> bash: warning: here-document delimited by end-of-file (wanted `%s')\n",
-				limiter);
-			break ;
-		}
+		if (!line && g_return_value == 0) // Leak de fd dans ce cas la +leak de params
+			{
+				free(line);
+				data->return_value = 0;
+				ft_printf("> bash: warning: here-document delimited by end-of-file (wanted `%s')\n",
+					limiter);
+				break ;
+			}
 		if (!ft_strcmp(line, limiter))
 		{
 			free(line);
@@ -101,9 +97,8 @@ char	*heredoc(t_data *data, char *limiter)
 	fd_heredoc = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd_heredoc == -1)
 	{
-		print_err(ERR_OP_FD);
 		free(filename);
-		return (NULL);
+		return (print_err_null(ERR_OP_FD));
 	}
 	fill_heredoc(data, fd_heredoc, limiter);
 	return (filename);

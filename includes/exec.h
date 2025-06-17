@@ -40,6 +40,7 @@ void					wait_child(pid_t last_pid, int *return_value);
 
 //// utils ////
 void					clear_exec(t_data *data);
+void					execute_builtins(t_data *data);
 void					free_listed_env(t_data *data);
 void					close_fd(t_cmd *cmd);
 bool					is_builtin(t_data *data);

@@ -72,13 +72,13 @@ bool	remove_quote(t_data *data, char **params)
 
 	dup = ft_strdup("");
 	if (dup == NULL)
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	if (remove_quote_loop(*params, &dup) == false)
 	{
 		data->return_value = 1;
 		if (dup != NULL)
 			free(dup);
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	}
 	free(*params);
 	*params = dup;

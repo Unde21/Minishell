@@ -8,12 +8,12 @@ static bool	dup_child(t_cmd *cmd)
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 	{
 		close(cmd->fd_in);
-		return (print_err(ERR_DUP));
+		return (print_err_false(ERR_DUP));
 	}
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
 	{
 		close(cmd->fd_out);
-		return (print_err(ERR_DUP));
+		return (print_err_false(ERR_DUP));
 	}
 	if (cmd->pipe_fd[0] != STDIN_FILENO && cmd->pipe_fd[0] != -1)
 		close(cmd->pipe_fd[0]);
@@ -61,7 +61,7 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	if (params_cpy == NULL)
 	{
 		data->return_value = 1;
-		print_err(ERR_MALLOC);
+		print_err_false(ERR_MALLOC);
 		free_and_exit(data, path_cmd, head, params_cpy);
 	}
 	i = -1;
@@ -71,7 +71,7 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 		if (params_cpy[i] == NULL)
 		{
 			data->return_value = 1;
-			print_err(ERR_MALLOC);
+			print_err_false(ERR_MALLOC);
 			free_and_exit(data, path_cmd, head, params_cpy);
 		}
 	}

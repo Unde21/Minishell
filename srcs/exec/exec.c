@@ -13,7 +13,7 @@ static void	set_pipe(t_cmd *cmd)
 	if (pipe(cmd->pipe_fd) < 0)
 	{
 		close_fd(head);
-		print_err(ERR_PIPE);
+		print_err_false(ERR_PIPE);
 	}
 	if (cmd->fd_out == STDOUT_FILENO)
 		cmd->fd_out = cmd->pipe_fd[1];
@@ -55,7 +55,7 @@ void	exec_init(t_data *data)
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	if (data->env_array == NULL)
 	{
-		print_err(ERR_MALLOC);
+		print_err_false(ERR_MALLOC);
 		data->return_value = 1;
 		return ;
 	}
@@ -80,7 +80,7 @@ void	exec_init(t_data *data)
 			if (pid < 0)
 			{
 				close_fd(head_cmd);
-				print_err(ERR_FORK);
+				print_err_false(ERR_FORK);
 			}
 			else if (pid == 0)
 				init_child(data, path_cmd, head_cmd);

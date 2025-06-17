@@ -32,10 +32,8 @@ static char	*extract_word(char *input, size_t word_size)
 	i = 0;
 	word = malloc(sizeof(char) * (word_size + 1));
 	if (word == NULL)
-	{
-		print_err(ERR_MALLOC);
-		return (NULL);
-	}
+		return(print_err_null(ERR_MALLOC));
+
 	while (*input != '\0' && i < word_size)
 	{
 		word[i] = *(input + i);
@@ -51,14 +49,14 @@ static bool	is_double_quote_missing(char *word, size_t word_size,
 	if (word_size == 1 && check_quote != NO_QUOTE
 		&& word[0] == ASCII_DBLE_QUOTE)
 	{
-		print_err(MISS_DBLE_QUOTE);
+		print_err_false(MISS_DBLE_QUOTE);
 		return (true);
 	}
 	else if ((word[word_size - 1] != ASCII_DBLE_QUOTE
 			&& check_quote == ASCII_DBLE_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_DBLE_QUOTE))
 	{
-		print_err(MISS_DBLE_QUOTE);
+		print_err_false(MISS_DBLE_QUOTE);
 		return (true);
 	}
 	return (false);
@@ -71,14 +69,14 @@ static bool	is_quote_missing(char *word, size_t word_size, int check_quote)
 	else if (word_size == 1 && check_quote != NO_QUOTE
 		&& word[0] == ASCII_SNGL_QUOTE)
 	{
-		print_err(MISS_SNGL_QUOTE);
+		print_err_false(MISS_SNGL_QUOTE);
 		return (true);
 	}
 	if ((word[word_size - 1] != ASCII_SNGL_QUOTE
 			&& check_quote == ASCII_SNGL_QUOTE) || (check_quote == NO_QUOTE
 			&& word[word_size - 1] == ASCII_SNGL_QUOTE))
 	{
-		print_err(MISS_SNGL_QUOTE);
+		print_err_false(MISS_SNGL_QUOTE);
 		return (true);
 	}
 	return (false);

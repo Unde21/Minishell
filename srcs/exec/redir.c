@@ -10,14 +10,14 @@ static bool	redir_out(t_cmd *cmd)
 		cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
 				0644);
 		if (cmd->fd_out < 0)
-			return (print_err(ERR_OP_FD));
+			return (print_err_false(ERR_OP_FD));
 	}
 	if (cmd->redir->type == APPEND)
 	{
 		cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
 				0644);
 		if (cmd->fd_out < 0)
-			return (print_err(ERR_OP_FD));
+			return (print_err_false(ERR_OP_FD));
 	}
 	return (true);
 }
@@ -28,7 +28,7 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 	{
 		cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 		if (cmd->fd_in < 0)
-			return (print_err(ERR_OP_FD));
+			return (print_err_false(ERR_OP_FD));
 	}
 	if (cmd->redir->type == HERE_DOC)
 	{
@@ -38,7 +38,7 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 		{
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 			if (cmd->fd_in < 0)
-				return (print_err(ERR_OP_FD));
+				return (print_err_false(ERR_OP_FD));
 			unlink(cmd->redir->file);
 			return (true);
 		}

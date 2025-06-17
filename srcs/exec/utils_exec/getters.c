@@ -20,7 +20,6 @@ char	*get_value(char *params)
 		i++;
 	if (!params[i] || params[i + 1] == '\0')
 		return (ft_strdup(""));
-	// faut checker si il foirre dans tout les appels de get_value
 	start = i + 1;
 	len = 0;
 	while (params[start + len])
@@ -39,19 +38,21 @@ char	*get_key(char *env)
 {
 	char	*key;
 	int		i;
+	char	*env_dup;
 
 	key = NULL;
 	i = 0;
 	while (env[i] && env[i] != '=' && env[i] != '+')
 		i++;
 	if (env[i] == '\0')
-		return (ft_strdup(env));
-	key = malloc(sizeof(char) * (i + 1)); // Leak si MALLOC == NULL
-	if (!key)
 	{
-		print_err(ERR_MALLOC);
-		return (NULL);
+		env_dup = ft_strdup(env);
+		if (!env_dup)
+			return (print_err_null(ERR_MALLOC));
 	}
+	key = NULL; // malloc(sizeof(char) * (i + 1)); // Leak si MALLOC == NULL
+	if (!key)
+		return (print_err_null(ERR_MALLOC));
 	i = -1;
 	while (env[++i] && env[i] != '=' && env[i] != '+')
 		key[i] = env[i];
