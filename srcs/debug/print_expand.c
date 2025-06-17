@@ -36,7 +36,6 @@ static void	print_special_operator_expand(t_redir *current_redir)
 
 void	print_lst_cmd_expand(t_cmd *cmd)
 {
-	size_t	i;
 	t_redir	*current_redir;
 
 	if (cmd == NULL)
@@ -44,7 +43,6 @@ void	print_lst_cmd_expand(t_cmd *cmd)
 	ft_printf("%s", PRINT_EXPAND);
 	while (cmd != NULL)
 	{
-		i = 0;
 		ft_printf("%s", START_SEP_LINE_EXPAND);
 		print_cmd_args_expanded(cmd);
 		current_redir = cmd->redir;

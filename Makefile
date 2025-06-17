@@ -43,6 +43,7 @@ SRCS := srcs/main.c \
 		srcs/builtins/cd.c \
 		srcs/builtins/cd_utils.c \
 		srcs/builtins/export.c \
+		srcs/builtins/export_utils.c \
 		srcs/builtins/unset.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \
@@ -105,7 +106,7 @@ DONE := "🏁"
 all: $(NAME)
 
 $(NAME): reset_debug libft/libft.a $(OBJS)
-	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(INCS) -DDEBUG_VALUE=$(DEBUG_VALUE) ./libft/libft.a -o $@
+	@$(CC) $(CFLAGS) $(OBJS) $(INCS) -DDEBUG_VALUE=$(DEBUG_VALUE) ./libft/libft.a -o $@ -lreadline
 	@echo -e "$(OK)$(MAGENTA)$(BOLD) Compilation successful !$(SUCCESS)$(END)"
 	@echo $(DEBUG_VALUE) > $(DEBUG_FILE)
 

@@ -17,6 +17,7 @@
 # define ERR_FORK "error: fork failed\n"
 # define ERR_DUP "error: dup failed\n"
 # define ERR_EXECVE "error: execve failed\n"
+# define QUIT "Quit (core dumped)\n"
 // # define PATH "PATH=/home/erbuffet/bin:/home/erbuffet/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/erbuffet/.dotnet/tools"
 
 typedef struct s_env	t_env;
@@ -52,7 +53,6 @@ bool					is_solo_builtin(char **params);
 bool					is_child_builtin(char **params);
 bool					child_builtin(t_data *data);
 bool					solo_builtin(t_data *data);
-bool					is_access_ok(char *path, int *return_value,
-							char **path_cmd);
+bool					is_access_ok(char *path, int *return_value);
 
 #endif

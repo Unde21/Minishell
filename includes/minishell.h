@@ -128,7 +128,7 @@ bool				init_cmd_args(t_cmd *cmd);
 // utils.c
 bool				print_err(char *str_error);
 void				reset_g_return_value(t_data *data);
-void				print_access_error(char *params);
+void				print_access_error(char *params, t_data *data);
 void				print_ambiguous(char *s);
 
 // clear_data.c
@@ -145,6 +145,7 @@ void				clear_all_data(t_data *data);
 void				get_prompt(t_data *data, char **prompt);
 
 // handle_signal.c
+int					do_nothing(void);
 void				set_signal_action(void);
 void				reset_signal(void);
 

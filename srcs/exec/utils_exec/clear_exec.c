@@ -2,6 +2,19 @@
 #include "exec.h"
 
 
+	head = *listed_env;
+	if (head == NULL)
+		return ;
+	while (head)
+	{
+		free(head->key);
+		free(head->value);
+		free(head->full_line);
+		free(head);
+		*listed_env = (*listed_env)->next;
+		head = *listed_env;
+	}
+}
 
 void	close_fd(t_cmd *cmd)
 {
@@ -14,8 +27,8 @@ void	close_fd(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
-// void	clear_exec(t_data *data)
-// {
-// 	close_fd(data->cmd);
-// 	free_listed_env();
-// }
+
+void	clear_exec(t_data *data)
+{
+	clear_listed_env(&data->listed_env);
+}

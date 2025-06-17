@@ -16,11 +16,11 @@ void	ft_echo(t_cmd *cmd)
 	}
 	while (cmd->params[i])
 	{
-		ft_printf("%s", cmd->params[i]);
+		ft_dprintf(cmd->fd_out, "%s", cmd->params[i]);
 		if (cmd->params[i + 1] != NULL)
-			ft_printf(" ");
+			ft_dprintf(cmd->fd_out, " ");
 		++i;
 	}
 	if (new_line == true)
-		ft_printf("\n");
+		ft_dprintf(cmd->fd_out, "\n");
 }

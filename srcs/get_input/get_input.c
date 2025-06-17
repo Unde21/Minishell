@@ -9,8 +9,10 @@ int			g_return_value = 0;
 
 static void	handle_input(t_data *data)
 {
+
 	if (ft_strcmp(data->line_read, "") == 0)
 		return ;
+
 	if (init_lst(data) == false)
 	{
 		data->return_value = 1;
@@ -27,11 +29,6 @@ static void	handle_input(t_data *data)
 	free(data->token_lst);
 	exec_init(data);
 	clear_cmd(data->cmd);
-}
-
-static int	do_nothing(void)
-{
-	return (0);
 }
 
 static void	exit_with_right_value(t_data *data, char *prompt)

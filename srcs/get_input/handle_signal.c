@@ -12,10 +12,15 @@ static void	signal_handler(int signal)
 		{
 			rl_pending_input = 'n';
 		}
-		ft_printf("^C");
 		rl_replace_line("", 0);
+		ft_printf("^C");
 		rl_done = 1;
 	}
+}
+
+int	do_nothing(void)
+{
+	return (0);
 }
 
 void	set_signal_action(void)
@@ -31,12 +36,8 @@ void	set_signal_action(void)
 
 static void	signal_handler_child(int signal)
 {
-	if (signal == SIGINT)
-		ft_printf("\n");
-	if (signal == SIGQUIT)
-		ft_printf("Quit (core dumped)\n");
+	(void)signal;
 }
-
 
 void	reset_signal(void)
 {

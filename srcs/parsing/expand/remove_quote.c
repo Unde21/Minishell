@@ -18,98 +18,69 @@ size_t	new_length(char *s)
 	return (len);
 }
 
-char	*ft_strndup(char *s, size_t *j)
+bool	duplicate_params(size_t *i, int quote, char *params, char **dup)
 {
-	size_t	i;
-	size_t	len;
-	char	*dup;
-	bool	in_quote;
+	size_t	index;
+	char	*tmp;
 
-	in_quote = false;
-	len = new_length(s);
-	dup = malloc(sizeof(char) * (len + 1));
-	if (dup == NULL)
-		return (NULL);
-	i = 0;
-	len = 0;
-	while (s[i])
+	index = *i;
+	while (params[index] != quote && params[index])
+		++index;
+	tmp = malloc(sizeof(char) * (index - *i + 1));
+	if (tmp == NULL)
+		return (false);
+	index = 0;
+	while (params[*i] != quote && params[*i])
 	{
-		if (s[i] != ASCII_DBLE_QUOTE)
-		{
-			dup[len] = s[i];
-			++len;
-		}
-		++i;
+		tmp[index] = params[*i];
+		++(*i);
+		++index;
 	}
-	dup[len] = '\0';
-	*j += i;
-	return (dup);
+	tmp[index] = '\0';
+	*dup = ft_strjoin_and_free(*dup, tmp);
+	free(tmp);
+	if (*dup == NULL)
+	{
+		return (false);
+	}
+	return (true);
 }
 
-bool	remove_quote_loop(char **params, char **dup)
+bool	remove_quote_loop(char *params, char **dup)
 {
 	size_t	i;
-	size_t	j;
-	size_t	k;
+	int		quote;
 
 	i = 0;
+	quote = wich_quote(params);
 	while (params[i])
 	{
-		j = 0;
-		while (params[i][j])
+		if (params[i] != quote)
 		{
-			if (params[i][j++] == ASCII_DBLE_QUOTE)
-			{
-				ft_strjoin_and_free(dup[i], ft_strndup(&params[i][j], &j));
-				if (dup[i] == NULL)
-				{
-					free_delim(dup, i);
-					return (false);
-				}
-				free(params[i]);
-				params[i] = dup[i];
-			}
-			else
-			{
-				k = j;
-				while (params[i][k])
-					++k;
-				dup[i] = malloc(sizeof(char) * (k + 1));
-				k = 0;
-				while (params[i][j])
-				{
-					dup[i][k] = params[i][j];
-					++j;
-					++k;
-				}
-			}
-			++j;
+			if (duplicate_params(&i, quote, params, dup) == false)
+				return (false);
 		}
-		++i;
+		else
+			++i;
 	}
 	return (true);
 }
 
 bool	remove_quote(t_data *data, char **params)
 {
-	size_t	len;
-	char	**tmp;
-	char	**dup;
+	char	*dup;
 
-	tmp = params;
-	len = ft_strlen(*params);
-	dup = malloc(sizeof(char *) * (len + 1));
+	dup = ft_strdup("");
 	if (dup == NULL)
+		return (print_err(ERR_MALLOC));
+	if (remove_quote_loop(*params, &dup) == false)
 	{
 		data->return_value = 1;
+		if (dup != NULL)
+			free(dup);
 		return (print_err(ERR_MALLOC));
 	}
-	if (remove_quote_loop(params, dup) == false)
-	{
-		data->return_value = 1;
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
-	}
-	free(dup);
+	free(*params);
+	*params = dup;
 	return (true);
 }

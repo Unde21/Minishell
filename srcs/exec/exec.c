@@ -78,15 +78,18 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 					'/') != NULL)
 			{
-				if (is_access_ok(data->cmd->params[0], &data->return_value,
-						path_cmd))
-					*path_cmd = data->cmd->params[0];
+				if (is_access_ok(data->cmd->params[0], &data->return_value))
+				{
+					*path_cmd = ft_strdup(data->cmd->params[0]); // execve foire si le malloc est NULL il devrait pas aller jusqu execve
+					if (*path_cmd == NULL)
+						*return_value = 1;
+				}
 			}
 			else
 				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
 						return_value);
 			if (*path_cmd == NULL)
-				print_access_error(data->cmd->params[0]);
+				print_access_error(data->cmd->params[0], data);
 		}
 		return ;
 	}
@@ -105,7 +108,7 @@ void	exec_init(t_data *data)
 	while (data->cmd)
 	{
 		data->return_value = 0;
-		if (solo_builtin(data) && data->cmd->next == NULL)
+		if (data->cmd->next == NULL && solo_builtin(data))
 		{
 			data->cmd = head_cmd;
 			return ;

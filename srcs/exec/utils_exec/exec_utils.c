@@ -30,6 +30,13 @@ bool	child_builtin(t_data *data)
 		else if (ft_strcmp(data->cmd->params[0], "exit") == 0)
 			ft_exit(data, data->cmd);
 		return (true);
+		if (ft_strcmp(data->cmd->params[0], "cd") == 0)
+			ft_cd(data, data->cmd);
+		else if (ft_strcmp(data->cmd->params[0], "export") == 0)
+			ft_export(data);
+		else if (ft_strcmp(data->cmd->params[0], "unset") == 0)
+			ft_unset(&data->listed_env, data->cmd);
+		return (true);
 	}
 	else
 		return (false);
@@ -77,13 +84,12 @@ bool	is_child_builtin(char **params)
 	return (false);
 }
 
-bool	is_access_ok(char *path, int *return_value, char **path_cmd)
+bool	is_access_ok(char *path, int *return_value)
 {
 	if (access(path, F_OK) == 0)
 	{
 		if (access(path, X_OK) == 0)
 		{
-			*path_cmd = ft_strdup(path);
 			*return_value = 0;
 			return (true);
 		}

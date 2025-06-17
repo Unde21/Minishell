@@ -56,10 +56,8 @@ char	*get_pattern(char *s, size_t i)
 static char	*get_cpy_pattern_loop(char *wildcards, int nb_file, char *cpy_file,
 		DIR *current_dir)
 {
-	size_t			index;
 	struct dirent	*read_file;
 
-	index = 0;
 	errno = 0;
 	while (1)
 	{
