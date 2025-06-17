@@ -4,6 +4,8 @@
 
 bool	is_builtin(t_data *data)
 {
+	if (data->cmd->params[0] == NULL)
+		return (false);
 	if (ft_strcmp(data->cmd->params[0], "echo") == 0)
 		return (ft_echo(data->cmd));
 	else if (ft_strcmp(data->cmd->params[0], "pwd") == 0)
@@ -24,8 +26,13 @@ bool	is_builtin(t_data *data)
 	return (false);
 }
 
-bool	is_access_ok(char *path, int *return_value)
+bool	is_access_ok(char *path, int *return_value, char **params)
 {
+	if (params[0][0] == '\0' || params == NULL)
+	{
+		*return_value = 127;
+		return (false);
+	}
 	if (access(path, F_OK) == 0)
 	{
 		if (access(path, X_OK) == 0)

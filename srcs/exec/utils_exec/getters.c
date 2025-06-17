@@ -80,14 +80,12 @@ char	**listed_env_to_array(t_data *data, t_env *listed_env)
 	return (data->env_array);
 }
 
-char	*get_path_cmd(t_data *data, char **params, char *path_cmd,
-		int *return_value)
+char	*get_path_cmd(t_data *data, char **params, int *return_value)
 {
 	int		i;
 	char	*path_value;
 	char	**path;
 
-	(void)path_cmd;
 	path_value = NULL;
 	i = -1;
 	while (data->env_array[++i])
@@ -117,7 +115,7 @@ char	*get_path_cmd(t_data *data, char **params, char *path_cmd,
 			free(path);
 			return (NULL);
 		}
-		if (is_access_ok(path[i], return_value))
+		if (is_access_ok(path[i], return_value, params))
 			return (path[i]);
 	}
 	free_all(path);
