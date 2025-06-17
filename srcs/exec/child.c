@@ -39,13 +39,15 @@ void	wait_child(pid_t last_pid, int *return_value)
 
 void	dup_child(t_cmd *cmd)
 {
-	if (dup2(cmd->fd_in, STDIN_FILENO) == -1) // faut free de trucs avant de exit
+	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+	// faut free de trucs avant de exit
 	{
 		close(cmd->fd_in);
 		print_err(ERR_DUP);
 		exit(1);
 	}
-	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1) // faut free de trucs avant de exit
+	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+	// faut free de trucs avant de exit
 	{
 		close(cmd->fd_out);
 		print_err(ERR_DUP);
@@ -57,7 +59,7 @@ void	dup_child(t_cmd *cmd)
 		close(cmd->pipe_fd[1]);
 }
 
-void	init_child(t_data *data, char *path_cmd, t_cmd *head)
+void	init_child(char **env_array, t_data *data, char *path_cmd, t_cmd *head)
 {
 	char	**params_cpy;
 	int		i;
@@ -66,16 +68,18 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	while (data->cmd->params[i])
 		++i;
 	params_cpy = malloc(sizeof(char *) * (i + 1)); // secure
+	if (!params_cpy)
+		return ;
+	params_cpy[i] = NULL;
 	i = -1;
 	while (data->cmd->params[++i])
-	params_cpy[i] = ft_strdup(data->cmd->params[i]); // secure
-	// params_cpy[i] = NULL; // -> je sais pas ce que sa fou la
+		params_cpy[i] = ft_strdup(data->cmd->params[i]);
 	set_signal_action_child();
 	dup_child(data->cmd);
 	if (data->return_value != 0)
 	{
 		free(path_cmd);
-		free_all(params_cpy	);
+		free_all(params_cpy);
 		exit(data->return_value);
 	}
 	if (child_builtin(data))
@@ -84,7 +88,7 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 		exit(data->return_value);
 	}
 	close_fd(head);
-	execve(path_cmd, params_cpy, data->env);
+	execve(path_cmd, params_cpy, env_array);
 	perror(ERR_EXECVE);
 	free(path_cmd);
 	free_all(params_cpy);

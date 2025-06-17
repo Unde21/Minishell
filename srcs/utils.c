@@ -23,6 +23,7 @@ void	print_access_error(char *params, t_data *data)
 		print_err(ERR_MALLOC);
 		return ;
 	}
+	// data->return_value = 127;
 	ft_dprintf(2, "bash: %s: ", params);
 	ft_dprintf(2, "command not found\n");
 }

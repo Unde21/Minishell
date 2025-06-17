@@ -67,7 +67,7 @@ static bool	init_redir(t_data *data, t_cmd *cmd)
 	return (true);
 }
 
-void	init(t_data *data, char **path_cmd, int *return_value)
+void	init(char **env_array, t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
 		set_pipe(data->cmd);
@@ -80,14 +80,14 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			{
 				if (is_access_ok(data->cmd->params[0], &data->return_value))
 				{
-					*path_cmd = ft_strdup(data->cmd->params[0]); // execve foire si le malloc est NULL il devrait pas aller jusqu execve
+					*path_cmd = ft_strdup(data->cmd->params[0]);
 					if (*path_cmd == NULL)
 						*return_value = 1;
 				}
 			}
 			else
-				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
-						return_value);
+				*path_cmd = get_path_cmd(env_array, data->cmd->params,
+						*path_cmd, return_value);
 			if (*path_cmd == NULL)
 				print_access_error(data->cmd->params[0], data);
 		}
@@ -99,6 +99,7 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 void	exec_init(t_data *data)
 {
 	char	*path_cmd;
+	char	**env_array;
 	t_cmd	*head_cmd;
 	pid_t	last_pid;
 	pid_t	pid;
@@ -108,12 +109,13 @@ void	exec_init(t_data *data)
 	while (data->cmd)
 	{
 		data->return_value = 0;
+		env_array = listed_env_to_array(data->listed_env);
 		if (data->cmd->next == NULL && solo_builtin(data))
 		{
 			data->cmd = head_cmd;
 			return ;
 		}
-		init(data, &path_cmd, &data->return_value);
+		init(env_array, data, &path_cmd, &data->return_value);
 		if (data->return_value == 0 && path_cmd != NULL)
 		{
 			pid = fork();
@@ -123,7 +125,7 @@ void	exec_init(t_data *data)
 				print_err(ERR_FORK);
 			}
 			else if (pid == 0 && path_cmd != NULL)
-				init_child(data, path_cmd, head_cmd);
+				init_child(env_array, data, path_cmd, head_cmd);
 			if (data->cmd->next == NULL)
 				last_pid = pid;
 		}
