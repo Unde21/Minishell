@@ -50,4 +50,7 @@ bool					is_builtin(t_data *data);
 bool					is_access_ok(char *path, int *return_value, char **params);
 size_t					get_total_length(char **params);
 
+// redir.c
+bool	init_redir(t_data *data, t_cmd *cmd);
+
 #endif

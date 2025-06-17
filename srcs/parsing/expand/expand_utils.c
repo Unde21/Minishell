@@ -84,7 +84,7 @@ static char	*get_env_value(char *var_name, t_env *listed_env, bool is_quote)
 	{
 		len_var_name = ft_strlen(var_name);
 		if (len_var_name != 0 && ft_strncmp(current->key,
-				var_name, len_var_name) == 0)
+				var_name, len_var_name + 1) == 0)
 			break ;
 		current = current->next;
 	}

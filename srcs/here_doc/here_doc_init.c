@@ -20,7 +20,7 @@ char	*get_random_name(char *here_doc)
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
 	{
-		print_err("ERROR : opening /dev/random in get_random_name !\n");
+		print_err(ERR_OP_FD);
 		free(here_doc);
 		return (NULL);
 	}
@@ -52,7 +52,7 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 
 	while (1)
 	{
-		line = readline(PROMPT_HERE_DOC); // secure readline
+		line = readline(PROMPT_HERE_DOC);
 		if (g_return_value == 130)
 		{
 			free(line);
@@ -63,12 +63,10 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 		{
 			free(line);
 			data->return_value = 0;
-			ft_printf("> bash: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n",
+			ft_printf("> bash: warning: here-document delimited by end-of-file (wanted `%s')\n",
 				limiter);
 			break ;
 		}
-		if (!line)
-			break ;
 		if (!ft_strcmp(line, limiter))
 		{
 			free(line);
