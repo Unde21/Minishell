@@ -9,8 +9,10 @@ int			g_return_value = 0;
 
 static void	handle_input(t_data *data)
 {
+
 	if (ft_strcmp(data->line_read, "") == 0)
 		return ;
+
 	if (init_lst(data) == false)
 	{
 		data->return_value = 1;

@@ -3,133 +3,55 @@
 #include "minishell.h"
 #include "parsing.h"
 
-static void	reset(t_env *listed_env)
-{
-	t_env	*reset;
-
-	reset = listed_env;
-	while (reset)
-	{
-		reset->printed = 0;
-		reset = reset->next;
-	}
-}
-
-static int	lst_size(t_env *head)
-{
-	int		count;
-	t_env	*current;
-
-	count = 0;
-	current = head;
-	while (current)
-	{
-		count++;
-		current = current->next;
-	}
-	return (count);
-}
-
-static bool	is_key_valid(char *params)
-{
-	int	i;
-
-	i = -1;
-	if (!params || !(ft_isalpha(params[0]) || params[0] == '_'))
-		return (false);
-	while (params[++i])
-	{
-		if (params[i] == '=')
-			break ;
-		if (params[i] == '+' && params[i + 1] == '=')
-			break ;
-		if (!ft_isalnum(params[i]) && params[i] != '_')
-			return (false);
-	}
-	return (true);
-}
-
-static int	export_type(char *params, t_env *listed_env)
-{
-	char	*key;
-
-	if (!params || !params[0])
-		return (0);
-	key = get_key(params);
-	if (!key)
-		return (0);
-	while (listed_env)
-	{
-		if (ft_strcmp(key, listed_env->key) == 0)
-		{
-			free(key);
-			return (2);
-		}
-		if (ft_strnstr(params, "+=", ft_strlen(key) + 2) != NULL)
-		{
-			free(key);
-			return (3);
-		}
-		listed_env = listed_env->next;
-	}
-	free(key);
-	return (1);
-}
-
-static void	export_new(t_env *listed_env, char *params)
+static bool	export_new(t_env *listed_env, char *params)
 {
 	t_env	*new_node;
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return ;
+		return (print_err(ERR_MALLOC));
 	else
 	{
-		new_node->key = get_key(params);
-		new_node->value = get_value(params);
-		new_node->full_line = ft_strdup(params);
+		new_node->key = get_key(params); // Leak si MALLOC == NULL
+		if (new_node->key == NULL)
+			return (false);
+		new_node->value = get_value(params); // Leak si MALLOC == NULL
+		if (new_node->value == NULL)
+			return (print_err(ERR_MALLOC));
+		new_node->full_line = ft_strdup(params); // Leak si MALLOC == NULL
+		if (new_node->full_line == NULL)
+			return (print_err(ERR_MALLOC));
 		new_node->printed = 0;
 		new_node->next = NULL;
 	}
 	add_back(new_node, &listed_env);
+	return (true);
 }
 
-static void	export_old(t_env *listed_env, char *params)
+static bool	export_old(t_env *listed_env, char *params)
 {
 	char	*key;
 
 	key = get_key(params);
+	if (key == NULL)
+		return (false);
 	while (listed_env)
 	{
 		if (ft_strcmp(listed_env->key, key) == 0)
 		{
-			listed_env->value = get_value(key);
-			listed_env->full_line = ft_strdup(params);
+			listed_env->value = get_value(key); // Leak si MALLOC == NULL
+			if (listed_env->value == NULL)
+				return (print_err(ERR_MALLOC));
+			listed_env->full_line = ft_strdup(params); // Leak si MALLOC == NULL
+			if (listed_env->full_line == NULL)
+				return (print_err(ERR_MALLOC));
 		}
 		listed_env = listed_env->next;
 	}
+	return (true);
 }
 
-static void	append_export(t_env *listed_env, char *params)
-{
-	char	*key;
-	char	*value;
-	int		len_key;
 
-	key = get_key(params);
-	value = get_value(params);
-	len_key = ft_strlen(key);
-	while (listed_env)
-	{
-		if (ft_strncmp(key, listed_env->key, len_key) == 0)
-		{
-			listed_env->value = ft_strjoin_and_free(listed_env->value, value);
-			listed_env->full_line = ft_strjoin_and_free(listed_env->full_line,
-					value);
-		}
-		listed_env = listed_env->next;
-	}
-}
 
 static void	export_no_argument(t_env *listed_env, t_cmd *cmd)
 {
@@ -159,6 +81,27 @@ static void	export_no_argument(t_env *listed_env, t_cmd *cmd)
 	reset(listed_env);
 }
 
+
+static bool	export_right_type(t_data *data, int i, int type)
+{
+	if (type == 1)
+	{
+		if (export_new(data->listed_env, data->cmd->params[i]) == false)
+			return (false);
+	}
+	else if (type == 2)
+	{
+		if (export_old(data->listed_env, data->cmd->params[i]) == false)
+			return (false);
+	}
+	else if (type == 3)
+	{
+		if (append_export(data->listed_env, data->cmd->params[i]) == false)
+			return (false);
+	}
+	return (true);
+}
+
 void	ft_export(t_data *data)
 {
 	int	i;
@@ -172,18 +115,17 @@ void	ft_export(t_data *data)
 	{
 		if (!is_key_valid(data->cmd->params[i]))
 		{
-			ft_putstr_fd("export: `", STDERR_FILENO);
-			ft_putstr_fd(data->cmd->params[i], STDERR_FILENO);
-			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+			ft_dprintf(STDERR_FILENO, "bash: export: `%s'",
+				data->cmd->params[i]);
+			ft_dprintf(STDERR_FILENO, ERR_EXPORT);
 			data->return_value = 1;
 			continue ;
 		}
 		type = export_type(data->cmd->params[i], data->listed_env);
-		if (type == 1)
-			export_new(data->listed_env, data->cmd->params[i]);
-		else if (type == 2)
-			export_old(data->listed_env, data->cmd->params[i]);
-		else if (type == 3)
-			append_export(data->listed_env, data->cmd->params[i]);
+		if (export_right_type(data, i, type) == false)
+		{
+			data->return_value = 1; // surement des trucs a free ici avant
+			return ;
+		}
 	}
 }

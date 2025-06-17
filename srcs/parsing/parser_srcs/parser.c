@@ -17,11 +17,11 @@ static bool	check_error(t_token *current)
 	return (true);
 }
 
-bool	parser(t_data *data, t_cmd **cmd)
+bool	parser(t_data *data, t_cmd **cmd, int prev_return_value)
 {
 	if (data->token_lst == NULL || data->token_lst->head == NULL)
 	{
-		data->return_value = 1;
+		data->return_value = prev_return_value;
 		return (false);
 	}
 	if (check_error(data->token_lst->head) == false)
