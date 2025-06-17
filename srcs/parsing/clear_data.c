@@ -22,7 +22,6 @@ static void	clear_redir(t_redir *redir)
 			redir->file = NULL;
 		}
 		free(redir);
-		redir = NULL;
 		redir = tmp;
 	}
 	redir = NULL;

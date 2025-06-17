@@ -15,10 +15,7 @@ static bool	dup_child(t_cmd *cmd)
 		close(cmd->fd_out);
 		return (print_err(ERR_DUP));
 	}
-	if (cmd->pipe_fd[0] != STDIN_FILENO && cmd->pipe_fd[0] != -1)
-		close(cmd->pipe_fd[0]);
-	if (cmd->pipe_fd[1] != STDIN_FILENO && cmd->pipe_fd[1] != -1)
-		close(cmd->pipe_fd[1]);
+
 	return (true);
 }
 
@@ -42,6 +39,8 @@ static void	child_exec(t_data *data, char *path_cmd, char **params_cpy,
 		execute_builtins(data);
 		free_and_exit(data, path_cmd, head, params_cpy);
 	}
+	if (path_cmd == NULL)
+		free_and_exit(data, path_cmd, head, params_cpy);
 	close_fd(head);
 	execve(path_cmd, params_cpy, data->env_array);
 	perror(ERR_EXECVE);
