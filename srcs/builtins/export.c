@@ -2,8 +2,8 @@
 #include "exec.h"
 #include "minishell.h"
 #include "parsing.h"
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 static bool	export_new(t_env *listed_env, char *params)
 {
@@ -86,7 +86,6 @@ static void	export_no_argument(t_env *listed_env)
 	reset(listed_env);
 }
 
-
 static bool	export_right_type(t_data *data, int i, int type)
 {
 	char	*key;
@@ -133,6 +132,8 @@ bool	ft_export(t_data *data)
 		if (export_right_type(data, i, type) == false)
 		{
 			data->return_value = 1; // surement des trucs a free ici avant
+			free_all(data->env_array);
+			data->env_array = listed_env_to_array(data, data->listed_env);
 			return (true);
 		}
 	}

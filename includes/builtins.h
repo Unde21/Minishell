@@ -48,6 +48,6 @@ void	reset(t_env *listed_env);
 bool	append_export(t_env *listed_env, char *params);
 
 // ft_unset.c
-bool	ft_unset(t_env **listed_env, t_cmd *cmd);
+bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd);
 
 #endif

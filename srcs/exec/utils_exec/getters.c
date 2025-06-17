@@ -115,7 +115,7 @@ char	*get_path_cmd(t_data *data, char **params, int *return_value)
 			free_all(path);
 			return (NULL);
 		}
-		if (is_access_ok(path[i], return_value))
+		if (is_access_ok(path[i], return_value, path))
 		{
 			path_value = ft_strdup(path[i]);
 			free_all(path);

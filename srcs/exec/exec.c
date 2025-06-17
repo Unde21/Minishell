@@ -110,7 +110,6 @@ void	exec_init(t_data *data)
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	while (data->cmd)
 	{
-		data->env_array = listed_env_to_array(data, data->listed_env);
 		if (data->cmd->next == NULL && data->return_value == 0 && is_builtin(data))
 		{
 			data->cmd = head_cmd;
