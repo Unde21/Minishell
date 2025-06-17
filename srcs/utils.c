@@ -7,6 +7,7 @@ bool	print_err_false(char *str_error)
 	ft_dprintf(STDERR_FILENO, "%s", str_error);
 	return (false);
 }
+
 char	*print_err_null(char *str_error)
 {
 	ft_dprintf(STDERR_FILENO, "%s", str_error);

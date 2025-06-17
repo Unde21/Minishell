@@ -49,6 +49,8 @@ SRCS := srcs/main.c \
 		srcs/builtins/cd_utils.c \
 		srcs/builtins/export.c \
 		srcs/builtins/export_utils.c \
+		srcs/builtins/builtins_utils.c \
+		srcs/builtins/export_new_node.c \
 		srcs/builtins/unset.c \
 		srcs/debug/print_tokenizer.c \
 		srcs/debug/print_parser.c \

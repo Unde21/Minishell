@@ -41,11 +41,12 @@ bool	display_error(t_data *data, char *params);
 void	ft_export(t_data *data);
 
 // export_utils.c
-int		export_type(char *params, t_env *listed_env);
-bool	is_key_valid(char *params);
+int		export_type(t_data *data, char *params, t_env *listed_env);
+bool	is_key_valid(t_data *data, char *params);
 int		lst_size(t_env *head);
 void	reset(t_env *listed_env);
-bool	append_export(t_env *listed_env, char *params);
+bool	append_export(char *key, t_env *listed_env, char *params);
+bool	export_new(t_env *listed_env, char *params);
 
 // ft_unset.c
 bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd);
