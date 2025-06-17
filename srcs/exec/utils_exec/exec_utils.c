@@ -22,7 +22,7 @@ bool	is_builtin(t_data *data)
 	else if (ft_strcmp(data->cmd->params[0], "export") == 0)
 		return (ft_export(data));
 	else if (ft_strcmp(data->cmd->params[0], "unset") == 0)
-		return (ft_unset(&data->listed_env, data->cmd));
+		return (ft_unset(data, &data->listed_env, data->cmd));
 	return (false);
 }
 

@@ -1,9 +1,9 @@
 #include "builtins.h"
 #include "exec.h"
 #include "parsing.h"
-#include <unistd.h>
-#include <stdlib.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 char	*get_value(char *params)
 {
@@ -106,17 +106,21 @@ char	*get_path_cmd(t_data *data, char **params, int *return_value)
 		path[i] = ft_strjoin_and_free(path[i], "/");
 		if (!path[i])
 		{
-			free(path);
+			free_all(path);
 			return (NULL);
 		}
 		path[i] = ft_strjoin_and_free(path[i], params[0]);
 		if (!path[i])
 		{
-			free(path);
+			free_all(path);
 			return (NULL);
 		}
-		if (is_access_ok(path[i], return_value, params))
-			return (path[i]);
+		if (is_access_ok(path[i], return_value, path))
+		{
+			path_value = ft_strdup(path[i]);
+			free_all(path);
+			return (path_value);
+		}
 	}
 	free_all(path);
 	return (NULL);

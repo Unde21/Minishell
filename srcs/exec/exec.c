@@ -1,9 +1,9 @@
 #include "builtins.h"
 #include "exec.h"
 #include "parsing.h"
-#include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
-# include <fcntl.h>
+#include <unistd.h>
 
 static void	set_pipe(t_cmd *cmd)
 {
@@ -107,9 +107,9 @@ void	exec_init(t_data *data)
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
+	data->env_array = listed_env_to_array(data, data->listed_env);
 	while (data->cmd)
 	{
-		data->env_array = listed_env_to_array(data, data->listed_env);
 		if (data->cmd->next == NULL && data->return_value == 0 && is_builtin(data))
 		{
 			data->cmd = head_cmd;
@@ -135,5 +135,6 @@ void	exec_init(t_data *data)
 	data->cmd = head_cmd;
 	reset_signal();
 	close_fd(head_cmd);
+	free_all(data->env_array);
 	wait_child(last_pid, &data->return_value);
 }

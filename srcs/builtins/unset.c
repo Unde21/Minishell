@@ -3,7 +3,7 @@
 #include "minishell.h"
 #include <stdlib.h>
 
-bool	ft_unset(t_env **listed_env, t_cmd *cmd)
+bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 {
 	t_env	*head;
 	t_env	*prev;
@@ -11,6 +11,8 @@ bool	ft_unset(t_env **listed_env, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	free_all(data->env_array);
+	data->env_array = listed_env_to_array(data, data->listed_env);
 	while (cmd->params[++i])
 	{
 		prev = NULL;
