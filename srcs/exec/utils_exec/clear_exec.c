@@ -1,9 +1,6 @@
 #include "builtins.h"
 #include "exec.h"
 
-static void	clear_listed_env(t_env **listed_env)
-{
-	t_env	*head;
 
 	head = *listed_env;
 	if (head == NULL)
