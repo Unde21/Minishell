@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 bool	check_match(char *file_name, char *wildcards)
 {
@@ -39,7 +40,7 @@ char	*get_pattern(char *s, size_t i)
 	wildcards = malloc(sizeof(char) * (len_wildcards + 1));
 	if (wildcards == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
 	}
 	j = 0;
@@ -65,7 +66,7 @@ static char	*get_cpy_pattern_loop(char *wildcards, int nb_file, char *cpy_file,
 		if (errno != 0)
 		{
 			free(cpy_file);
-			ft_dprintf(2, ERR_READDIR);
+			ft_dprintf(STDERR_FILENO, ERR_READDIR);
 			return (NULL);
 		}
 		else if (read_file == NULL)
@@ -115,7 +116,7 @@ char	*create_cpy_pattern(t_data *data, char **expanded, char *wildcards)
 	cpy_file = ft_strdup("");
 	if (cpy_file == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		*expanded = NULL;
 		return (NULL);
 	}

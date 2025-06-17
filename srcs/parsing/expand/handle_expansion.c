@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 void	join_return_value(char **expanded, size_t *i, int prev_return_value)
 {
@@ -77,8 +78,7 @@ bool	replace_env_variables(t_data *data, char **params, size_t i)
 	if (expanded == NULL)
 	{
 		data->return_value = 1;
-		ft_dprintf(2, ERR_MALLOC);
-		return (false);
+		return (print_err(ERR_MALLOC));
 	}
 	data->cmd->args->is_quote = false;
 	*params = expand(*params, expanded, data, i);
@@ -86,9 +86,9 @@ bool	replace_env_variables(t_data *data, char **params, size_t i)
 	{
 		data->return_value = 1;
 		if (data->error_readdir == false)
-			ft_dprintf(2, ERR_MALLOC);
+			ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		else
-			ft_dprintf(2, ERR_READDIR);
+			ft_dprintf(STDERR_FILENO, ERR_READDIR);
 		return (false);
 	}
 	return (true);

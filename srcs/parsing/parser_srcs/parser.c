@@ -27,8 +27,7 @@ bool	parser(t_data *data, t_cmd **cmd, int prev_return_value)
 	if (check_error(data->token_lst->head) == false)
 	{
 		data->return_value = 1;
-		ft_dprintf(2, ERR_NO_FILE);
-		return (false);
+		return (print_err(ERR_NO_FILE));
 	}
 	if (get_cmd_args(data->token_lst->head, cmd) == false)
 	{

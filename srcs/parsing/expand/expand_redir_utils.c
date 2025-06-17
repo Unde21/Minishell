@@ -1,19 +1,20 @@
 #include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 static char	*handle_ambiguous_file(t_data *data, char *var_name)
 {
 	data->ambiguous_file = ft_strdup("$");
 	if (data->ambiguous_file == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
 	}
 	data->ambiguous_file = ft_strjoin_and_free(data->ambiguous_file, var_name);
 	if (data->ambiguous_file == NULL)
 	{
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
 	}
 	data->is_ambiguous = true;
@@ -55,7 +56,7 @@ void	join_with_expand_file(t_data *data, char **expanded, char *s, size_t *i)
 	if (var_name == NULL)
 	{
 		free(var_name);
-		ft_dprintf(2, ERR_MALLOC);
+		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return ;
 	}
 	env_value = get_env_value(data, var_name, data->cmd->args->is_quote);
@@ -64,7 +65,7 @@ void	join_with_expand_file(t_data *data, char **expanded, char *s, size_t *i)
 		free(var_name);
 		free(env_value);
 		if (data->is_ambiguous == false)
-			ft_dprintf(2, ERR_MALLOC);
+			ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return ;
 	}
 	*expanded = ft_strjoin_and_free(*expanded, env_value);

@@ -46,10 +46,7 @@ static bool	check_prompt_error(char **prompt)
 	{
 		*prompt = ft_strdup(PATH_ERROR);
 		if (*prompt == NULL)
-		{
-			ft_dprintf(2, ERR_MALLOC);
-			return (false);
-		}
+			return (print_err(ERR_MALLOC));
 	}
 	return (true);
 }

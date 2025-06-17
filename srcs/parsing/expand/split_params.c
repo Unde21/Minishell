@@ -61,10 +61,7 @@ bool	split_wildcards_file(t_cmd *cmd)
 		{
 			current->params = split_params(current->params);
 			if (current->params == NULL)
-			{
-				ft_dprintf(2, ERR_MALLOC);
-				return (false);
-			}
+				return (print_err(ERR_MALLOC));
 		}
 		current = current->next;
 	}
