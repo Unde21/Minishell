@@ -1,3 +1,4 @@
+#include "builtins.h"
 #include "exec.h"
 #include "parsing.h"
 #include <unistd.h>
@@ -18,7 +19,8 @@ char	*get_value(char *params)
 	while (params[i] && params[i] != '=')
 		i++;
 	if (!params[i] || params[i + 1] == '\0')
-		return (ft_strdup("")); // faut checker si il foirre dans tout les appels de get_value
+		return (ft_strdup(""));
+	// faut checker si il foirre dans tout les appels de get_value
 	start = i + 1;
 	len = 0;
 	while (params[start + len])
@@ -57,82 +59,66 @@ char	*get_key(char *env)
 	return (key);
 }
 
-char	*get_random_name(char *here_doc)
-{
-	char	c;
-	int		i;
-	int		fd;
-
-	i = 0;
-	here_doc = malloc(sizeof(char) * 26);
-	if (!here_doc)
-	{
-		print_err(ERR_MALLOC);
-		return (NULL);
-	}
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
-	{
-		print_err("ERROR : opening /dev/random in get_random_name !\n");
-		free(here_doc);
-		return (NULL);
-	}
-	while (i < 25)
-	{
-		read(fd, &c, 1);
-		if (ft_isprint(c) && c != '/')
-			here_doc[i++] = c;
-	}
-	here_doc[i] = '\0';
-	close(fd);
-	return (here_doc);
-}
-
-char	*get_limiter(t_cmd *cmd)
-{
-	while (cmd->redir != NULL)
-	{
-		if (cmd->redir->type == HERE_DOC)
-			return (cmd->redir->file);
-		cmd->redir = cmd->redir->next;
-	}
-	return (NULL);
-}
-
-char	*get_path_cmd(char **params, char *path_cmd, int *return_value)
+char	**listed_env_to_array(t_data *data, t_env *listed_env)
 {
 	int		i;
-	char	**path;
+	int		size;
+	t_env	*head;
 
 	i = -1;
-	path = ft_split(getenv("PATH"), ':');
-	if (!path)
+	size = lst_size(listed_env);
+	head = listed_env;
+	data->env_array = malloc(sizeof(char *) * (size + 1));
+	if (!data->env_array)
+		return (NULL);
+	data->env_array[size] = NULL;
+	while (head)
 	{
-		*return_value = 1;
+		data->env_array[++i] = ft_strdup(head->full_line);
+		head = head->next;
+	}
+	return (data->env_array);
+}
+
+char	*get_path_cmd(t_data *data, char **params, char *path_cmd,
+		int *return_value)
+{
+	int		i;
+	char	*path_value;
+	char	**path;
+
+	(void)path_cmd;
+	path_value = NULL;
+	i = -1;
+	while (data->env_array[++i])
+		if (ft_strncmp(data->env_array[i], "PATH=", 5) == 0)
+			path_value = get_value(data->env_array[i]);
+	if (!path_value)
+	{
+		*return_value = 127;
 		return (NULL);
 	}
+	path = ft_split(path_value, ':');
+	free(path_value);
+	if (!path)
+		return (NULL);
+	i = -1;
 	while (path[++i])
 	{
 		path[i] = ft_strjoin_and_free(path[i], "/");
-		if (path[i] == NULL)
+		if (!path[i])
 		{
-			*return_value = 1;
+			free(path);
 			return (NULL);
 		}
 		path[i] = ft_strjoin_and_free(path[i], params[0]);
-		if (path[i] == NULL)
+		if (!path[i])
 		{
-			*return_value = 1;
+			free(path);
 			return (NULL);
 		}
 		if (is_access_ok(path[i], return_value))
-		{
-			path_cmd = ft_strdup(path[i]);
-			if (path_cmd == NULL)
-				*return_value = 1;
-			free_all(path);
-			return (path_cmd);
-		}
+			return (path[i]);
 	}
 	free_all(path);
 	return (NULL);

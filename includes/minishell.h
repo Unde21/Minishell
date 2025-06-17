@@ -103,6 +103,7 @@ typedef struct s_data
 	char			*name_outfile;
 	char			**av;
 	char			**env;
+	char			**env_array;
 	bool			error_readdir;
 	bool			is_ambiguous;
 	bool			had_space_before;
