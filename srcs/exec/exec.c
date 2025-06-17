@@ -23,31 +23,24 @@ static void	set_pipe(t_cmd *cmd)
 
 void	init(t_data *data, char **path_cmd, int *return_value)
 {
-	if (data->cmd->next != NULL)
-		set_pipe(data->cmd);
-	if (init_redir(data, data->cmd))
+	if (data->cmd->params[0] && g_return_value == 0)
 	{
-		if (data->cmd->params[0] && g_return_value == 0)
+		if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
+				'/') != NULL)
 		{
-			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
-					'/') != NULL)
+			if (is_access_ok(data->cmd->params[0], &data->return_value,
+					data->cmd->params))
 			{
-				if (is_access_ok(data->cmd->params[0], &data->return_value,
-						data->cmd->params))
-				{
-					*path_cmd = ft_strdup(data->cmd->params[0]);
-					if (*path_cmd == NULL)
-						*return_value = 1;
-				}
+				*path_cmd = ft_strdup(data->cmd->params[0]);
+				if (*path_cmd == NULL)
+					*return_value = 1;
 			}
-			else
-				*path_cmd = get_path_cmd(data, data->cmd->params, return_value);
-			if (*path_cmd == NULL)
-				print_access_error(data->cmd->params[0], data);
 		}
-		return ;
+		else
+			*path_cmd = get_path_cmd(data, data->cmd->params, return_value);
+		if (*path_cmd == NULL)
+			print_access_error(data->cmd->params[0], data);
 	}
-	*return_value = 1;
 }
 
 void	exec_init(t_data *data)
@@ -68,14 +61,20 @@ void	exec_init(t_data *data)
 	}
 	while (data->cmd)
 	{
-		init(data, &path_cmd, &data->return_value);
+		if (data->cmd->next != NULL)
+			set_pipe(data->cmd);
+		if (init_redir(data, data->cmd) == false)
+			break ;
 		if (data->cmd->next == NULL && data->return_value == 0
 			&& is_builtin(data))
-		{
-			data->cmd = head_cmd;
-			return ;
-		}
-		if (data->return_value == 0 && path_cmd != NULL)
+			{
+				execute_builtins(data);
+				data->cmd = head_cmd;
+				return ;
+			}
+		if (!is_builtin(data))
+			init(data, &path_cmd, &data->return_value);
+		if (data->return_value == 0)
 		{
 			pid = fork();
 			if (pid < 0)
@@ -83,7 +82,7 @@ void	exec_init(t_data *data)
 				close_fd(head_cmd);
 				print_err(ERR_FORK);
 			}
-			else if (pid == 0 && path_cmd != NULL)
+			else if (pid == 0)
 				init_child(data, path_cmd, head_cmd);
 			if (data->cmd->next == NULL)
 				last_pid = pid;
