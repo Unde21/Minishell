@@ -59,29 +59,28 @@ char	*get_key(char *env)
 	return (key);
 }
 
-char	**listed_env_to_array(t_env *listed_env)
+char	**listed_env_to_array(t_data *data, t_env *listed_env)
 {
 	int		i;
 	int		size;
-	char	**env_array;
 	t_env	*head;
 
 	i = -1;
 	size = lst_size(listed_env);
 	head = listed_env;
-	env_array = malloc(sizeof(char *) * (size + 1));
-	if (!env_array)
+	data->env_array = malloc(sizeof(char *) * (size + 1));
+	if (!data->env_array)
 		return (NULL);
-	env_array[size] = NULL;
+	data->env_array[size] = NULL;
 	while (head)
 	{
-		env_array[++i] = ft_strdup(head->full_line);
+		data->env_array[++i] = ft_strdup(head->full_line);
 		head = head->next;
 	}
-	return (env_array);
+	return (data->env_array);
 }
 
-char	*get_path_cmd(char **env_array, char **params, char *path_cmd,
+char	*get_path_cmd(t_data *data, char **params, char *path_cmd,
 		int *return_value)
 {
 	int		i;
@@ -91,9 +90,9 @@ char	*get_path_cmd(char **env_array, char **params, char *path_cmd,
 	(void)path_cmd;
 	path_value = NULL;
 	i = -1;
-	while (env_array[++i])
-		if (ft_strncmp(env_array[i], "PATH=", 5) == 0)
-			path_value = get_value(env_array[i]);
+	while (data->env_array[++i])
+		if (ft_strncmp(data->env_array[i], "PATH=", 5) == 0)
+			path_value = get_value(data->env_array[i]);
 	if (!path_value)
 	{
 		*return_value = 127;

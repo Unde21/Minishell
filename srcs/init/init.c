@@ -20,6 +20,7 @@ void	init_data(t_data *data, int ac, char **av, char **env)
 	data->cmd = NULL;
 	data->token_lst = NULL;
 	data->token = NULL;
+	data->env_array = NULL;
 }
 
 bool	init_cmd_args(t_cmd *cmd)

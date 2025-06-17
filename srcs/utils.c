@@ -24,14 +24,8 @@ void	print_access_error(char *params, t_data *data)
 		print_err(ERR_MALLOC);
 		return ;
 	}
-<<<<<<< HEAD
 	ft_dprintf(STDERR_FILENO, "bash: %s: ", params);
 	ft_dprintf(STDERR_FILENO, "command not found\n");
-=======
-	// data->return_value = 127;
-	ft_dprintf(2, "bash: %s: ", params);
-	ft_dprintf(2, "command not found\n");
->>>>>>> origin/norm_leak
 }
 
 void	print_ambiguous(char *s)
