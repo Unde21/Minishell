@@ -38,7 +38,10 @@ static void	child_exec(t_data *data, char *path_cmd, char **params_cpy,
 	if (dup_child(data->cmd) == false || data->return_value != 0)
 		free_and_exit(data, path_cmd, head, params_cpy);
 	if (is_builtin(data))
+	{
+		execute_builtins(data);
 		free_and_exit(data, path_cmd, head, params_cpy);
+	}
 	close_fd(head);
 	execve(path_cmd, params_cpy, data->env_array);
 	perror(ERR_EXECVE);
