@@ -56,7 +56,7 @@ static bool	export_old(t_env *listed_env, char *params, char *key)
 	return (true);
 }
 
-static void	export_no_argument(t_env *listed_env, t_cmd *cmd)
+static void	export_no_argument(t_env *listed_env)
 {
 	int		printed_count;
 	int		total;
@@ -77,7 +77,7 @@ static void	export_no_argument(t_env *listed_env, t_cmd *cmd)
 		}
 		if (min)
 		{
-			ft_dprintf(cmd->fd_out, "export %s \n", min->full_line);
+			ft_dprintf(STDOUT_FILENO, "export %s \n", min->full_line);
 			min->printed = 1;
 		}
 	}
@@ -116,7 +116,7 @@ void	ft_export(t_data *data)
 	i = 0;
 	type = 0;
 	if (data->cmd->params[1] == NULL)
-		export_no_argument(data->listed_env, data->cmd);
+		export_no_argument(data->listed_env);
 	while (data->cmd->params[++i])
 	{
 		if (!is_key_valid(data->cmd->params[i]))

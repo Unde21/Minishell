@@ -75,10 +75,7 @@ bool	handle_split_expand(t_cmd *cmd)
 		{
 			current->params = split_expand(current->params);
 			if (current->params == NULL)
-			{
-				ft_dprintf(2, ERR_MALLOC);
-				return (false);
-			}
+				return (print_err(ERR_MALLOC));
 		}
 		current = current->next;
 	}

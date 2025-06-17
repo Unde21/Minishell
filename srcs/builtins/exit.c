@@ -1,6 +1,7 @@
 #include "builtins.h"
 #include "minishell.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 static void	is_number(t_data *data, char *s)
 {
@@ -13,9 +14,9 @@ static void	is_number(t_data *data, char *s)
 	{
 		if (ft_isdigit(s[i]) == 0)
 		{
-			ft_dprintf(2, EXIT_ERROR);
-			ft_putstr_fd(s, 2);
-			ft_dprintf(2, ERR_NUM_ARG);
+			ft_dprintf(STDERR_FILENO, EXIT_ERROR);
+			ft_dprintf(STDERR_FILENO, "%s", s);
+			ft_dprintf(STDERR_FILENO, ERR_NUM_ARG);
 			clear_all_data(data);
 			exit(2);
 		}
@@ -35,9 +36,9 @@ static void	get_exit_code(t_data *data, char *s)
 		exit_code = ft_atoll(s, &check_error) % 256;
 	if (check_error != 0)
 	{
-		ft_dprintf(2, EXIT_ERROR);
-		ft_dprintf(2, "%s", s);
-		ft_dprintf(2, ERR_NUM_ARG);
+		ft_dprintf(STDERR_FILENO, EXIT_ERROR);
+		ft_dprintf(STDERR_FILENO, "%s", s);
+		ft_dprintf(STDERR_FILENO, ERR_NUM_ARG);
 		exit(2);
 	}
 	clear_all_data(data);
@@ -61,7 +62,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	is_number(data, s);
 	if (cmd->nb_args > 2)
 	{
-		ft_dprintf(2, EXIT_TOO_MANY);
+		ft_dprintf(STDERR_FILENO, EXIT_TOO_MANY);
 		data->return_value = 1;
 		return (-1);
 	}

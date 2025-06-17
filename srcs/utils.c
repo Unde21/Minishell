@@ -1,9 +1,10 @@
 #include "minishell.h"
 #include "parsing.h"
+#include <unistd.h>
 
 bool	print_err(char *str_error)
 {
-	ft_dprintf(2, "%s", str_error);
+	ft_dprintf(STDERR_FILENO, "%s", str_error);
 	return (false);
 }
 
@@ -23,13 +24,13 @@ void	print_access_error(char *params, t_data *data)
 		print_err(ERR_MALLOC);
 		return ;
 	}
-	ft_dprintf(2, "bash: %s: ", params);
-	ft_dprintf(2, "command not found\n");
+	ft_dprintf(STDERR_FILENO, "bash: %s: ", params);
+	ft_dprintf(STDERR_FILENO, "command not found\n");
 }
 
 void	print_ambiguous(char *s)
 {
-	ft_dprintf(2, PRINT_BASH);
-	ft_dprintf(2, " %s: ", s);
-	ft_dprintf(2, ERR_AMBIGUOUS);
+	ft_dprintf(STDERR_FILENO, PRINT_BASH);
+	ft_dprintf(STDERR_FILENO, " %s: ", s);
+	ft_dprintf(STDERR_FILENO, ERR_AMBIGUOUS);
 }
