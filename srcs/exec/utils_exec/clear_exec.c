@@ -23,6 +23,7 @@
 
 void	close_fd(t_cmd *cmd)
 {
+	// Faut delete les commentaires ici ?
 	while (cmd)
 	{
 		if (cmd->pipe_fd[0] != -1)

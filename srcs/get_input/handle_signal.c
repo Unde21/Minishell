@@ -1,4 +1,3 @@
-#include "minishell.h"
 #include "parsing.h"
 #include <fcntl.h>
 #include <signal.h>

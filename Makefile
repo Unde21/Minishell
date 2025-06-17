@@ -41,6 +41,7 @@ SRCS := srcs/main.c \
 		srcs/exec/handle_child/child.c\
 		srcs/exec/handle_child/child_utils.c\
 		srcs/here_doc/here_doc_init.c \
+		srcs/here_doc/here_doc_expand.c \
 		srcs/builtins/exit.c \
 		srcs/builtins/echo.c \
 		srcs/builtins/env.c \

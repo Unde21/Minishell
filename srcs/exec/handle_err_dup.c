@@ -1,4 +1,5 @@
 #include "exec.h"
+#include <unistd.h>
 
 bool	err_dup_parent(t_data *data, t_cmd *cmd, int save_stdin,
 		int save_stdout)

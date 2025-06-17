@@ -1,6 +1,5 @@
 #include "builtins.h"
 #include "exec.h"
-#include "minishell.h"
 #include "parsing.h"
 #include <signal.h>
 #include <stdlib.h>

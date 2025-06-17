@@ -19,36 +19,19 @@ env: use -[v]S to pass options in shebang lines\n"
 # define PWD "PWD"
 # define ERR_EXPORT ": not a valid identifier\n"
 
-// ft_exit.c
-int		ft_exit(t_data *data, t_cmd *cmd);
-
-// ft_echo.c
-bool	ft_echo(t_cmd *cmd);
-
-// ft_env.c
-bool	ft_env(t_data *data, t_cmd *cmd);
-
-// ft_pwd.c
-bool	ft_pwd(t_data *data);
-
-// ft_cd.c
-bool	ft_cd(t_data *data, t_cmd *cmd);
-
-// cd_utils.c
-bool	display_error(t_data *data, char *params);
-
-// ft_export.c
+void	reset(t_env *listed_env);
 void	ft_export(t_data *data);
-
-// export_utils.c
+int		lst_size(t_env *head);
+int		ft_exit(t_data *data, t_cmd *cmd);
 int		export_type(t_data *data, char *params, t_env *listed_env);
 bool	is_key_valid(t_data *data, char *params);
-int		lst_size(t_env *head);
-void	reset(t_env *listed_env);
-bool	append_export(char *key, t_env *listed_env, char *params);
-bool	export_new(t_env *listed_env, char *params);
-
-// ft_unset.c
 bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd);
+bool	ft_pwd(t_data *data);
+bool	ft_env(t_data *data, t_cmd *cmd);
+bool	ft_echo(t_cmd *cmd);
+bool	ft_cd(t_data *data, t_cmd *cmd);
+bool	export_new(t_env *listed_env, char *params);
+bool	display_error(t_data *data, char *params);
+bool	append_export(char *key, t_env *listed_env, char *params);
 
 #endif

@@ -1,5 +1,4 @@
 #include "builtins.h"
-#include "minishell.h"
 #include <unistd.h>
 
 bool	ft_echo(t_cmd *cmd)

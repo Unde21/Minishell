@@ -1,6 +1,5 @@
 #include "builtins.h"
 #include "exec.h"
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
 #include <unistd.h>

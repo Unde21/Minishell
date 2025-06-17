@@ -2,6 +2,7 @@
 #include "exec.h"
 #include "parsing.h"
 #include <fcntl.h>
+#include <unistd.h>
 
 static bool	redir_out(t_cmd *cmd)
 {
@@ -44,7 +45,6 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 			unlink(cmd->redir->file);
 			return (true);
 		}
-		return (false);
 	}
 	return (true);
 }

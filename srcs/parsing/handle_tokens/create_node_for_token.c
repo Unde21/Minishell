@@ -1,4 +1,3 @@
-#include "minishell.h"
 #include "parsing.h"
 
 size_t	new_node_pipes(t_token **new, t_data *data)

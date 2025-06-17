@@ -1,4 +1,3 @@
-#include "minishell.h"
 #include "parsing.h"
 
 static bool	check_error(t_token *current)

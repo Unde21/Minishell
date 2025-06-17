@@ -13,9 +13,6 @@
 # define CHECK "\001✅\002 ["
 # define PATH_ERROR "\001🤯\002 path_error: "
 
-////////////////////////////
-///////* list parsing */////
-////////////////////////////
 typedef enum e_token_type
 {
 	WORD,
@@ -27,131 +24,103 @@ typedef enum e_token_type
 	HERE_DOC,
 	APPEND,
 	NOTHING
-}					t_token_type;
+}	t_token_type;
 
 typedef struct s_token
 {
-	char			*content;
-	bool			in_list;
 	t_token_type	type;
 	struct s_token	*next;
-}					t_token;
+	char			*content;
+	bool			in_list;
+}	t_token;
 
 typedef struct s_token_lst
 {
-	t_token			*head;
-	t_token			*tail;
-}					t_token_lst;
-////////////////////////////////
+	t_token		*tail;
+	t_token		*head;
+}	t_token_lst;
 
-///////////////////////////
-/////* list global *///////
-///////////////////////////
 typedef struct s_redir
 {
 	t_token_type	type;
-	bool			is_ambiguous;
-	char			*file;
 	struct s_redir	*next;
-}					t_redir;
+	char			*file;
+	bool			is_ambiguous;
+}	t_redir;
 
 typedef struct s_args
 {
-	char			*content;
-	bool			is_quote;
-	bool			need_expand;
-	bool			is_wildcards;
-}					t_args;
+	char	*content;
+	bool	need_expand;
+	bool	is_wildcards;
+	bool	is_quote;
+}	t_args;
 
 typedef struct s_cmd
 {
-	t_args			*args;
-	char			**params;
-	size_t			nb_args;
 	t_redir			*redir;
-	int				pipe_fd[2];
-	int				fd_in;
-	int				fd_out;
+	t_args			*args;
 	struct s_cmd	*next;
-}					t_cmd;
-////////////////////////////
+	size_t			nb_args;
+	int				pipe_fd[2];
+	int				fd_out;
+	int				fd_in;
+	char			**params;
+}	t_cmd;
 
-////////////////////////////
-///////* list exec *////////
-////////////////////////////
 typedef struct s_env
 {
-	char			*key;
-	char			*value;
-	char			*full_line;
-	int				printed;
-
 	struct s_env	*next;
-}					t_env;
-/////////////////////////////
+	int				printed;
+	char			*value;
+	char			*key;
+	char			*full_line;
+}	t_env;
 
-//////////////////////////
-/////* main structur *////
-//////////////////////////
 typedef struct s_data
 {
-	char			*line_read;
-	char			*ambiguous_file;
-	int				ac;
-	int				return_value;
-	char			*name_infile;
-	char			*name_outfile;
-	char			**av;
-	char			**env;
-	char			**env_array;
-	bool			error_readdir;
-	bool			is_ambiguous;
-	bool			had_space_before;
-	int				last_type;
-	t_env			*listed_env;
-	t_cmd			*cmd;
-	t_redir			*redir;
-	t_token			*token;
-	t_token_lst		*token_lst;
-}					t_data;
-////////////////////////////
+	t_token_lst	*token_lst;
+	t_token		*token;
+	t_redir		*redir;
+	t_env		*listed_env;
+	t_cmd		*cmd;
+	int			return_value;
+	int			last_type;
+	int			ac;
+	char		*name_outfile;
+	char		*name_infile;
+	char		*line_read;
+	char		*ambiguous_file;
+	char		**env;
+	char		**env_array;
+	char		**av;
+	bool		is_ambiguous;
+	bool		had_space_before;
+	bool		error_readdir;
+}	t_data;
 
-extern int			g_return_value;
+extern int	g_return_value;
 
-// init.c
-void				init_listed_env(t_data *data);
-
-bool				init_data(t_data *data, int ac, char **av, char **env);
-bool				init_lst(t_data *data);
-bool				init_cmd_args(t_cmd *cmd);
-
-// utils.c
-bool				print_err_false(char *str_error);
-char				*print_err_null(char *str_error);
-void				reset_g_return_value(t_data *data);
-void				print_access_error(char *params, t_data *data);
-void				print_ambiguous(char *s);
-
-// clear_data.c
-void				clear_token(t_token *lst);
-void				clear_cmd(t_cmd *cmd);
-void				free_all(char **str);
-int					wich_quote(char *input);
-
-// get_input.c
-void				get_input(t_data *data);
-void				clear_all_data(t_data *data);
-
-// get_prompt.c
-void				get_prompt(t_data *data, char **prompt);
-
-// handle_signal.c
-int					do_nothing(void);
-void				set_signal_action(void);
-void				reset_signal(void);
-void				set_signal_action_child(void);
-
-// signal_utils.c
-void				signal_handler_child(int signal);
+void	signal_handler_child(int signal);
+void	set_signal_action(void);
+void	set_signal_action_child(void);
+void	reset_signal(void);
+void	reset_g_return_value(t_data *data);
+void	print_ambiguous(char *s);
+void	print_access_error(char *params, t_data *data);
+void	init_listed_env(t_data *data);
+void	get_prompt(t_data *data, char **prompt);
+void	get_input(t_data *data);
+void	free_all(char **str);
+void	clear_token(t_token *lst);
+void	clear_cmd(t_cmd *cmd);
+void	clear_all_data(t_data *data);
+int		wich_quote(char *input);
+int		do_nothing(void);
+char	*print_err_null(char *str_error);
+bool	print_err_false(char *str_error);
+bool	init_lst(t_data *data);
+bool	init_data(t_data *data, int ac, char **av, char **env);
+bool	init_cmd_args(t_cmd *cmd);
 
 #endif

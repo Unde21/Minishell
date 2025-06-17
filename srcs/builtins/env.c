@@ -1,6 +1,4 @@
 #include "builtins.h"
-#include "minishell.h"
-#include "parsing.h"
 #include <unistd.h>
 
 static bool	print_error_env(t_cmd *cmd)

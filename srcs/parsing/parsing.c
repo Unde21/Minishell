@@ -1,7 +1,4 @@
-#include "builtins.h"
 #include "debug.h"
-#include "exec.h"
-#include "minishell.h"
 #include <stdlib.h>
 
 static bool	tokenizer(t_data *data)

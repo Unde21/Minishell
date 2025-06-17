@@ -57,9 +57,9 @@ bool	fill_heredoc_loop(char *line, char *limiter, t_data *data)
 		free(line);
 		return (false);
 	}
-	if (is_expand_redir(line))
+	if (is_expand_here_doc(line))
 	{
-		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
+		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir)) // sa leak
 		{
 			data->return_value = 1;
 			free(line);
