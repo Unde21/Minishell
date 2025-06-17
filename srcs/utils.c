@@ -16,8 +16,13 @@ void	reset_g_return_value(t_data *data)
 	}
 }
 
-void	print_access_error(char *params)
+void	print_access_error(char *params, t_data *data)
 {
+	if (data->return_value == 1)
+	{
+		print_err(ERR_MALLOC);
+		return ;
+	}
 	ft_dprintf(2, "bash: %s: ", params);
 	ft_dprintf(2, "command not found\n");
 }

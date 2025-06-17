@@ -76,7 +76,7 @@ void						skip_quote_dollar(char **input, int is_quote,
 char						*ft_strjoin_and_free(char *s1, char *s2);
 
 // parser.c
-bool						parser(t_data *data, t_cmd **cmd);
+bool						parser(t_data *data, t_cmd **cmd, int prev_return_value);
 
 // fill_special_operator_cmd.c
 bool						add_special_operator_to_cmd(t_token *current,

@@ -49,7 +49,7 @@ t_env	*create_node(t_data *data, int i)
 	}
 	else
 	{
-		next_node->key = get_key(data->env[i]);
+		next_node->key = get_key(data->env[i]); // Leak si MALLOC == NULL
 		next_node->value = getenv(next_node->key);
 		next_node->full_line = data->env[i];
 		next_node->printed = 0;
@@ -67,14 +67,14 @@ void	init_listed_env(t_data *data)
 	next_node = NULL;
 	data->listed_env = create_node(data, 0);
 	if (data->env == NULL)
-		print_err("ERROR : fill_listed_env 01");
+		print_err("ERROR : fill_listed_env 01"); // faut changer les msg
 	while (data->env[i])
 	{
 		next_node = create_node(data, i++);
 		if (next_node == NULL)
 		{
 			free_listed_env(data);
-			print_err("ERROR : fill_listed_env 02\n");
+			print_err("ERROR : fill_listed_env 02\n"); // faut changer les msg
 			return ;
 		}
 		else

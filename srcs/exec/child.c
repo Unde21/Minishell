@@ -31,7 +31,7 @@ void	wait_child(pid_t last_pid, int *return_value)
 			{
 				*return_value = 128 + WTERMSIG(status);
 				if (*return_value == 131)
-					ft_printf("Quit (core dumped)\n");
+					ft_dprintf(STDOUT_FILENO, QUIT);
 			}
 		}
 	}
@@ -39,13 +39,13 @@ void	wait_child(pid_t last_pid, int *return_value)
 
 void	dup_child(t_cmd *cmd)
 {
-	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
+	if (dup2(cmd->fd_in, STDIN_FILENO) == -1) // faut free de trucs avant de exit
 	{
 		close(cmd->fd_in);
 		print_err(ERR_DUP);
 		exit(1);
 	}
-	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
+	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1) // faut free de trucs avant de exit
 	{
 		close(cmd->fd_out);
 		print_err(ERR_DUP);
@@ -65,11 +65,11 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	i = 0;
 	while (data->cmd->params[i])
 		++i;
-	params_cpy = malloc(sizeof(char *) * (i + 1));
+	params_cpy = malloc(sizeof(char *) * (i + 1)); // secure
 	i = -1;
 	while (data->cmd->params[++i])
-	params_cpy[i] = ft_strdup(data->cmd->params[i]);
-	params_cpy[i] = NULL;
+	params_cpy[i] = ft_strdup(data->cmd->params[i]); // secure
+	// params_cpy[i] = NULL; // -> je sais pas ce que sa fou la
 	set_signal_action_child();
 	dup_child(data->cmd);
 	if (data->return_value != 0)

@@ -26,7 +26,7 @@ bool	duplicate_params(size_t *i, int quote, char *params, char **dup)
 	index = *i;
 	while (params[index] != quote && params[index])
 		++index;
-	tmp = malloc(sizeof(char) * (index + 1));
+	tmp = malloc(sizeof(char) * (index - *i + 1));
 	if (tmp == NULL)
 		return (false);
 	index = 0;
@@ -38,12 +38,11 @@ bool	duplicate_params(size_t *i, int quote, char *params, char **dup)
 	}
 	tmp[index] = '\0';
 	*dup = ft_strjoin_and_free(*dup, tmp);
+	free(tmp);
 	if (*dup == NULL)
 	{
-		free(tmp);
 		return (false);
 	}
-	free(tmp);
 	return (true);
 }
 

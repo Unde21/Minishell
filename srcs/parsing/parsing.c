@@ -12,6 +12,7 @@ static bool	tokenizer(t_data *data)
 	if (DEBUG_VALUE == 1 || DEBUG_VALUE == 5)
 		print_lst(data->token_lst->head);
 	return (true);
+
 }
 
 static bool	manage_expansion(t_data *data, int prev_return_value)
@@ -42,7 +43,7 @@ bool	parsing(t_data *data)
 	data->return_value = 0;
 	if (tokenizer(data) == false)
 		return (false);
-	if (parser(data, &data->cmd) == false)
+	if (parser(data, &data->cmd, prev_return_value) == false)
 		return (false);
 	if (manage_expansion(data, prev_return_value) == false)
 		return (false);

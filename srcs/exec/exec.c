@@ -79,13 +79,17 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 					'/') != NULL)
 			{
 				if (is_access_ok(data->cmd->params[0], &data->return_value))
-					*path_cmd = ft_strdup(data->cmd->params[0]);
+				{
+					*path_cmd = ft_strdup(data->cmd->params[0]); // execve foire si le malloc est NULL il devrait pas aller jusqu execve
+					if (*path_cmd == NULL)
+						*return_value = 1;
+				}
 			}
 			else
 				*path_cmd = get_path_cmd(data->cmd->params, *path_cmd,
 						return_value);
 			if (*path_cmd == NULL)
-				print_access_error(data->cmd->params[0]);
+				print_access_error(data->cmd->params[0], data);
 		}
 		return ;
 	}

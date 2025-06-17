@@ -17,6 +17,7 @@ env: use -[v]S to pass options in shebang lines\n"
 # define ERR_PWD "pwd: No such file or directory\n"
 # define OLDPWD "OLDPWD"
 # define PWD "PWD"
+# define ERR_EXPORT ": not a valid identifier\n"
 
 // ft_exit.c
 int		ft_exit(t_data *data, t_cmd *cmd);
@@ -38,6 +39,13 @@ void	display_error(t_data *data, char *params);
 
 // ft_export.c
 void	ft_export(t_data *data);
+
+// export_utils.c
+int	export_type(char *params, t_env *listed_env);
+bool	is_key_valid(char *params);
+int	lst_size(t_env *head);
+void	reset(t_env *listed_env);
+bool	append_export(t_env *listed_env, char *params);
 
 // ft_unset.c
 void	ft_unset(t_env **listed_env, t_cmd *cmd);
