@@ -94,7 +94,7 @@ static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 	return (true);
 }
 
-void	exec(t_data *data)
+void	exec(t_data *data) // soucis sur << EOF cat --> le cat affiche pas parce que apres appel du here_doc c est clode dans redir
 {
 	char	*path_cmd;
 	t_cmd	*head_cmd;
