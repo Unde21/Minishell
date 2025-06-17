@@ -81,7 +81,7 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 					'/') != NULL)
 			{
-				if (is_access_ok(data->cmd->params[0], &data->return_value))
+				if (is_access_ok(data->cmd->params[0], &data->return_value, data->cmd->params))
 				{
 					*path_cmd = ft_strdup(data->cmd->params[0]);
 					if (*path_cmd == NULL)
@@ -110,9 +110,8 @@ void	exec_init(t_data *data)
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	while (data->cmd)
 	{
-		data->return_value = 0;
-		
-		if (data->cmd->next == NULL && solo_builtin(data))
+		data->env_array = listed_env_to_array(data, data->listed_env);
+		if (data->cmd->next == NULL && data->return_value == 0 && is_builtin(data))
 		{
 			data->cmd = head_cmd;
 			return ;

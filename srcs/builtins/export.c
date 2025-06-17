@@ -110,7 +110,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 	return (true);
 }
 
-void	ft_export(t_data *data)
+bool	ft_export(t_data *data)
 {
 	int	i;
 	int	type;
@@ -133,7 +133,8 @@ void	ft_export(t_data *data)
 		if (export_right_type(data, i, type) == false)
 		{
 			data->return_value = 1; // surement des trucs a free ici avant
-			return ;
+			return (true);
 		}
 	}
+	return (true);
 }
