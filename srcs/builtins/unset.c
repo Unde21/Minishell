@@ -1,7 +1,9 @@
 #include "builtins.h"
 #include "exec.h"
 #include "minishell.h"
+#include "parsing.h"
 #include <stdlib.h>
+
 
 bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 {
@@ -18,6 +20,11 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 		prev = NULL;
 		head = *listed_env;
 		key = get_key(cmd->params[i]); // Leak si MALLOC == NULL
+		if (key == NULL)
+		{
+			print_err(ERR_MALLOC);
+			return (NULL);
+		}
 		while (head)
 		{
 			if (ft_strcmp(head->key, key) == 0)

@@ -101,16 +101,10 @@ bool	ft_cd(t_data *data, t_cmd *cmd)
 			return (true);
 		}
 		if (chdir(home_path) == -1)
-		{
-			display_error(data, cmd->params[1]);
-			return (true);
-		}
+			return (display_error(data, cmd->params[1]));
 	}
 	else if (chdir(cmd->params[1]) == -1)
-	{
-		display_error(data, cmd->params[1]);
-		return (true);
-	}
+		return (display_error(data, cmd->params[1]));
 	update_listed_env(data, data->listed_env);
 	return (true);
 }

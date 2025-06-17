@@ -29,17 +29,17 @@
 # define HEREDOC 42
 # define NO_HERDOC 43
 
-struct							s_cmd;
-struct							s_data;
-struct							s_token;
-struct							s_token_lst;
-enum							e_token_type;
+struct s_cmd;
+struct s_data;
+struct s_token;
+struct s_token_lst;
+enum e_token_type;
 
-typedef struct s_cmd			t_cmd;
-typedef struct s_data			t_data;
-typedef struct s_token			t_token;
-typedef struct s_token_lst		t_token_lst;
-typedef enum e_token_type		t_token_type;
+typedef struct s_cmd		t_cmd;
+typedef struct s_data		t_data;
+typedef struct s_token		t_token;
+typedef struct s_token_lst	t_token_lst;
+typedef enum e_token_type	t_token_type;
 
 // parsing.c
 bool						parsing(t_data *data);
@@ -76,7 +76,8 @@ void						skip_quote_dollar(char **input, int is_quote,
 char						*ft_strjoin_and_free(char *s1, char *s2);
 
 // parser.c
-bool						parser(t_data *data, t_cmd **cmd, int prev_return_value);
+bool						parser(t_data *data, t_cmd **cmd,
+								int prev_return_value);
 
 // fill_special_operator_cmd.c
 bool						add_special_operator_to_cmd(t_token *current,

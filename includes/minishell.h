@@ -148,6 +148,6 @@ void				get_prompt(t_data *data, char **prompt);
 int					do_nothing(void);
 void				set_signal_action(void);
 void				reset_signal(void);
-void	set_signal_action_child(void);
+void				set_signal_action_child(void);
 
 #endif

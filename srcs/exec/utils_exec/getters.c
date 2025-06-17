@@ -74,7 +74,18 @@ char	**listed_env_to_array(t_data *data, t_env *listed_env)
 	data->env_array[size] = NULL;
 	while (head)
 	{
-		data->env_array[++i] = ft_strdup(head->full_line);
+		if (head->full_line != NULL)
+		{
+			data->env_array[++i] = ft_strdup(head->full_line);
+			if (data->env_array == NULL)
+				return (NULL);
+		}
+		else
+		{
+			data->env_array[++i] = ft_strdup("");
+			if (data->env_array == NULL)
+				return (NULL);
+		}
 		head = head->next;
 	}
 	return (data->env_array);

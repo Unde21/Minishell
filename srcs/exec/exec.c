@@ -60,11 +60,14 @@ void	exec_init(t_data *data)
 	head_cmd = data->cmd;
 	path_cmd = NULL;
 	data->env_array = listed_env_to_array(data, data->listed_env);
-	// if (data->env_array == NULL)
-	// CONFLIT
+	if (data->env_array == NULL)
+	{
+		print_err(ERR_MALLOC);
+		data->return_value = 1;
+		return ;
+	}
 	while (data->cmd)
 	{
-		data->env_array = listed_env_to_array(data, data->listed_env);
 		init(data, &path_cmd, &data->return_value);
 		if (data->cmd->next == NULL && data->return_value == 0
 			&& is_builtin(data))
