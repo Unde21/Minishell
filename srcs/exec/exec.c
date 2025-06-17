@@ -21,55 +21,6 @@ static void	set_pipe(t_cmd *cmd)
 		cmd->next->fd_in = cmd->pipe_fd[0];
 }
 
-static bool	init_redir(t_data *data, t_cmd *cmd)
-{
-	while (cmd->redir)
-	{
-		if (cmd->redir->is_ambiguous)
-		{
-			print_ambiguous(data->ambiguous_file);
-			data->return_value = 1;
-			return (false);
-		}
-		if (cmd->redir->type == REDIR_OUT)
-		{
-			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
-					0644);
-			if (cmd->fd_out < 0)
-				return (print_err(ERR_OP_FD));
-		}
-		if (cmd->redir->type == APPEND)
-		{
-			cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
-					0644);
-			if (cmd->fd_out < 0)
-				return (print_err(ERR_OP_FD));
-		}
-		if (cmd->redir->type == REDIR_IN)
-		{
-			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
-			if (cmd->fd_in < 0)
-				return (print_err(ERR_OP_FD));
-		}
-		if (cmd->redir->type == HERE_DOC)
-		{
-			cmd->redir->file = heredoc(data, get_limiter(cmd));
-			reset_signal();
-			if (cmd->redir->file != NULL)
-			{
-				cmd->fd_in = open(cmd->redir->file, O_RDONLY);
-				if (cmd->fd_in < 0)
-					return (print_err(ERR_OP_FD));
-				unlink(cmd->redir->file);
-				return (true);
-			}
-			return (false);
-		}
-		cmd->redir = cmd->redir->next;
-	}
-	return (true);
-}
-
 void	init(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->next != NULL)
@@ -81,7 +32,8 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 					'/') != NULL)
 			{
-				if (is_access_ok(data->cmd->params[0], &data->return_value, data->cmd->params))
+				if (is_access_ok(data->cmd->params[0], &data->return_value,
+						data->cmd->params))
 				{
 					*path_cmd = ft_strdup(data->cmd->params[0]);
 					if (*path_cmd == NULL)
@@ -108,14 +60,18 @@ void	exec_init(t_data *data)
 	head_cmd = data->cmd;
 	path_cmd = NULL;
 	data->env_array = listed_env_to_array(data, data->listed_env);
+	// if (data->env_array == NULL)
+	// CONFLIT
 	while (data->cmd)
 	{
-		if (data->cmd->next == NULL && data->return_value == 0 && is_builtin(data))
+		data->env_array = listed_env_to_array(data, data->listed_env);
+		init(data, &path_cmd, &data->return_value);
+		if (data->cmd->next == NULL && data->return_value == 0
+			&& is_builtin(data))
 		{
 			data->cmd = head_cmd;
 			return ;
 		}
-		init(data, &path_cmd, &data->return_value);
 		if (data->return_value == 0 && path_cmd != NULL)
 		{
 			pid = fork();

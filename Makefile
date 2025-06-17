@@ -32,6 +32,7 @@ SRCS := srcs/main.c \
 		srcs/exec/utils_exec/getters.c \
 		srcs/exec/utils_exec/exec_utils.c \
 		srcs/exec/utils_exec/clear_exec.c\
+		srcs/exec/redir.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/exec.c \
 		srcs/exec/child.c\
