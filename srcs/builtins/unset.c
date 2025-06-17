@@ -4,7 +4,6 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-
 bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 {
 	t_env	*head;
@@ -21,10 +20,7 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 		head = *listed_env;
 		key = get_key(cmd->params[i]); // Leak si MALLOC == NULL
 		if (key == NULL)
-		{
-			print_err(ERR_MALLOC);
-			return (NULL);
-		}
+			return (print_err_false(ERR_MALLOC));
 		while (head)
 		{
 			if (ft_strcmp(head->key, key) == 0)

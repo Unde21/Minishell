@@ -11,7 +11,7 @@ static bool	export_new(t_env *listed_env, char *params)
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	else
 	{
 		new_node->key = get_key(params); // Leak si MALLOC == NULL
@@ -19,10 +19,10 @@ static bool	export_new(t_env *listed_env, char *params)
 			return (false);
 		new_node->value = get_value(params); // Leak si MALLOC == NULL
 		if (new_node->value == NULL)
-			return (print_err(ERR_MALLOC));
+			return (print_err_false(ERR_MALLOC));
 		new_node->full_line = ft_strdup(params); // Leak si MALLOC == NULL
 		if (new_node->full_line == NULL)
-			return (print_err(ERR_MALLOC));
+			return (print_err_false(ERR_MALLOC));
 		new_node->printed = 0;
 		new_node->next = NULL;
 	}
@@ -43,13 +43,13 @@ static bool	export_old(t_env *listed_env, char *params, char *key)
 			if (listed_env->value == NULL)
 			{
 				free(key);
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 			}
 			listed_env->full_line = ft_strdup(params); // Leak si MALLOC == NULL
 			if (listed_env->full_line == NULL)
 			{
 				free(key);
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 			}
 		}
 		listed_env = listed_env->next;

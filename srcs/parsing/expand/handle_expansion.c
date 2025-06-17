@@ -31,8 +31,7 @@ void	join_without_expand(char **expanded, char c, size_t *i)
 
 static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 {
-	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR
-		&& s[*i + 1] != '\0')
+	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR && s[*i + 1] != '\0')
 	{
 		if (s[*i + 1] == '?')
 			join_return_value(expanded, i, data->return_value);
@@ -78,7 +77,7 @@ bool	replace_env_variables(t_data *data, char **params, size_t i)
 	if (expanded == NULL)
 	{
 		data->return_value = 1;
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	}
 	data->cmd->args->is_quote = false;
 	*params = expand(*params, expanded, data, i);

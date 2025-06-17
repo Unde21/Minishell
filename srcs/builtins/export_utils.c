@@ -53,8 +53,8 @@ int	export_type(char *params, t_env *listed_env)
 {
 	char	*key;
 
-	if (!params || !params[0])
-		return (0); // Error return 0 ?
+	// if (!params || !params[0])
+	// 	return (0); // Error return 0 ?
 	key = get_key(params);
 	if (!key)
 		return (0); // Error return 0 ?
@@ -91,11 +91,11 @@ bool	append_export(t_env *listed_env, char *params)
 		{
 			listed_env->value = ft_strjoin_and_free(listed_env->value, value);
 			if (listed_env->value == NULL)
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 			listed_env->full_line = ft_strjoin_and_free(listed_env->full_line,
 					value);
 			if (listed_env->full_line == NULL)
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 		}
 		listed_env = listed_env->next;
 	}

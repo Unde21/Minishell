@@ -30,10 +30,10 @@ bool	init_cmd_args(t_cmd *cmd)
 	i = 0;
 	cmd->params = malloc(sizeof(char *) * (cmd->nb_args + 1));
 	if (cmd->params == NULL)
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));
 	if (cmd->args == NULL)
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	while (i <= cmd->nb_args)
 	{
 		cmd->args[i].is_wildcards = false;
@@ -53,10 +53,7 @@ static bool	init_cmd(t_data *data)
 
 	cmd = malloc(sizeof(t_cmd));
 	if (cmd == NULL)
-	{
-		print_err(ERR_MALLOC);
-		return (false);
-	}
+		return (print_err_false(ERR_MALLOC));
 	cmd->nb_args = 0;
 	cmd->fd_in = 0;
 	cmd->fd_out = 1;
@@ -77,10 +74,7 @@ static bool	init_token(t_data *data)
 
 	tokens = malloc(sizeof(t_token_lst));
 	if (tokens == NULL)
-	{
-		print_err(ERR_MALLOC);
-		return (false);
-	}
+		return (print_err_false(ERR_MALLOC));
 	tokens->head = NULL;
 	tokens->tail = NULL;
 	current = NULL;

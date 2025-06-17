@@ -9,7 +9,7 @@ t_token	*new_token(char *content, t_token_type type)
 	token = malloc(sizeof(t_token));
 	if (token == NULL)
 	{
-		print_err(ERR_MALLOC);
+		print_err_null(ERR_MALLOC);
 		return (NULL);
 	}
 	token->content = ft_strdup(content);

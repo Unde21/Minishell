@@ -47,13 +47,13 @@ bool	replace_file_name(t_data *data, char **file_name,
 	if (expanded == NULL)
 	{
 		data->return_value = 1;
-		return (print_err(ERR_MALLOC));
+		return(print_err_false(ERR_MALLOC));
 	}
 	*file_name = expand(*file_name, expanded, data, is_heredoc);
 	if (*file_name == NULL)
 	{
 		data->return_value = 1;
-		return (print_err(ERR_MALLOC));
+		return(print_err_false(ERR_MALLOC));
 	}
 	if (data->is_ambiguous == true && is_heredoc != HEREDOC)
 	{
