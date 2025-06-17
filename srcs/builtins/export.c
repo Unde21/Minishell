@@ -2,6 +2,8 @@
 #include "exec.h"
 #include "minishell.h"
 #include "parsing.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 static bool	export_new(t_env *listed_env, char *params)
 {

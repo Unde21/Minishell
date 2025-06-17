@@ -1,5 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
 char	*get_value(char *params)
 {

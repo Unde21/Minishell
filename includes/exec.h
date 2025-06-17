@@ -2,13 +2,6 @@
 # define EXEC_H
 
 # include "minishell.h"
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 # include <unistd.h>
 
 # define PROMPT_HERE_DOC "> "
@@ -54,5 +47,6 @@ bool					is_child_builtin(char **params);
 bool					child_builtin(t_data *data);
 bool					solo_builtin(t_data *data);
 bool					is_access_ok(char *path, int *return_value);
+size_t					get_total_length(char **params);
 
 #endif

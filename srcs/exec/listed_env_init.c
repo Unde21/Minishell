@@ -1,4 +1,5 @@
 #include "exec.h"
+#include <stdlib.h>
 
 void	free_listed_env(t_data *data)
 {
