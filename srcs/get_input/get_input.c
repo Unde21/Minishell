@@ -29,11 +29,6 @@ static void	handle_input(t_data *data)
 	clear_cmd(data->cmd);
 }
 
-static int	do_nothing(void)
-{
-	return (0);
-}
-
 static void	exit_with_right_value(t_data *data, char *prompt)
 {
 	rl_clear_history();

@@ -36,7 +36,7 @@ static void	get_exit_code(t_data *data, char *s)
 	if (check_error != 0)
 	{
 		ft_dprintf(2, EXIT_ERROR);
-		ft_putstr_fd(s, 2);
+		ft_dprintf(2, "%s", s);
 		ft_dprintf(2, ERR_NUM_ARG);
 		exit(2);
 	}

@@ -63,11 +63,6 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	int		i;
 
 	i = 0;
-	if (child_builtin(data))
-	{
-		free(path_cmd);
-		exit(data->return_value);
-	}
 	while (data->cmd->params[i])
 		++i;
 	params_cpy = malloc(sizeof(char *) * (i + 1));
@@ -77,13 +72,18 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	params_cpy[i] = NULL;
 	set_signal_action_child();
 	dup_child(data->cmd);
-	close_fd(head);
 	if (data->return_value != 0)
 	{
 		free(path_cmd);
 		free_all(params_cpy	);
 		exit(data->return_value);
 	}
+	if (child_builtin(data))
+	{
+		free(path_cmd);
+		exit(data->return_value);
+	}
+	close_fd(head);
 	execve(path_cmd, params_cpy, data->env);
 	perror(ERR_EXECVE);
 	free(path_cmd);

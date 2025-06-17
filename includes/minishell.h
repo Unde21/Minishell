@@ -145,6 +145,7 @@ void				clear_all_data(t_data *data);
 void				get_prompt(t_data *data, char **prompt);
 
 // handle_signal.c
+int					do_nothing(void);
 void				set_signal_action(void);
 void				reset_signal(void);
 
