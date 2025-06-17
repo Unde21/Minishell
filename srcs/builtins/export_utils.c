@@ -1,6 +1,7 @@
 #include "exec.h"
 #include "minishell.h"
 #include "parsing.h"
+#include <stdlib.h>
 
 void	reset(t_env *listed_env)
 {

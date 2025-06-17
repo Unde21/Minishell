@@ -1,5 +1,6 @@
 #include "builtins.h"
 #include "exec.h"
+#include <unistd.h>
 
 bool	solo_builtin(t_data *data)
 {

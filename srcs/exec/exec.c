@@ -1,6 +1,9 @@
 #include "builtins.h"
 #include "exec.h"
 #include "parsing.h"
+#include <unistd.h>
+#include <stdlib.h>
+# include <fcntl.h>
 
 static void	set_pipe(t_cmd *cmd)
 {
@@ -80,7 +83,7 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 			{
 				if (is_access_ok(data->cmd->params[0], &data->return_value))
 				{
-					*path_cmd = ft_strdup(data->cmd->params[0]); // execve foire si le malloc est NULL il devrait pas aller jusqu execve
+					*path_cmd = ft_strdup(data->cmd->params[0]); // execve foire si le malloc est NULL il devrait pas aller jusqu
 					if (*path_cmd == NULL)
 						*return_value = 1;
 				}

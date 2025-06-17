@@ -1,9 +1,11 @@
 #include "builtins.h"
 #include "exec.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 void	clear_listed_env(t_env **listed_env)
 {
-	t_env *head;
+	t_env	*head;
 
 	head = *listed_env;
 	if (head == NULL)

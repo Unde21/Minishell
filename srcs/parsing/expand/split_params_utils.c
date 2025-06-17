@@ -51,6 +51,7 @@ void	free_delim(char **s, size_t	delim)
 {
 	while (delim > 0)
 	{
+		ft_printf("%s\n", s[delim]);
 		free(s[delim]);
 		--delim;
 	}
