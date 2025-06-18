@@ -118,7 +118,8 @@ char	*get_path_cmd(t_data *data, char **params, int *return_value)
 	path_value = search_path_in_env(data, return_value);
 	if (path_value == NULL)
 	{
-		*return_value = 1;
+		if (*return_value == 0)
+			*return_value = 1;
 		return (NULL);
 	}
 	path = ft_split(path_value, ':');
