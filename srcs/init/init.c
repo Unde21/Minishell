@@ -47,10 +47,11 @@ static bool	init_cmd(t_data *data)
 		return (print_err_false(ERR_MALLOC));
 	ft_memset(cmd, 0, sizeof(t_cmd));
 	cmd->fd_out = 1;
+	cmd->fd_in = 0;
 	cmd->pipe_fd[0] = -1;
 	cmd->pipe_fd[1] = -1;
 	data->cmd = cmd;
-	return (true);
+	return (true);	
 }
 
 static bool	init_token(t_data *data)

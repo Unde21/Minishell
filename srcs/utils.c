@@ -26,6 +26,7 @@ void	print_access_error(char *params, t_data *data)
 {
 	if (data->return_value == 1)
 	{
+		ft_printf("1\n");
 		print_err_null(ERR_MALLOC);
 		return ;
 	}

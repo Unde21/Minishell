@@ -78,11 +78,11 @@ static bool	free_key_and_return_false(char *key, char *value)
 	return (print_err_false(ERR_MALLOC));
 }
 
-bool	append_export(char *key, t_env *listed_env, char *params)
+bool	append_export(t_data *data, char *key, t_env *listed_env, char *params)
 {
 	char	*value;
 
-	value = get_value(params);
+	value = get_value(data, params);
 	if (value == NULL)
 	{
 		free(key);

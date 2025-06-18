@@ -16,6 +16,7 @@ static bool	dup_child(t_cmd *cmd)
 		close(cmd->fd_out);
 		return (print_err_false(ERR_DUP));
 	}
+	close_fd(cmd, false);
 	return (true);
 }
 
@@ -24,7 +25,7 @@ static void	free_and_exit(t_data *data, char *path_cmd, t_cmd *head,
 {
 	free(path_cmd);
 	free_all(params_cpy);
-	close_fd(head);
+	close_fd(head, true);
 	clear_cmd(data->cmd);
 	exit(data->return_value);
 }
@@ -41,10 +42,12 @@ static void	child_exec(t_data *data, char *path_cmd, char **params_cpy,
 	}
 	if (path_cmd == NULL)
 		free_and_exit(data, path_cmd, head, params_cpy);
-	close_fd(head);
+	close_fd(head, true);
 	execve(path_cmd, params_cpy, data->env_array);
 	perror(ERR_EXECVE);
 	free(path_cmd);
+	close(data->cmd->fd_in);
+	close(data->cmd->fd_out);
 	free_all(params_cpy);
 	clear_cmd(data->cmd);
 	exit(127);
@@ -86,18 +89,16 @@ pid_t	init_child(t_data *data, t_cmd *head_cmd, char *path_cmd)
 
 	pid = 0;
 	last_pid = 0;
-	if (data->return_value == 0)
+
+	pid = fork();
+	if (pid < 0)
 	{
-		pid = fork();
-		if (pid < 0)
-		{
-			close_fd(head_cmd);
-			print_err_false(ERR_FORK);
-		}
-		else if (pid == 0)
-			child(data, path_cmd, head_cmd);
-		if (data->cmd->next == NULL)
-			last_pid = pid;
+		close_fd(head_cmd, true);
+		print_err_false(ERR_FORK);
 	}
+	else if (pid == 0)
+		child(data, path_cmd, head_cmd);
+	if (data->cmd->next == NULL)
+		last_pid = pid;
 	return (last_pid);
 }

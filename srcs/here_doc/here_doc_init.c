@@ -44,8 +44,9 @@ char	*get_limiter(t_cmd *cmd)
 
 bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 {
-	char	*line = *line_ptr;
+	char	*line;
 
+	line = *line_ptr;
 	if (!line && g_return_value == 0)
 	{
 		data->return_value = 0;
@@ -55,7 +56,6 @@ bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 	}
 	if (!ft_strcmp(line, limiter))
 		return (false);
-		
 	if (is_expand_here_doc(line))
 	{
 		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir)) // ya probleme de leak sur l expand du here_doc
@@ -80,7 +80,6 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 		line = readline(PROMPT_HERE_DOC);
 		if (g_return_value == 130)
 		{
-			free(line);
 			data->return_value = 130;
 			break ;
 		}
@@ -89,11 +88,12 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 		ft_dprintf(fd_heredoc, "%s\n", line);
 		free(line);
 	}
+	free(line);
 	close(fd_heredoc);
 	return (NULL);
 }
 
-char	*heredoc(t_data *data, char *limiter)
+char	*heredoc(t_data *data, t_redir *redir, char *limiter)
 {
 	int		fd_heredoc;
 	char	*filename;
@@ -110,5 +110,6 @@ char	*heredoc(t_data *data, char *limiter)
 		return (print_err_null(ERR_OP_FD));
 	}
 	fill_heredoc(data, fd_heredoc, limiter);
+	free(redir->file);
 	return (filename);
 }
