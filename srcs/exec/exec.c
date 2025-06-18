@@ -12,7 +12,7 @@ static void	set_pipe(t_cmd *cmd, t_data *data)
 	head = cmd;
 	if (pipe(cmd->pipe_fd) < 0)
 	{
-		close_fd(head);
+		close_fd(head, true);
 		data->return_value = 1;
 		print_err_false(ERR_CREAT_PIPE);
 	}
@@ -69,6 +69,7 @@ static bool	dup_parent_builtins(t_data *data, t_cmd *cmd)
 static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 		pid_t *last_pid)
 {
+	data->return_value = 0;
 	if (data->cmd->next != NULL)
 	{
 		set_pipe(data->cmd, data);
@@ -90,11 +91,12 @@ static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 	if (!is_builtin(data))
 		get_absolute_path(data, &path_cmd, &data->return_value);
 	*last_pid = init_child(data, head_cmd, path_cmd);
+	close_fd(data->cmd, false);
 	free(path_cmd);
 	return (true);
 }
 
-void	exec(t_data *data) // soucis sur << EOF cat --> le cat affiche pas parce que apres appel du here_doc c est clode dans redir
+void	exec(t_data *data)
 {
 	char	*path_cmd;
 	t_cmd	*head_cmd;
@@ -118,7 +120,7 @@ void	exec(t_data *data) // soucis sur << EOF cat --> le cat affiche pas parce qu
 	}
 	data->cmd = head_cmd;
 	reset_signal();
-	close_fd(head_cmd);
+	close_fd(head_cmd, true);
 	free_all(data->env_array);
 	wait_child(last_pid, &data->return_value);
 }

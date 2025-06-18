@@ -118,6 +118,11 @@ char	*create_cpy_pattern(t_data *data, char **expanded, char *wildcards)
 		return (NULL);
 	cpy_file = get_cpy_pattern(wildcards, nb_file, cpy_file);
 	if (cpy_file == NULL)
+	{
+		free(*expanded);
+		*expanded = NULL;
+		free(wildcards);
 		return (NULL);
+	}
 	return (cpy_file);
 }

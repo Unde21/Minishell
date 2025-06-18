@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "exec.h"
 
-static bool	fill_new_node(t_env *new_node, char *params)
+static bool	fill_new_node(t_data *data, t_env *new_node, char *params)
 {
 	new_node->key = get_key(params);
 	if (new_node->key == NULL)
@@ -11,7 +11,7 @@ static bool	fill_new_node(t_env *new_node, char *params)
 		free(new_node);
 		return (false);
 	}
-	new_node->value = get_value(params);
+	new_node->value = get_value(data, params);
 	if (new_node->value == NULL)
 	{
 		free(new_node->key);
@@ -31,7 +31,7 @@ static bool	fill_new_node(t_env *new_node, char *params)
 	return (true);
 }
 
-bool	export_new(t_env *listed_env, char *params)
+bool	export_new(t_data *data, t_env *listed_env, char *params)
 {
 	t_env	*new_node;
 
@@ -40,7 +40,7 @@ bool	export_new(t_env *listed_env, char *params)
 		return (print_err_false(ERR_MALLOC));
 	else
 	{
-		if (fill_new_node(new_node, params) == false)
+		if (fill_new_node(data, new_node, params) == false)
 			return (false);
 	}
 	add_back(new_node, &listed_env);

@@ -21,7 +21,7 @@ static void	is_number(t_data *data, char *s)
 				close(data->cmd->fd_in);
 			if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
 				close(data->cmd->fd_out);
-			close_fd(data->cmd);
+			close_fd(data->cmd, true);
 			exit(2);
 		}
 		++i;
@@ -49,7 +49,7 @@ static void	get_exit_code(t_data *data, char *s)
 		close(data->cmd->fd_in);
 	if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
 		close(data->cmd->fd_out);
-	close_fd(data->cmd);
+	close_fd(data->cmd, true);
 	exit(exit_code);
 }
 
@@ -62,7 +62,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->nb_args == 1)
 	{
 		exit_code = data->return_value;
-		close_fd(cmd);
+		close_fd(cmd, true);
 		exit(exit_code);
 	}
 	else

@@ -4,14 +4,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static bool	export_old(t_env *listed_env, char *params, char *key)
+static bool	export_old(t_data *data, t_env *listed_env, char *params, char *key)
 {
 	while (listed_env)
 	{
 		if (ft_strcmp(listed_env->key, key) == 0)
 		{
 			free(listed_env->value);
-			listed_env->value = get_value(key);
+			listed_env->value = get_value(data, key);
 			if (listed_env->value == NULL)
 			{
 				free(key);
@@ -66,7 +66,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 	key = NULL;
 	if (type == 1)
 	{
-		if (export_new(data->listed_env, data->cmd->params[i]) == false)
+		if (export_new(data, data->listed_env, data->cmd->params[i]) == false)
 			return (false);
 	}
 	else if (type == 2)
@@ -74,7 +74,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 		key = get_key(data->cmd->params[i]);
 		if (key == NULL)
 			return (print_err_false(ERR_MALLOC));
-		if (export_old(data->listed_env, data->cmd->params[i], key) == false)
+		if (export_old(data, data->listed_env, data->cmd->params[i], key) == false)
 			return (false);
 	}
 	else if (type == 3)

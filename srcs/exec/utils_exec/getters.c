@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-char	*get_value(char *params)
+char	*get_value(t_data *data, char *params)
 {
 	char	*value;
 	int		start;
@@ -16,14 +16,22 @@ char	*get_value(char *params)
 	while (params[i] && params[i] != '=')
 		i++;
 	if (!params[i] || params[i + 1] == '\0')
-		return (ft_strdup(""));
+	{
+		value = ft_strdup("");
+		if (value == NULL)
+			data->return_value = 1;
+		return (value);
+	}
 	start = i + 1;
 	len = 0;
 	while (params[start + len])
 		len++;
 	value = malloc(sizeof(char) * (len + 1));
 	if (!value)
+	{
+		data->return_value = 1;
 		return (NULL);
+	}
 	j = 0;
 	while (params[start])
 		value[j++] = params[start++];
@@ -68,16 +76,19 @@ static char	*search_path_in_env(t_data *data, int *return_value)
 	{
 		if (ft_strncmp(data->env_array[i], "PATH=", 5) == 0)
 		{
-			path_value = get_value(data->env_array[i]);
+			path_value = get_value(data, data->env_array[i]);
 			if (!path_value || path_value[0] == '\0')
 			{
-				*return_value = 127;
+				if (*return_value == 0)
+					*return_value = 127;
 				return (NULL);
 			}
 			break ;
 		}
 		++i;
 	}
+	if (path_value == NULL)
+		*return_value = 127;
 	return (path_value);
 }
 
@@ -118,7 +129,8 @@ char	*get_path_cmd(t_data *data, char **params, int *return_value)
 	path_value = search_path_in_env(data, return_value);
 	if (path_value == NULL)
 	{
-		*return_value = 1;
+		if (*return_value == 0)
+			*return_value = 1;
 		return (NULL);
 	}
 	path = ft_split(path_value, ':');

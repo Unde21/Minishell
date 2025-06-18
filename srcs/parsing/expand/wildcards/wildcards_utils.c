@@ -23,8 +23,8 @@ int	get_nb_file(char *wildcards)
 			return (-3);
 		else if (read_file == NULL)
 			break ;
-		if (read_file->d_name[0] != DOT && check_match(read_file->d_name,
-				wildcards) == true)
+		if ((wildcards[0] == DOT || read_file->d_name[0] != DOT)
+			&& check_match(read_file->d_name, wildcards) == true)
 			++nb_file;
 	}
 	if (close_dir(&current_dir) == false)
@@ -50,7 +50,8 @@ bool	open_dir(DIR **current_dir)
 bool	is_file_name_valid(char *file_name, char *wildcards, char **cpy_file,
 		int *nb_file)
 {
-	if ((wildcards[0] == '.' || file_name[0] != '.') && check_match(file_name, wildcards) == true)
+	if ((wildcards[0] == '.' || file_name[0] != '.')
+		&& check_match(file_name, wildcards) == true)
 	{
 		*cpy_file = ft_strjoin_and_free(*cpy_file, file_name);
 		if (*cpy_file == NULL)

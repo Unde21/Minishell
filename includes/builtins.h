@@ -30,7 +30,7 @@ bool	ft_pwd(t_data *data);
 bool	ft_env(t_data *data, t_cmd *cmd);
 bool	ft_echo(t_cmd *cmd);
 bool	ft_cd(t_data *data, t_cmd *cmd);
-bool	export_new(t_env *listed_env, char *params);
+bool	export_new(t_data *data, t_env *listed_env, char *params);
 bool	display_error(t_data *data, char *params);
 bool	append_export(char *key, t_env *listed_env, char *params);
 

@@ -45,7 +45,7 @@ static bool	fill_next_node(t_env *next_node, t_data *data, int i)
 		free(next_node);
 		return (false);
 	}
-	next_node->value = get_value(data->env[i]);
+	next_node->value = get_value(data, data->env[i]);
 	if (next_node->value == NULL)
 	{
 		free(next_node->key);
