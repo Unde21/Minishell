@@ -40,8 +40,8 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 			cmd->fd_in = open(cmd->redir->file, O_RDONLY);
 			if (cmd->fd_in < 0)
 				return (print_err_false(ERR_OP_FD));
-			// close(cmd->fd_in); --> sa retire le leak de fd mais sa casse << EOF cat
-			// cmd->fd_in = 0;
+			// close(data->cmd->fd_in);
+			// data->cmd->fd_in = 0;
 			unlink(cmd->redir->file);
 			return (true);
 		}

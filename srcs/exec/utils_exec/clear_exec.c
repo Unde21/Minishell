@@ -3,24 +3,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-// void	clear_listed_env(t_env **listed_env)
-// {
-// 	t_env	*head;
-
-// 	head = *listed_env;
-// 	if (head == NULL)
-// 		return ;
-// 	while (head)
-// 	{
-// 		// free(head->key);
-// 		// free(head->value);
-// 		// free(head->full_line);
-// 		// free(head);
-// 		*listed_env = (*listed_env)->next;
-// 		head = *listed_env;
-// 	}
-// }
-
 void	close_fd(t_cmd *cmd)
 {
 	// Faut delete les commentaires ici ?
@@ -33,8 +15,3 @@ void	close_fd(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
-
-// void	clear_exec(t_data *data)
-// {
-// 	// clear_listed_env(&data->listed_env);
-// }
