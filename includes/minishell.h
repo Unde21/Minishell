@@ -84,6 +84,7 @@ typedef struct s_data
 	t_redir		*redir;
 	t_env		*listed_env;
 	t_cmd		*cmd;
+	size_t		size_cmd;
 	int			return_value;
 	int			last_type;
 	int			ac;

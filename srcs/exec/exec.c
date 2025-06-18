@@ -77,7 +77,7 @@ static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 	}
 	if (init_redir(data, data->cmd) == false)
 		return (false);
-	if (data->cmd->next == NULL && is_builtin(data))
+	if (data->size_cmd == 1 && is_builtin(data))
 	{
 		dup_parent_builtins(data, data->cmd);
 		if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
@@ -102,6 +102,7 @@ void	exec(t_data *data) // soucis sur << EOF cat --> le cat affiche pas parce qu
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
+	data->size_cmd = get_size_cmd(data->cmd);
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	if (data->env_array == NULL)
 	{

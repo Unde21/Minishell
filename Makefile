@@ -37,6 +37,7 @@ SRCS := srcs/main.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/env_to_array.c \
 		srcs/exec/exec.c \
+		srcs/exec/utils_exec/get_size_cmd.c \
 		srcs/exec/handle_err_dup.c \
 		srcs/exec/handle_child/child.c\
 		srcs/exec/handle_child/child_utils.c\

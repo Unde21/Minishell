@@ -97,13 +97,21 @@ void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i)
 		*expanded = NULL;
 		return ;
 	}
+	*i += ft_strlen(wildcards);
+	if (ft_strchr(wildcards, '/') != NULL)
+	{
+		*expanded = ft_strjoin_and_free(*expanded, wildcards);
+		free(wildcards);
+		return ;
+	}
 	cpy_file = create_cpy_pattern(data, expanded, wildcards);
 	if (cpy_file == NULL)
 	{
+		free(*expanded);
+		*expanded = NULL;
 		free(wildcards);
 		return ;
 	}
 	expand_wildcards(expanded, cpy_file, wildcards, len_expanded);
-	*i += ft_strlen(wildcards);
 	free(wildcards);
 }

@@ -4,18 +4,19 @@
 bool	need_split_params(t_cmd *cmd, char **params)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 0;
 	while (params[i])
 	{
-		j = 0;
-		while (params[i][j])
+		if (ft_strchr(params[i], '*') != NULL
+			&& ft_strchr(params[i], '/') != NULL)
 		{
-			if (params[i][j] == '/' && cmd->args[i].is_wildcards == true)
-				return (true);
-			++j;
+			++i;
+			continue ;
 		}
+		else if (cmd->args[i].is_wildcards == true
+			&& ft_strchr(params[i], '/') != NULL)
+			return (true);
 		++i;
 	}
 	return (false);
