@@ -67,8 +67,7 @@ static void	expand_wildcards(char **expanded, char *cpy_file, char *wildcards,
 	cpy_file = sort_file_name(cpy_file);
 	if (cpy_file == NULL)
 	{
-		free(wildcards);
-		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
+		free(*expanded);
 		*expanded = NULL;
 		return ;
 	}
@@ -107,9 +106,6 @@ void	join_wildcards(t_data *data, char **expanded, char *s, size_t *i)
 	cpy_file = create_cpy_pattern(data, expanded, wildcards);
 	if (cpy_file == NULL)
 	{
-		free(*expanded);
-		*expanded = NULL;
-		free(wildcards);
 		return ;
 	}
 	expand_wildcards(expanded, cpy_file, wildcards, len_expanded);
