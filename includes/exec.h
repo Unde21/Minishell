@@ -28,6 +28,7 @@ void	child(t_data *data, char *path_cmd, t_cmd *head);
 void	add_back(t_env *new_node, t_env **stack);
 t_env	*create_node(t_data *data, int i);
 size_t	get_total_length(char **params);
+size_t	get_size_cmd(t_cmd *cmd);
 pid_t	init_child(t_data *data, t_cmd *head_cmd, char *path_cmd);
 int		get_list_size(t_data *data);
 char	*heredoc(t_data *data, char *limiter);

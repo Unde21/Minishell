@@ -50,7 +50,7 @@ bool	open_dir(DIR **current_dir)
 bool	is_file_name_valid(char *file_name, char *wildcards, char **cpy_file,
 		int *nb_file)
 {
-	if (file_name[0] != '.' && check_match(file_name, wildcards) == true)
+	if ((wildcards[0] == '.' || file_name[0] != '.') && check_match(file_name, wildcards) == true)
 	{
 		*cpy_file = ft_strjoin_and_free(*cpy_file, file_name);
 		if (*cpy_file == NULL)

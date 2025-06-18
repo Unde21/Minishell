@@ -115,16 +115,9 @@ char	*create_cpy_pattern(t_data *data, char **expanded, char *wildcards)
 	}
 	cpy_file = ft_strdup("");
 	if (cpy_file == NULL)
-	{
-		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
-		*expanded = NULL;
 		return (NULL);
-	}
 	cpy_file = get_cpy_pattern(wildcards, nb_file, cpy_file);
 	if (cpy_file == NULL)
-	{
-		*expanded = NULL;
 		return (NULL);
-	}
 	return (cpy_file);
 }
