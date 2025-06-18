@@ -65,26 +65,14 @@ static bool	export_right_type(t_data *data, int i, int type)
 
 	key = NULL;
 	if (type == 1)
-	{
-		if (export_new(data, data->listed_env, data->cmd->params[i]) == false)
-			return (false);
-	}
-	else if (type == 2)
-	{
-		key = get_key(data->cmd->params[i]);
-		if (key == NULL)
-			return (print_err_false(ERR_MALLOC));
-		if (export_old(data, data->listed_env, data->cmd->params[i], key) == false)
-			return (false);
-	}
+		return (export_new(data, data->listed_env, data->cmd->params[i]));
+	key = get_key(data->cmd->params[i]);
+	if (key == NULL)
+		return (print_err_false(ERR_MALLOC));
+	if (type == 2)
+		return (export_old(data, data->listed_env, data->cmd->params[i], key));
 	else if (type == 3)
-	{
-		key = get_key(data->cmd->params[i]);
-		if (key == NULL)
-			return (print_err_false(ERR_MALLOC));
-		if (append_export(key, data->listed_env, data->cmd->params[i]) == false)
-			return (false);
-	}
+		return (append_export(key, data->listed_env, data->cmd->params[i]));
 	return (true);
 }
 
@@ -92,7 +80,7 @@ static bool	check_key(t_data *data, int i)
 {
 	if (!is_key_valid(data, data->cmd->params[i]))
 	{
-		ft_dprintf(STDERR_FILENO, "bash: export: `%s'%s",
+		ft_dprintf(STDERR_FILENO, "error: export: `%s'%s",
 			data->cmd->params[i], ERR_EXPORT);
 		return (false);
 	}

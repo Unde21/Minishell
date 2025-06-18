@@ -13,6 +13,8 @@ void	free_listed_env(t_data *data)
 			free(data->listed_env->key);
 		if (data->listed_env->value != NULL)
 			free(data->listed_env->value);
+		if (data->listed_env->full_line != NULL)
+			free(data->listed_env->full_line);
 		free(data->listed_env);
 		data->listed_env = tmp;
 	}

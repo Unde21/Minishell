@@ -29,8 +29,7 @@ static void	get_absolute_path(t_data *data, char **path_cmd, int *return_value)
 		if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 				'/') != NULL)
 		{
-			if (is_access_ok(data->cmd->params[0], &data->return_value,
-					data->cmd->params))
+			if (is_access_ok(data->cmd->params[0], data->cmd->params, data))
 			{
 				*path_cmd = ft_strdup(data->cmd->params[0]);
 				if (*path_cmd == NULL)
@@ -38,7 +37,7 @@ static void	get_absolute_path(t_data *data, char **path_cmd, int *return_value)
 			}
 		}
 		else
-			*path_cmd = get_path_cmd(data, data->cmd->params, return_value);
+			*path_cmd = get_path_cmd(data, data->cmd->params);
 		if (*path_cmd == NULL)
 			print_access_error(data->cmd->params[0], data);
 	}

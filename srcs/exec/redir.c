@@ -2,7 +2,6 @@
 #include "exec.h"
 #include "parsing.h"
 #include <fcntl.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 static bool	redir_out(t_cmd *cmd)

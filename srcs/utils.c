@@ -22,21 +22,7 @@ void	reset_g_return_value(t_data *data)
 	}
 }
 
-void	print_access_error(char *params, t_data *data)
-{
-	if (data->return_value == 1)
-	{
-		ft_printf("1\n");
-		print_err_null(ERR_MALLOC);
-		return ;
-	}
-	ft_dprintf(STDERR_FILENO, "bash: %s: ", params);
-	ft_dprintf(STDERR_FILENO, "command not found\n");
-}
-
 void	print_ambiguous(char *s)
 {
-	ft_dprintf(STDERR_FILENO, PRINT_BASH);
-	ft_dprintf(STDERR_FILENO, " %s: ", s);
-	ft_dprintf(STDERR_FILENO, ERR_AMBIGUOUS);
+	ft_dprintf(STDERR_FILENO, "%s %s: %s", PRINT_ERR, s, ERR_AMBIGUOUS);
 }

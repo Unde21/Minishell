@@ -1,6 +1,9 @@
 #include "builtins.h"
+#include "parsing.h"
 #include "exec.h"
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 bool	is_builtin(t_data *data)
 {
@@ -43,23 +46,59 @@ void	execute_builtins(t_data *data)
 		ft_unset(data, &data->listed_env, data->cmd);
 }
 
-bool	is_access_ok(char *path, int *return_value, char **params)
+bool	print_access_error(char *params, t_data *data)
+{
+	if (data->return_value == 1)
+		print_err_null(ERR_MALLOC);
+	else if (data->return_value == 127)
+		ft_dprintf(STDERR_FILENO, "%s%s", params, CMD_NOT_FOUND);
+	else if (data->return_value == 126)
+	{
+		data->return_value = 126;
+		ft_dprintf(STDERR_FILENO, "%s%s", params, NO_FILE);
+	}
+	else
+		data->return_value = 126;
+	return (false);
+}
+
+static bool	is_directory(char *path, t_data *data)
+{
+	struct stat	s;
+
+	if (stat(path, &s) != 0)
+	{
+		data->return_value = 127;
+		return (false);
+	}
+	if (S_ISDIR(s.st_mode))
+	{
+		ft_dprintf(2, "%s %s", path, ERR_IS_DIR);
+		data->return_value = -42;
+		return (false);
+	}
+	return (true);
+}
+
+bool	is_access_ok(char *path, char **params, t_data *data)
 {
 	if (params[0][0] == '\0' || params == NULL)
 	{
-		*return_value = 127;
+		data->return_value = 127;
 		return (false);
 	}
+	if (is_directory(path, data) == false)
+		return (false);
 	if (access(path, F_OK) == 0)
 	{
 		if (access(path, X_OK) == 0)
 		{
-			*return_value = 0;
+			data->return_value = 0;
 			return (true);
 		}
-		*return_value = 126;
+		data->return_value = 126;
 		return (false);
 	}
-	*return_value = 127;
+	data->return_value = 127;
 	return (false);
 }

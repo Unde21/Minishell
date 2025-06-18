@@ -1,4 +1,3 @@
-
 #include "parsing.h"
 
 bool	is_expand_here_doc(char *file_name)

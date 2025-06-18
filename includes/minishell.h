@@ -108,7 +108,6 @@ void	set_signal_action_child(void);
 void	reset_signal(void);
 void	reset_g_return_value(t_data *data);
 void	print_ambiguous(char *s);
-void	print_access_error(char *params, t_data *data);
 void	init_listed_env(t_data *data);
 void	get_prompt(t_data *data, char **prompt);
 void	get_input(t_data *data);

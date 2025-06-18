@@ -11,7 +11,10 @@
 # define ERR_DUP "error: dup failed\n"
 # define ERR_EXECVE "error: execve failed\n"
 # define QUIT "Quit (core dumped)\n"
-# define WARNING_HEREDOC "> bash: warning: here-document \
+# define ERR_IS_DIR ": Is a directory\n"
+# define CMD_NOT_FOUND ": command not found\n"
+# define NO_FILE ": No such file or directory\n"
+# define WARNING_HEREDOC "warning: here-document \
 delimited by end-of-file (wanted "
 
 typedef struct s_env	t_env;
@@ -34,13 +37,14 @@ int		get_list_size(t_data *data);
 char	*heredoc(t_data *data, t_redir *redir, char *limiter);
 char	*get_value(t_data *data, char *params);
 char	*get_random_name(char *here_doc);
-char	*get_path_cmd(t_data *data, char **params, int *return_value);
+char	*get_path_cmd(t_data *data, char **params);
 char	*get_limiter(t_cmd *cmd);
 char	*get_key(char *env);
 char	**listed_env_to_array(t_data *data, t_env *listed_env);
+bool	print_access_error(char *params, t_data *data);
 bool	is_expand_here_doc(char *file_name);
 bool	is_builtin(t_data *data);
-bool	is_access_ok(char *path, int *return_value, char **params);
+bool	is_access_ok(char *path, char **params, t_data *data);
 bool	init_redir(t_data *data, t_cmd *cmd);
 bool	err_dup_parent(t_data *data, t_cmd *cmd,
 			int save_stdin, int save_stdout);
