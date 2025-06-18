@@ -31,8 +31,8 @@ static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 	while (current != NULL)
 	{
 		len_var_name = ft_strlen(var_name);
-		if (len_var_name != 0 && ft_strncmp(current->key,
-				var_name, len_var_name + 1) == 0)
+		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name
+				+ 1) == 0)
 			break ;
 		current = current->next;
 	}
@@ -50,11 +50,10 @@ void	join_with_expand_file(t_data *data, char **expanded, char *s, size_t *i)
 	char	*var_name;
 	char	*env_value;
 
-	++(*i);
-	var_name = get_var_name(&s[*i]);
+	var_name =  get_var_name(&s[++*i]);
 	if (var_name == NULL)
 	{
-		free(var_name);
+		data->return_value = 1;
 		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return ;
 	}
@@ -62,9 +61,11 @@ void	join_with_expand_file(t_data *data, char **expanded, char *s, size_t *i)
 	if (env_value == NULL)
 	{
 		free(var_name);
-		free(env_value);
 		if (data->is_ambiguous == false)
+		{
+			data->return_value = 1;
 			ft_dprintf(STDERR_FILENO, ERR_MALLOC);
+		}
 		return ;
 	}
 	*expanded = ft_strjoin_and_free(*expanded, env_value);
