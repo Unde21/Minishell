@@ -2,20 +2,20 @@
 #include "parsing.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 static bool	dup_child(t_cmd *cmd)
 {
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 	{
 		close(cmd->fd_in);
-		return (print_err(ERR_DUP));
+		return (print_err_false(ERR_DUP));
 	}
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
 	{
 		close(cmd->fd_out);
-		return (print_err(ERR_DUP));
+		return (print_err_false(ERR_DUP));
 	}
-
 	return (true);
 }
 
@@ -50,7 +50,7 @@ static void	child_exec(t_data *data, char *path_cmd, char **params_cpy,
 	exit(127);
 }
 
-void	init_child(t_data *data, char *path_cmd, t_cmd *head)
+void	child(t_data *data, char *path_cmd, t_cmd *head)
 {
 	char	**params_cpy;
 	int		i;
@@ -60,7 +60,7 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 	if (params_cpy == NULL)
 	{
 		data->return_value = 1;
-		print_err(ERR_MALLOC);
+		print_err_false(ERR_MALLOC);
 		free_and_exit(data, path_cmd, head, params_cpy);
 	}
 	i = -1;
@@ -70,11 +70,34 @@ void	init_child(t_data *data, char *path_cmd, t_cmd *head)
 		if (params_cpy[i] == NULL)
 		{
 			data->return_value = 1;
-			print_err(ERR_MALLOC);
+			print_err_false(ERR_MALLOC);
 			free_and_exit(data, path_cmd, head, params_cpy);
 		}
 	}
 	params_cpy[i] = NULL;
 	set_signal_action_child();
 	child_exec(data, path_cmd, params_cpy, head);
+}
+
+pid_t	init_child(t_data *data, t_cmd *head_cmd, char *path_cmd)
+{
+	pid_t	last_pid;
+	pid_t	pid;
+
+	pid = 0;
+	last_pid = 0;
+	if (data->return_value == 0)
+	{
+		pid = fork();
+		if (pid < 0)
+		{
+			close_fd(head_cmd);
+			print_err_false(ERR_FORK);
+		}
+		else if (pid == 0)
+			child(data, path_cmd, head_cmd);
+		if (data->cmd->next == NULL)
+			last_pid = pid;
+	}
+	return (last_pid);
 }

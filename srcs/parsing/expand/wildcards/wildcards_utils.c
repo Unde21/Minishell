@@ -35,7 +35,7 @@ int	get_nb_file(char *wildcards)
 bool	close_dir(DIR **current_dir)
 {
 	if (closedir(*current_dir) != 0)
-		return (print_err(ERR_CLOSE_DIR));
+		return (print_err_false(ERR_CLOSE_DIR));
 	return (true);
 }
 
@@ -43,7 +43,7 @@ bool	open_dir(DIR **current_dir)
 {
 	*current_dir = opendir(CURRENT_DIRECTORY);
 	if (*current_dir == NULL)
-		return (print_err(ERR_OP_DIR));
+		return (print_err_false(ERR_OP_DIR));
 	return (true);
 }
 

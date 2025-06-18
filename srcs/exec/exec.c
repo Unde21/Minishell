@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static void	set_pipe(t_cmd *cmd)
+static void	set_pipe(t_cmd *cmd, t_data *data)
 {
 	t_cmd	*head;
 
@@ -13,7 +13,8 @@ static void	set_pipe(t_cmd *cmd)
 	if (pipe(cmd->pipe_fd) < 0)
 	{
 		close_fd(head);
-		print_err(ERR_PIPE);
+		data->return_value = 1;
+		print_err_false(ERR_CREAT_PIPE);
 	}
 	if (cmd->fd_out == STDOUT_FILENO)
 		cmd->fd_out = cmd->pipe_fd[1];
@@ -21,7 +22,7 @@ static void	set_pipe(t_cmd *cmd)
 		cmd->next->fd_in = cmd->pipe_fd[0];
 }
 
-void	init(t_data *data, char **path_cmd, int *return_value)
+static void	get_absolute_path(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->params[0] && g_return_value == 0)
 	{
@@ -43,29 +44,14 @@ void	init(t_data *data, char **path_cmd, int *return_value)
 	}
 }
 
-bool	err_dup_parent(t_data *data, t_cmd *cmd, int save_stdin, int save_stdout)
-{
-	if (save_stdin != -1)
-		close(save_stdin);
-	if (save_stdout != -1)
-		close(save_stdout);
-	if (cmd->fd_in != -1)
-		close(cmd->fd_in);
-	if (cmd->fd_out != -1)
-	close(cmd->fd_out);
-	print_err(ERR_DUP);
-	data->return_value = 1;
-	return (false);
-}
-
-static bool dup_parent_builtins(t_data *data, t_cmd *cmd)
+static bool	dup_parent_builtins(t_data *data, t_cmd *cmd)
 {
 	int	save_stdin;
 	int	save_stdout;
 
 	save_stdin = dup(STDIN_FILENO);
 	save_stdout = dup(STDOUT_FILENO);
-
+	data->return_value = 0;
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
@@ -80,55 +66,53 @@ static bool dup_parent_builtins(t_data *data, t_cmd *cmd)
 	return (true);
 }
 
-void	exec_init(t_data *data)
+static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
+		pid_t *last_pid)
+{
+	if (data->cmd->next != NULL)
+	{
+		set_pipe(data->cmd, data);
+		if (data->return_value != 0)
+			return (false);
+	}
+	if (init_redir(data, data->cmd) == false)
+		return (false);
+	if (data->cmd->next == NULL && is_builtin(data))
+	{
+		dup_parent_builtins(data, data->cmd);
+		if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
+			close(data->cmd->fd_in);
+		if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
+			close(data->cmd->fd_out);
+		data->cmd = head_cmd;
+		return (true);
+	}
+	if (!is_builtin(data))
+		get_absolute_path(data, &path_cmd, &data->return_value);
+	*last_pid = init_child(data, head_cmd, path_cmd);
+	free(path_cmd);
+	return (true);
+}
+
+void	exec(t_data *data) // soucis sur << EOF cat --> le cat affiche pas parce que apres appel du here_doc c est clode dans redir
 {
 	char	*path_cmd;
 	t_cmd	*head_cmd;
 	pid_t	last_pid;
-	pid_t	pid;
 
 	head_cmd = data->cmd;
 	path_cmd = NULL;
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	if (data->env_array == NULL)
 	{
-		print_err(ERR_MALLOC);
+		print_err_false(ERR_MALLOC);
 		data->return_value = 1;
 		return ;
 	}
 	while (data->cmd)
 	{
-		if (data->cmd->next != NULL)
-			set_pipe(data->cmd);
-		if (init_redir(data, data->cmd) == false)
+		if (exec_loop(data, head_cmd, path_cmd, &last_pid) == false)
 			break ;
-		if (data->cmd->next == NULL && data->return_value == 0
-			&& is_builtin(data))
-			{
-				dup_parent_builtins(data, data->cmd);
-				if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
-					close(data->cmd->fd_in);
-				if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
-					close(data->cmd->fd_out);
-				data->cmd = head_cmd;
-				return ;
-			}
-		if (!is_builtin(data))
-			init(data, &path_cmd, &data->return_value);
-		if (data->return_value == 0)
-		{
-			pid = fork();
-			if (pid < 0)
-			{
-				close_fd(head_cmd);
-				print_err(ERR_FORK);
-			}
-			else if (pid == 0)
-				init_child(data, path_cmd, head_cmd);
-			if (data->cmd->next == NULL)
-				last_pid = pid;
-		}
-		free(path_cmd);
 		data->cmd = data->cmd->next;
 	}
 	data->cmd = head_cmd;

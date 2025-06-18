@@ -1,4 +1,3 @@
-#include "minishell.h"
 #include "parsing.h"
 
 static bool	check_error(t_token *current)
@@ -27,7 +26,7 @@ bool	parser(t_data *data, t_cmd **cmd)
 	if (check_error(data->token_lst->head) == false)
 	{
 		data->return_value = 1;
-		return (print_err(ERR_NO_FILE));
+		return (print_err_false(ERR_NO_FILE));
 	}
 	if (get_cmd_args(data->token_lst->head, cmd) == false)
 	{

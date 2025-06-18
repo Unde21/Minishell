@@ -1,11 +1,9 @@
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
 
 static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 {
-	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR
-		&& s[*i + 1] != '\0')
+	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR && s[*i + 1] != '\0')
 	{
 		if (s[*i + 1] == '?')
 			join_return_value(expanded, i, data->return_value);
@@ -38,8 +36,8 @@ static char	*expand(char *s, char *expanded, t_data *data, int is_heredoc)
 	return (expanded);
 }
 
-bool	replace_file_name(t_data *data, char **file_name,
-	int is_heredoc, t_redir *redir)
+bool	replace_file_name(t_data *data, char **file_name, int is_heredoc,
+		t_redir *redir)
 {
 	char	*expanded;
 
@@ -47,13 +45,13 @@ bool	replace_file_name(t_data *data, char **file_name,
 	if (expanded == NULL)
 	{
 		data->return_value = 1;
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	}
 	*file_name = expand(*file_name, expanded, data, is_heredoc);
 	if (*file_name == NULL)
 	{
 		data->return_value = 1;
-		return (print_err(ERR_MALLOC));
+		return (print_err_false(ERR_MALLOC));
 	}
 	if (data->is_ambiguous == true && is_heredoc != HEREDOC)
 	{
@@ -91,8 +89,8 @@ bool	expand_redir(t_data *data, t_cmd *cmd)
 		if (current_redir->type != HERE_DOC
 			&& is_expand_redir(current_redir->file) == true)
 		{
-			if (replace_file_name(data, &current_redir->file,
-					NO_HERDOC, data->cmd->redir) == false)
+			if (replace_file_name(data, &current_redir->file, NO_HERDOC,
+					data->cmd->redir) == false)
 				return (false);
 		}
 		else if (remove_quote(data, &current_redir->file) == false)

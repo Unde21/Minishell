@@ -1,19 +1,6 @@
 #include "exec.h"
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
-
-void	reset(t_env *listed_env)
-{
-	t_env	*reset;
-
-	reset = listed_env;
-	while (reset)
-	{
-		reset->printed = 0;
-		reset = reset->next;
-	}
-}
 
 int	lst_size(t_env *head)
 {
@@ -30,13 +17,16 @@ int	lst_size(t_env *head)
 	return (count);
 }
 
-bool	is_key_valid(char *params)
+bool	is_key_valid(t_data *data, char *params)
 {
 	int	i;
 
 	i = -1;
 	if (!params || !(ft_isalpha(params[0]) || params[0] == '_'))
+	{
+		data->return_value = 1;
 		return (false);
+	}
 	while (params[++i])
 	{
 		if (params[i] == '=')
@@ -44,20 +34,25 @@ bool	is_key_valid(char *params)
 		if (params[i] == '+' && params[i + 1] == '=')
 			break ;
 		if (!ft_isalnum(params[i]) && params[i] != '_')
+		{
+			data->return_value = 1;
 			return (false);
+		}
 	}
 	return (true);
 }
 
-int	export_type(char *params, t_env *listed_env)
+int	export_type(t_data *data, char *params, t_env *listed_env)
 {
 	char	*key;
 
-	if (!params || !params[0])
-		return (0); // Error return 0 ?
 	key = get_key(params);
 	if (!key)
-		return (0); // Error return 0 ?
+	{
+		print_err_false(ERR_MALLOC);
+		data->return_value = 1;
+		return (-1);
+	}
 	while (listed_env)
 	{
 		if (ft_strcmp(key, listed_env->key) == 0)
@@ -76,28 +71,38 @@ int	export_type(char *params, t_env *listed_env)
 	return (1);
 }
 
-bool	append_export(t_env *listed_env, char *params)
+static bool	free_key_and_return_false(char *key, char *value)
 {
-	char	*key;
-	char	*value;
-	int		len_key;
+	free(key);
+	free(value);
+	return (print_err_false(ERR_MALLOC));
+}
 
-	key = get_key(params); // Leak si MALLOC == NULL
-	value = get_value(params); // Leak si MALLOC == NULL
-	len_key = ft_strlen(key);
+bool	append_export(char *key, t_env *listed_env, char *params)
+{
+	char	*value;
+
+	value = get_value(params);
+	if (value == NULL)
+	{
+		free(key);
+		return (print_err_false(ERR_MALLOC));
+	}
 	while (listed_env)
 	{
-		if (ft_strncmp(key, listed_env->key, len_key) == 0)
+		if (ft_strncmp(key, listed_env->key, ft_strlen(key)) == 0)
 		{
 			listed_env->value = ft_strjoin_and_free(listed_env->value, value);
 			if (listed_env->value == NULL)
-				return (print_err(ERR_MALLOC));
+				return (free_key_and_return_false(key, value));
 			listed_env->full_line = ft_strjoin_and_free(listed_env->full_line,
 					value);
 			if (listed_env->full_line == NULL)
-				return (print_err(ERR_MALLOC));
+				return (free_key_and_return_false(key, value));
 		}
 		listed_env = listed_env->next;
 	}
+	free(key);
+	free(value);
 	return (true);
 }

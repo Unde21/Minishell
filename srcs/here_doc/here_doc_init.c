@@ -1,8 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
-#include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
-# include <fcntl.h>
+#include <unistd.h>
 
 char	*get_random_name(char *here_doc)
 {
@@ -13,16 +13,12 @@ char	*get_random_name(char *here_doc)
 	i = 0;
 	here_doc = malloc(sizeof(char) * 26);
 	if (!here_doc)
-	{
-		print_err(ERR_MALLOC);
-		return (NULL);
-	}
+		return (print_err_null(ERR_MALLOC));
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
 	{
-		print_err(ERR_OP_FD);
 		free(here_doc);
-		return (NULL);
+		return (print_err_null(ERR_OP_FD));
 	}
 	while (i < 25)
 	{
@@ -46,29 +42,29 @@ char	*get_limiter(t_cmd *cmd)
 	return (NULL);
 }
 
-bool	fill_heredoc_loop(char *line, char *limiter, t_data *data)
+bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 {
+	char	*line = *line_ptr;
+
 	if (!line && g_return_value == 0)
 	{
-		free(line);
 		data->return_value = 0;
 		ft_printf(WARNING_HEREDOC);
 		ft_printf("`%s')\n", limiter);
-		return (false) ;
+		return (false);
 	}
 	if (!ft_strcmp(line, limiter))
+		return (false);
+		
+	if (is_expand_here_doc(line))
 	{
-		free(line);
-		return (false) ;
-	}
-	if (is_expand_redir(line))
-	{
-		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
+		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir)) // ya probleme de leak sur l expand du here_doc
 		{
 			data->return_value = 1;
-			free(line);
-			return (false) ;
+			*line_ptr = NULL;
+			return (false);
 		}
+		*line_ptr = line;
 	}
 	return (true);
 }
@@ -76,7 +72,9 @@ bool	fill_heredoc_loop(char *line, char *limiter, t_data *data)
 char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 {
 	char	*line;
+	char	*old_line;
 
+	old_line = NULL;
 	while (1)
 	{
 		line = readline(PROMPT_HERE_DOC);
@@ -86,7 +84,7 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 			data->return_value = 130;
 			break ;
 		}
-		if (fill_heredoc_loop(line, limiter, data) == false)
+		if (fill_heredoc_loop(&line, limiter, data) == false)
 			break ;
 		ft_dprintf(fd_heredoc, "%s\n", line);
 		free(line);
@@ -108,9 +106,8 @@ char	*heredoc(t_data *data, char *limiter)
 	fd_heredoc = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd_heredoc == -1)
 	{
-		print_err(ERR_OP_FD);
 		free(filename);
-		return (NULL);
+		return (print_err_null(ERR_OP_FD));
 	}
 	fill_heredoc(data, fd_heredoc, limiter);
 	return (filename);

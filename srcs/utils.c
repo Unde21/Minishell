@@ -1,11 +1,16 @@
-#include "minishell.h"
 #include "parsing.h"
 #include <unistd.h>
 
-bool	print_err(char *str_error)
+bool	print_err_false(char *str_error)
 {
 	ft_dprintf(STDERR_FILENO, "%s", str_error);
 	return (false);
+}
+
+char	*print_err_null(char *str_error)
+{
+	ft_dprintf(STDERR_FILENO, "%s", str_error);
+	return (NULL);
 }
 
 void	reset_g_return_value(t_data *data)
@@ -21,7 +26,7 @@ void	print_access_error(char *params, t_data *data)
 {
 	if (data->return_value == 1)
 	{
-		print_err(ERR_MALLOC);
+		print_err_null(ERR_MALLOC);
 		return ;
 	}
 	ft_dprintf(STDERR_FILENO, "bash: %s: ", params);

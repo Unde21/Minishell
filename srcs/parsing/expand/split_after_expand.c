@@ -1,4 +1,3 @@
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
 
@@ -75,7 +74,7 @@ bool	handle_split_expand(t_cmd *cmd)
 		{
 			current->params = split_expand(current->params);
 			if (current->params == NULL)
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 		}
 		current = current->next;
 	}

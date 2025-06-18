@@ -1,9 +1,7 @@
 #include "builtins.h"
 #include "exec.h"
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
-
 
 bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 {
@@ -15,15 +13,20 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 	i = 0;
 	free_all(data->env_array);
 	data->env_array = listed_env_to_array(data, data->listed_env);
+	if (data->env_array == NULL)
+	{
+		data->return_value = 1;
+		return (print_err_false(ERR_MALLOC));
+	}
 	while (cmd->params[++i])
 	{
 		prev = NULL;
 		head = *listed_env;
-		key = get_key(cmd->params[i]); // Leak si MALLOC == NULL
+		key = get_key(cmd->params[i]);
 		if (key == NULL)
 		{
-			print_err(ERR_MALLOC);
-			return (NULL);
+			data->return_value = 1;
+			return (print_err_false(ERR_MALLOC));
 		}
 		while (head)
 		{

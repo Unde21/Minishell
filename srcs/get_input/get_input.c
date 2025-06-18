@@ -1,6 +1,5 @@
 #include "builtins.h"
 #include "exec.h"
-#include "minishell.h"
 #include "parsing.h"
 #include <signal.h>
 #include <stdlib.h>
@@ -25,8 +24,7 @@ static void	handle_input(t_data *data)
 	}
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
-	exec_init(data);
-	// clear_exec(data);
+	exec(data);
 	clear_cmd(data->cmd);
 }
 
@@ -45,7 +43,7 @@ static bool	check_prompt_error(char **prompt)
 	{
 		*prompt = ft_strdup(PATH_ERROR);
 		if (*prompt == NULL)
-			return (print_err(ERR_MALLOC));
+			return (print_err_false(ERR_MALLOC));
 	}
 	return (true);
 }

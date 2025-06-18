@@ -1,9 +1,6 @@
-#include "builtins.h"
 #include "exec.h"
 #include "parsing.h"
-#include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 char	*get_value(char *params)
 {
@@ -20,12 +17,11 @@ char	*get_value(char *params)
 		i++;
 	if (!params[i] || params[i + 1] == '\0')
 		return (ft_strdup(""));
-	// faut checker si il foirre dans tout les appels de get_value
 	start = i + 1;
 	len = 0;
 	while (params[start + len])
 		len++;
-	value = malloc(len + 1); // Leak si MALLOC == NULL
+	value = malloc(sizeof(char) * (len + 1));
 	if (!value)
 		return (NULL);
 	j = 0;
@@ -39,19 +35,21 @@ char	*get_key(char *env)
 {
 	char	*key;
 	int		i;
+	char	*env_dup;
 
 	key = NULL;
 	i = 0;
 	while (env[i] && env[i] != '=' && env[i] != '+')
 		i++;
 	if (env[i] == '\0')
-		return (ft_strdup(env));
-	key = malloc(sizeof(char) * (i + 1)); // Leak si MALLOC == NULL
-	if (!key)
 	{
-		print_err(ERR_MALLOC);
-		return (NULL);
+		env_dup = ft_strdup(env);
+		if (!env_dup)
+			return (print_err_null(ERR_MALLOC));
 	}
+	key = malloc(sizeof(char) * (i + 1));
+	if (!key)
+		return (NULL);
 	i = -1;
 	while (env[++i] && env[i] != '=' && env[i] != '+')
 		key[i] = env[i];
@@ -59,80 +57,77 @@ char	*get_key(char *env)
 	return (key);
 }
 
-char	**listed_env_to_array(t_data *data, t_env *listed_env)
+static char	*search_path_in_env(t_data *data, int *return_value)
 {
-	int		i;
-	int		size;
-	t_env	*head;
+	char	*path_value;
+	size_t	i;
 
-	i = -1;
-	size = lst_size(listed_env);
-	head = listed_env;
-	data->env_array = malloc(sizeof(char *) * (size + 1));
-	if (!data->env_array)
-		return (NULL);
-	data->env_array[size] = NULL;
-	while (head)
+	i = 0;
+	path_value = NULL;
+	while (data->env_array[i])
 	{
-		if (head->full_line != NULL)
+		if (ft_strncmp(data->env_array[i], "PATH=", 5) == 0)
 		{
-			data->env_array[++i] = ft_strdup(head->full_line);
-			if (data->env_array == NULL)
+			path_value = get_value(data->env_array[i]);
+			if (!path_value || path_value[0] == '\0')
+			{
+				*return_value = 127;
 				return (NULL);
+			}
+			break ;
 		}
-		else
-		{
-			data->env_array[++i] = ft_strdup("");
-			if (data->env_array == NULL)
-				return (NULL);
-		}
-		head = head->next;
+		++i;
 	}
-	return (data->env_array);
+	return (path_value);
+}
+
+char	*get_strict_path(char **path, char **params, int *return_value)
+{
+	char	*path_value;
+	size_t	i;
+
+	i = 0;
+	while (path[i])
+	{
+		path_value = ft_strdup(path[i]);
+		path_value = ft_strjoin_and_free(path_value, "/");
+		path_value = ft_strjoin_and_free(path_value, params[0]);
+		if (!path_value)
+		{
+			*return_value = 1;
+			free_all(path);
+			return (NULL);
+		}
+		if (is_access_ok(path_value, return_value, path))
+		{
+			free_all(path);
+			return (path_value);
+		}
+		free(path_value);
+		++i;
+	}
+	free_all(path);
+	return (NULL);
 }
 
 char	*get_path_cmd(t_data *data, char **params, int *return_value)
 {
-	int		i;
 	char	*path_value;
 	char	**path;
 
-	path_value = NULL;
-	i = -1;
-	while (data->env_array[++i])
-		if (ft_strncmp(data->env_array[i], "PATH=", 5) == 0)
-			path_value = get_value(data->env_array[i]);
-	if (!path_value)
+	path_value = search_path_in_env(data, return_value);
+	if (path_value == NULL)
 	{
-		*return_value = 127;
+		*return_value = 1;
 		return (NULL);
 	}
 	path = ft_split(path_value, ':');
 	free(path_value);
+	path_value = NULL;
 	if (!path)
-		return (NULL);
-	i = -1;
-	while (path[++i])
 	{
-		path[i] = ft_strjoin_and_free(path[i], "/");
-		if (!path[i])
-		{
-			free_all(path);
-			return (NULL);
-		}
-		path[i] = ft_strjoin_and_free(path[i], params[0]);
-		if (!path[i])
-		{
-			free_all(path);
-			return (NULL);
-		}
-		if (is_access_ok(path[i], return_value, path))
-		{
-			path_value = ft_strdup(path[i]);
-			free_all(path);
-			return (path_value);
-		}
+		*return_value = 1;
+		return (NULL);
 	}
-	free_all(path);
-	return (NULL);
+	return (get_strict_path(path, params, return_value));
 }

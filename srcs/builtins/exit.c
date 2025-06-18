@@ -1,7 +1,7 @@
 #include "builtins.h"
-#include "minishell.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include "exec.h"
 
 static void	is_number(t_data *data, char *s)
 {
@@ -17,7 +17,11 @@ static void	is_number(t_data *data, char *s)
 			ft_dprintf(STDERR_FILENO, EXIT_ERROR);
 			ft_dprintf(STDERR_FILENO, "%s", s);
 			ft_dprintf(STDERR_FILENO, ERR_NUM_ARG);
-			clear_all_data(data);
+			if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
+				close(data->cmd->fd_in);
+			if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
+				close(data->cmd->fd_out);
+			close_fd(data->cmd);
 			exit(2);
 		}
 		++i;
@@ -41,7 +45,11 @@ static void	get_exit_code(t_data *data, char *s)
 		ft_dprintf(STDERR_FILENO, ERR_NUM_ARG);
 		exit(2);
 	}
-	clear_all_data(data);
+	if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
+		close(data->cmd->fd_in);
+	if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
+		close(data->cmd->fd_out);
+	close_fd(data->cmd);
 	exit(exit_code);
 }
 
@@ -54,7 +62,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->nb_args == 1)
 	{
 		exit_code = data->return_value;
-		clear_all_data(data);
+		close_fd(cmd);
 		exit(exit_code);
 	}
 	else

@@ -1,55 +1,28 @@
 #include "builtins.h"
 #include "exec.h"
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
 #include <unistd.h>
 
-static bool	export_new(t_env *listed_env, char *params)
-{
-	t_env	*new_node;
-
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-		return (print_err(ERR_MALLOC));
-	else
-	{
-		new_node->key = get_key(params); // Leak si MALLOC == NULL
-		if (new_node->key == NULL)
-			return (false);
-		new_node->value = get_value(params); // Leak si MALLOC == NULL
-		if (new_node->value == NULL)
-			return (print_err(ERR_MALLOC));
-		new_node->full_line = ft_strdup(params); // Leak si MALLOC == NULL
-		if (new_node->full_line == NULL)
-			return (print_err(ERR_MALLOC));
-		new_node->printed = 0;
-		new_node->next = NULL;
-	}
-	add_back(new_node, &listed_env);
-	return (true);
-}
-
 static bool	export_old(t_env *listed_env, char *params, char *key)
 {
-	key = get_key(params);
-	if (key == NULL)
-		return (false);
 	while (listed_env)
 	{
 		if (ft_strcmp(listed_env->key, key) == 0)
 		{
-			listed_env->value = get_value(key); // Leak si MALLOC == NULL
+			free(listed_env->value);
+			listed_env->value = get_value(key);
 			if (listed_env->value == NULL)
 			{
 				free(key);
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 			}
-			listed_env->full_line = ft_strdup(params); // Leak si MALLOC == NULL
+			free(listed_env->full_line);
+			listed_env->full_line = ft_strdup(params);
 			if (listed_env->full_line == NULL)
 			{
 				free(key);
-				return (print_err(ERR_MALLOC));
+				return (print_err_false(ERR_MALLOC));
 			}
 		}
 		listed_env = listed_env->next;
@@ -98,18 +71,35 @@ static bool	export_right_type(t_data *data, int i, int type)
 	}
 	else if (type == 2)
 	{
+		key = get_key(data->cmd->params[i]);
+		if (key == NULL)
+			return (print_err_false(ERR_MALLOC));
 		if (export_old(data->listed_env, data->cmd->params[i], key) == false)
 			return (false);
 	}
 	else if (type == 3)
 	{
-		if (append_export(data->listed_env, data->cmd->params[i]) == false)
+		key = get_key(data->cmd->params[i]);
+		if (key == NULL)
+			return (print_err_false(ERR_MALLOC));
+		if (append_export(key, data->listed_env, data->cmd->params[i]) == false)
 			return (false);
 	}
 	return (true);
 }
 
-bool	ft_export(t_data *data)
+static bool	check_key(t_data *data, int i)
+{
+	if (!is_key_valid(data, data->cmd->params[i]))
+	{
+		ft_dprintf(STDERR_FILENO, "bash: export: `%s'%s",
+			data->cmd->params[i], ERR_EXPORT);
+		return (false);
+	}
+	return (true);
+}
+
+void	ft_export(t_data *data)
 {
 	int	i;
 	int	type;
@@ -117,25 +107,21 @@ bool	ft_export(t_data *data)
 	i = 0;
 	type = 0;
 	if (data->cmd->params[1] == NULL)
-		export_no_argument(data->listed_env);
+		return (export_no_argument(data->listed_env));
 	while (data->cmd->params[++i])
 	{
-		if (!is_key_valid(data->cmd->params[i]))
-		{
-			ft_dprintf(STDERR_FILENO, "bash: export: `%s'",
-				data->cmd->params[i]);
-			ft_dprintf(STDERR_FILENO, ERR_EXPORT);
-			data->return_value = 1;
-			continue ;
-		}
-		type = export_type(data->cmd->params[i], data->listed_env);
+		if (check_key(data, i) == false)
+			break ;
+		type = export_type(data, data->cmd->params[i], data->listed_env);
+		if (type < 0)
+			return ;
 		if (export_right_type(data, i, type) == false)
 		{
-			data->return_value = 1; // surement des trucs a free ici avant
+			data->return_value = 1;
 			free_all(data->env_array);
 			data->env_array = listed_env_to_array(data, data->listed_env);
-			return (true);
+			if (data->env_array == NULL)
+				print_err_false(ERR_MALLOC);
 		}
 	}
-	return (true);
 }

@@ -1,4 +1,3 @@
-#include "minishell.h"
 #include "parsing.h"
 #include <stdlib.h>
 
@@ -38,10 +37,7 @@ static bool	fill_cmd_args(t_token **current, t_cmd *current_cmd)
 		}
 		current_cmd->params[i] = ft_strdup((*current)->content);
 		if (current_cmd->params[i] == NULL)
-		{
-			print_err(ERR_MALLOC);
-			return (false);
-		}
+			return (print_err_false(ERR_MALLOC));
 		++i;
 		*current = (*current)->next;
 	}
@@ -53,10 +49,7 @@ static bool	new_node_cmd(t_cmd **current_cmd)
 {
 	(*current_cmd)->next = malloc(sizeof(t_cmd));
 	if ((*current_cmd)->next == NULL)
-	{
-		print_err(ERR_MALLOC);
-		return (false);
-	}
+		return (print_err_false(ERR_MALLOC));
 	(*current_cmd) = (*current_cmd)->next;
 	(*current_cmd)->nb_args = 0;
 	(*current_cmd)->args = NULL;
@@ -76,7 +69,7 @@ bool	get_cmd_args(t_token *current, t_cmd **cmd)
 
 	current_cmd = *cmd;
 	if (current->type == PIPE)
-		return (print_err(ERR_PIPE));
+		return (print_err_false(ERR_PIPE));
 	while (current != NULL)
 	{
 		get_cmd_nb_arg(current, current_cmd);
@@ -87,9 +80,9 @@ bool	get_cmd_args(t_token *current, t_cmd **cmd)
 		{
 			current = current->next;
 			if (current == NULL)
-				return (print_err(ERR_PIPE));
+				return (print_err_false(ERR_PIPE));
 			if (current->type == PIPE)
-				return (print_err(ERR_MULTIPLE_PIPE));
+				return (print_err_false(ERR_MULTIPLE_PIPE));
 			if (current != NULL && new_node_cmd(&current_cmd) == false)
 				return (false);
 		}

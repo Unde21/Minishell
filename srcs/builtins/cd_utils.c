@@ -1,5 +1,4 @@
 #include "builtins.h"
-#include "minishell.h"
 
 bool	display_error(t_data *data, char *params)
 {
