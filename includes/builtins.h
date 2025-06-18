@@ -32,6 +32,6 @@ bool	ft_echo(t_cmd *cmd);
 bool	ft_cd(t_data *data, t_cmd *cmd);
 bool	export_new(t_data *data, t_env *listed_env, char *params);
 bool	display_error(t_data *data, char *params);
-bool	append_export(char *key, t_env *listed_env, char *params);
+bool	append_export(t_data *data, char *key, t_env *listed_env, char *params);
 
 #endif
