@@ -9,7 +9,7 @@ static bool	fill_new_node(t_data *data, t_env **new_node, char *params)
 	if ((*new_node)->key == NULL)
 	{
 		free(*new_node);
-		return (false);
+		return (print_err_false(ERR_MALLOC));
 	}
 	(*new_node)->value = get_value(data, params);
 	if ((*new_node)->value == NULL)

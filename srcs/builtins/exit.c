@@ -14,14 +14,15 @@ static void	is_number(t_data *data, char *s)
 	{
 		if (ft_isdigit(s[i]) == 0)
 		{
-			ft_dprintf(STDERR_FILENO, EXIT_ERROR);
-			ft_dprintf(STDERR_FILENO, "%s", s);
-			ft_dprintf(STDERR_FILENO, ERR_NUM_ARG);
+			ft_dprintf(STDERR_FILENO, "%s%s%s", EXIT_ERROR, s, ERR_NUM_ARG);
 			if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
 				close(data->cmd->fd_in);
 			if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
 				close(data->cmd->fd_out);
 			close_fd(data->cmd, true);
+			free_all(data->env_array);
+			clear_cmd(data->cmd);
+			free_listed_env(data);
 			exit(2);
 		}
 		++i;
@@ -40,9 +41,10 @@ static void	get_exit_code(t_data *data, char *s)
 		exit_code = ft_atoll(s, &check_error) % 256;
 	if (check_error != 0)
 	{
-		ft_dprintf(STDERR_FILENO, EXIT_ERROR);
-		ft_dprintf(STDERR_FILENO, "%s", s);
-		ft_dprintf(STDERR_FILENO, ERR_NUM_ARG);
+		ft_dprintf(STDERR_FILENO, "%s%s%s", EXIT_ERROR, s, ERR_NUM_ARG);
+		clear_cmd(data->cmd);
+		free_all(data->env_array);
+		free_listed_env(data);
 		exit(2);
 	}
 	if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
@@ -50,10 +52,13 @@ static void	get_exit_code(t_data *data, char *s)
 	if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
 		close(data->cmd->fd_out);
 	close_fd(data->cmd, true);
+	clear_cmd(data->cmd);
+	free_listed_env(data);
+	free_all(data->env_array);
 	exit(exit_code);
 }
 
-int	ft_exit(t_data *data, t_cmd *cmd)
+int	ft_exit(t_data *data, t_cmd *cmd, t_cmd *head)
 {
 	char	*s;
 	int		exit_code;
@@ -62,7 +67,10 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->nb_args == 1)
 	{
 		exit_code = data->return_value;
-		close_fd(cmd, true);
+		close_fd(head, false);
+		clear_cmd(data->cmd);
+		free_all(data->env_array);
+		free_listed_env(data);
 		exit(exit_code);
 	}
 	else

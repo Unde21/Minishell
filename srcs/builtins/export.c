@@ -11,7 +11,7 @@ static bool	export_old(t_data *data, t_env *listed_env, char *params, char *key)
 		if (ft_strcmp(listed_env->key, key) == 0)
 		{
 			free(listed_env->value);
-			listed_env->value = get_value(data, key);
+			listed_env->value = get_value(data, params);
 			if (listed_env->value == NULL)
 			{
 				free(key);
@@ -27,7 +27,6 @@ static bool	export_old(t_data *data, t_env *listed_env, char *params, char *key)
 		}
 		listed_env = listed_env->next;
 	}
-	free(key);
 	return (true);
 }
 
@@ -46,7 +45,7 @@ static void	export_no_argument(t_env *listed_env)
 		min = NULL;
 		while (head)
 		{
-			if (!head->printed && (!min || strcmp(head->key, min->key) < 0))
+			if (!head->printed && (!min || ft_strcmp(head->key, min->key) < 0))
 				min = head;
 			head = head->next;
 		}
@@ -65,10 +64,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 
 	key = NULL;
 	if (type == 1)
-	{
-		if (export_new(data, data->listed_env, data->cmd->params[i]) == false)
-			return (false);
-	}
+		return (export_new(data, data->listed_env, data->cmd->params[i]));
 	key = get_key(data->cmd->params[i]);
 	if (key == NULL)
 		return (print_err_false(ERR_MALLOC));
@@ -80,6 +76,9 @@ static bool	export_right_type(t_data *data, int i, int type)
 	else if (type == 3)
 		return (append_export(data, key, data->listed_env,
 				data->cmd->params[i]));
+	free(key);
+	free_all(data->env_array);
+	data->env_array = listed_env_to_array(data, data->listed_env);
 	return (true);
 }
 
@@ -113,10 +112,11 @@ void	ft_export(t_data *data)
 		if (export_right_type(data, i, type) == false)
 		{
 			data->return_value = 1;
-			free_all(data->env_array);
-			data->env_array = listed_env_to_array(data, data->listed_env);
 			if (data->env_array == NULL)
+			{
 				print_err_false(ERR_MALLOC);
+				return ;
+			}
 		}
 	}
 }

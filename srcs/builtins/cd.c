@@ -1,4 +1,5 @@
 #include "builtins.h"
+#include "exec.h"
 #include "parsing.h"
 #include <stdlib.h>
 #include <unistd.h>
@@ -19,20 +20,22 @@ static char	*get_home_path(t_env *env)
 
 static bool	update_pwd(t_data *data, t_env *current)
 {
+	free(current->value);
 	current->value = getcwd(NULL, 0);
 	if (current->value == NULL)
 	{
-		ft_dprintf(2, ERR_PWD);
+		ft_dprintf(2, "error: %s", NO_FILE);
 		data->return_value = 1;
 		return (false);
 	}
+	free(current->full_line);
 	current->full_line = ft_strdup(current->key);
 	current->full_line = ft_strjoin_and_free(current->full_line, "=");
 	current->full_line = ft_strjoin_and_free(current->full_line,
 			current->value);
 	if (current->full_line == NULL)
 	{
-		ft_dprintf(2, ERR_PWD);
+		ft_dprintf(2, ERR_MALLOC);
 		data->return_value = 1;
 		return (false);
 	}
@@ -41,24 +44,26 @@ static bool	update_pwd(t_data *data, t_env *current)
 
 static bool	update_oldpwd(t_data *data, t_env *current, t_env *old)
 {
+	free(current->value);
 	current->value = ft_strdup(old->value);
 	if (current->value == NULL)
 	{
-		ft_dprintf(2, ERR_PWD);
+		ft_dprintf(2, ERR_MALLOC);
 		data->return_value = 1;
 		return (false);
 	}
+	free(current->full_line);
 	current->full_line = ft_strdup(old->full_line);
 	if (current->full_line == NULL)
 	{
-		ft_dprintf(2, ERR_PWD);
+		ft_dprintf(2, ERR_MALLOC);
 		data->return_value = 1;
 		return (false);
 	}
 	return (true);
 }
 
-static void	update_listed_env(t_data *data, t_env *env)
+static bool	update_listed_env(t_data *data, t_env *env)
 {
 	t_env	*pwd_env;
 	t_env	*oldpwd_env;
@@ -78,10 +83,11 @@ static void	update_listed_env(t_data *data, t_env *env)
 	if (pwd_env == NULL || oldpwd_env == NULL)
 	{
 		data->return_value = 1;
-		return ;
+		return (false);
 	}
-	update_oldpwd(data, oldpwd_env, pwd_env);
-	update_pwd(data, pwd_env);
+	if (update_oldpwd(data, oldpwd_env, pwd_env) == false)
+		return (false);
+	return (update_pwd(data, pwd_env));
 }
 
 bool	ft_cd(t_data *data, t_cmd *cmd)
@@ -104,6 +110,5 @@ bool	ft_cd(t_data *data, t_cmd *cmd)
 	}
 	else if (chdir(cmd->params[1]) == -1)
 		return (display_error(data, cmd->params[1]));
-	update_listed_env(data, data->listed_env);
-	return (true);
+	return (update_listed_env(data, data->listed_env));
 }

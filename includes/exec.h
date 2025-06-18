@@ -22,8 +22,7 @@ typedef struct s_cmd	t_cmd;
 
 void	wait_child(pid_t last_pid, int *return_value);
 void	free_listed_env(t_data *data);
-void	execute_builtins(t_data *data);
-void	execute_builtins(t_data *data);
+void	execute_builtins(t_data *data, t_cmd *head);
 void	exec(t_data *data);
 void	close_fd(t_cmd *cmd, bool close_all_cmd);
 void	clear_exec(t_data *data);
