@@ -5,6 +5,8 @@
 
 bool	unset_loop(char *key, t_env *head, t_env *prev, t_data *data)
 {
+	t_env	*tmp;
+
 	if (key == NULL)
 	{
 		data->return_value = 1;
@@ -19,6 +21,13 @@ bool	unset_loop(char *key, t_env *head, t_env *prev, t_data *data)
 				prev->next = head->next;
 			else
 				*data->listed_env = *head->next;
+			tmp = head;
+			head = head->next;
+			free(tmp->value);
+			free(tmp->full_line);
+			free(tmp->key);
+			free(tmp);
+			return (true);
 		}
 		prev = head;
 		head = head->next;
@@ -41,14 +50,15 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 		head = *listed_env;
 		key = get_key(cmd->params[i]);
 		unset_loop(key, head, prev, data);
+		free(key);  // --> a priori pas free 
+		if (data->return_value != 0)
+			return (false);
 	}
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	if (data->env_array == NULL)
 	{
 		data->return_value = 1;
-		free(key);
 		return (print_err_false(ERR_MALLOC));
 	}
-	free(key);
 	return (true);
 }

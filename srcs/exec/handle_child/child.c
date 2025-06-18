@@ -39,7 +39,7 @@ static void	child_exec(t_data *data, char *path_cmd, char **params_cpy,
 		free_and_exit(data, path_cmd, head, params_cpy);
 	if (is_builtin(data))
 	{
-		execute_builtins(data);
+		execute_builtins(data, head);
 		free_and_exit(data, path_cmd, head, params_cpy);
 	}
 	if (path_cmd == NULL)

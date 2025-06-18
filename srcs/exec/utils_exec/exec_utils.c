@@ -26,7 +26,7 @@ bool	is_builtin(t_data *data)
 	return (false);
 }
 
-void	execute_builtins(t_data *data)
+void	execute_builtins(t_data *data, t_cmd *head)
 {
 	if (data->cmd->params[0] == NULL)
 		return ;
@@ -37,7 +37,7 @@ void	execute_builtins(t_data *data)
 	else if (ft_strcmp(data->cmd->params[0], "env") == 0)
 		ft_env(data, data->cmd);
 	else if (ft_strcmp(data->cmd->params[0], "exit") == 0)
-		ft_exit(data, data->cmd);
+		ft_exit(data, data->cmd, head);
 	else if (ft_strcmp(data->cmd->params[0], "cd") == 0)
 		ft_cd(data, data->cmd);
 	else if (ft_strcmp(data->cmd->params[0], "export") == 0)
