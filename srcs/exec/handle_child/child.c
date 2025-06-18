@@ -89,7 +89,6 @@ pid_t	init_child(t_data *data, t_cmd *head_cmd, char *path_cmd)
 
 	pid = 0;
 	last_pid = 0;
-
 	pid = fork();
 	if (pid < 0)
 	{

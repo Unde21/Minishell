@@ -3,18 +3,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	close_fd(t_cmd *cmd)
+void	close_fd(t_cmd *cmd, bool close_all_cmd)
 {
-	// Faut delete les commentaires ici ?
-
 	if (close_all_cmd == true)
 	{
 		while (cmd)
 		{
 			if (cmd->pipe_fd[0] != -1)
-			close(cmd->pipe_fd[0]);
+				close(cmd->pipe_fd[0]);
 			if (cmd->pipe_fd[1] != -1)
-			close(cmd->pipe_fd[1]);
+				close(cmd->pipe_fd[1]);
 			cmd = cmd->next;
 		}
 	}

@@ -59,7 +59,6 @@ bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 	if (is_expand_here_doc(line))
 	{
 		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
-		// ya probleme de leak sur l expand du here_doc
 		{
 			data->return_value = 1;
 			*line_ptr = NULL;
@@ -111,6 +110,6 @@ char	*heredoc(t_data *data, t_redir *redir, char *limiter)
 		return (print_err_null(ERR_OP_FD));
 	}
 	fill_heredoc(data, fd_heredoc, limiter);
-	free(filename);
+	free(redir->file);
 	return (filename);
 }

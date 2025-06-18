@@ -49,7 +49,9 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 		}
 		return (true);
 	}
+	return (true);
 }
+
 bool	init_redir(t_data *data, t_cmd *cmd)
 {
 	t_redir	*head;

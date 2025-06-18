@@ -51,7 +51,7 @@ static bool	init_cmd(t_data *data)
 	cmd->pipe_fd[0] = -1;
 	cmd->pipe_fd[1] = -1;
 	data->cmd = cmd;
-	return (true);	
+	return (true);
 }
 
 static bool	init_token(t_data *data)
