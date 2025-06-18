@@ -3,8 +3,8 @@
 
 # include "minishell.h"
 
-# define EXIT_ERROR "bash: exit: "
-# define EXIT_TOO_MANY "exit\nbash: exit: too many arguments\n"
+# define EXIT_ERROR "error: exit: "
+# define EXIT_TOO_MANY "exit\nerror: exit: too many arguments\n"
 # define ERR_NUM_ARG ": numeric argument required\n"
 # define ENV_TOO_MANY \
 	"‘: No such file or directory\n\
@@ -12,7 +12,7 @@ env: use -[v]S to pass options in shebang lines\n"
 # define ERR_ENV "env: ‘"
 # define ENV_NO_FILE "No such file or directory\n"
 # define CD_HOME "HOME"
-# define CD_ERR "bash: cd: "
+# define CD_ERR "error: cd: "
 # define CD_NO_DIR "No such file or directory\n"
 # define ERR_PWD "pwd: No such file or directory\n"
 # define OLDPWD "OLDPWD"

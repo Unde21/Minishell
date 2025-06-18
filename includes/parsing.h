@@ -15,7 +15,7 @@
 # define ERR_OP_DIR "error: failed to open directory\n"
 # define ERR_CLOSE_DIR "error: failed to close directory\n"
 # define ERR_READDIR "error: failed to read directory\n"
-# define PRINT_BASH "bash:"
+# define PRINT_ERR "error:"
 # define ERR_AMBIGUOUS "ambiguous redirect\n"
 # define ASCII_DBLE_QUOTE 34
 # define ASCII_SNGL_QUOTE 39

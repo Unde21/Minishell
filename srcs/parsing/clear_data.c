@@ -35,9 +35,7 @@ void	clear_cmd(t_cmd *cmd)
 	{
 		tmp = cmd->next;
 		if (cmd->redir != NULL)
-		{
 			clear_redir(cmd->redir);
-		}
 		free(cmd->args);
 		if (cmd->params != NULL)
 			free_all(cmd->params);

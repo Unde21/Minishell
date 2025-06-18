@@ -34,6 +34,7 @@ static void	exit_with_right_value(t_data *data, char *prompt)
 	free(prompt);
 	ft_printf("exit\n");
 	free(data->line_read);
+	free_listed_env(data);
 	exit(data->return_value);
 }
 
@@ -64,8 +65,8 @@ static void	readline_loop(t_data *data)
 			exit_with_right_value(data, prompt);
 		add_history(data->line_read);
 		reset_g_return_value(data);
-		handle_input(data);
 		free(prompt);
+		handle_input(data);
 		free(data->line_read);
 	}
 }

@@ -4,9 +4,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-
-#include <stdlib.h>
-
 static bool	redir_out(t_cmd *cmd)
 {
 	if (cmd->redir->type == REDIR_OUT)
