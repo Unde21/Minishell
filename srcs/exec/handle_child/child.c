@@ -1,8 +1,8 @@
 #include "exec.h"
 #include "parsing.h"
-#include <unistd.h>
-#include <stdlib.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static bool	dup_child(t_cmd *cmd)
 {

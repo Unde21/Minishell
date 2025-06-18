@@ -41,10 +41,10 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 			if (cmd->fd_in < 0)
 			{
 				data->return_value = 1;
+				unlink(cmd->redir->file);
 				return (print_err_false(ERR_OP_FD));
 			}
 			unlink(cmd->redir->file);
-			return (true);
 		}
 	}
 	return (true);
