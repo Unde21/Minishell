@@ -31,13 +31,14 @@ SRCS := srcs/main.c \
 		srcs/parsing/expand/wildcards/wildcards_utils.c \
 		srcs/parsing/expand/wildcards/get_pattern.c \
 		srcs/exec/utils_exec/getters.c \
+		srcs/exec/utils_exec/get_path.c \
 		srcs/exec/utils_exec/exec_utils.c \
 		srcs/exec/utils_exec/clear_exec.c\
+		srcs/exec/utils_exec/get_size_cmd.c \
 		srcs/exec/redir.c \
 		srcs/exec/listed_env_init.c \
 		srcs/exec/env_to_array.c \
 		srcs/exec/exec.c \
-		srcs/exec/utils_exec/get_size_cmd.c \
 		srcs/exec/handle_err_dup.c \
 		srcs/exec/handle_child/child.c\
 		srcs/exec/handle_child/child_utils.c\

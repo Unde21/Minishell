@@ -65,12 +65,18 @@ static bool	export_right_type(t_data *data, int i, int type)
 
 	key = NULL;
 	if (type == 1)
-		return (export_new(data, data->listed_env, data->cmd->params[i]));
-	key = get_key(data->cmd->params[i]);
-	if (key == NULL)
-		return (print_err_false(ERR_MALLOC));
-	if (type == 2)
-		return (export_old(data, data->listed_env, data->cmd->params[i], key));
+	{
+		if (export_new(data, data->listed_env, data->cmd->params[i]) == false)
+			return (false);
+	}
+	else if (type == 2)
+	{
+		key = get_key(data->cmd->params[i]);
+		if (key == NULL)
+			return (print_err_false(ERR_MALLOC));
+		if (!export_old(data, data->listed_env, data->cmd->params[i], key))
+			return (false);
+	}
 	else if (type == 3)
 		return (append_export(key, data->listed_env, data->cmd->params[i]));
 	return (true);
