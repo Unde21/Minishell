@@ -111,6 +111,6 @@ char	*heredoc(t_data *data, t_redir *redir, char *limiter)
 		return (print_err_null(ERR_OP_FD));
 	}
 	fill_heredoc(data, fd_heredoc, limiter);
-	free(filename);
+	free(redir->file);
 	return (filename);
 }

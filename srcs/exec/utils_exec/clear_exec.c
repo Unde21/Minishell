@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	close_fd(t_cmd *cmd)
+void	close_fd(t_cmd *cmd, bool close_all_cmd)
 {
 	// Faut delete les commentaires ici ?
 
