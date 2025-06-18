@@ -64,6 +64,7 @@ char	*get_key(char *env)
 		env_dup = ft_strdup(env);
 		if (!env_dup)
 			return (print_err_null(ERR_MALLOC));
+		return (env_dup);
 	}
 	key = malloc(sizeof(char) * (i + 1));
 	if (!key)

@@ -24,26 +24,30 @@ static bool	split_and_cpy_expand(char **final_array, char **params,
 	return (true);
 }
 
-static char	**split_expand(char **params)
+static char	**split_expand(t_data *data, char **params)
 {
 	size_t	i;
-	size_t	total_len;
 	size_t	index;
 	char	**final_array;
 
 	i = 0;
-	total_len = 0;
 	index = 0;
-	count_params_expand(params, &total_len);
-	final_array = malloc(sizeof(char *) * (total_len + 1));
+	count_params_expand(params, &i);
+	final_array = malloc(sizeof(char *) * (i + 1));
 	if (final_array == NULL)
-		return (NULL);
-	while (params[i])
 	{
-		if (split_and_cpy_expand(final_array, params, &index, &i) == false)
-			return (NULL);
-		++i;
+		free_all(params);
+		data->return_value = 1;
+		return (NULL);
 	}
+	i = -1;
+	while (params[++i])
+		if (split_and_cpy_expand(final_array, params, &index, &i) == false)
+		{
+			data->return_value = 1;
+			free_all(params);
+			return (NULL);
+		}
 	free_all(params);
 	final_array[index] = NULL;
 	return (final_array);
@@ -63,7 +67,7 @@ static bool	need_split_expand(t_cmd *cmd, char **params)
 	return (false);
 }
 
-bool	handle_split_expand(t_cmd *cmd)
+bool	handle_split_expand(t_data *data, t_cmd *cmd)
 {
 	t_cmd	*current;
 
@@ -72,7 +76,7 @@ bool	handle_split_expand(t_cmd *cmd)
 	{
 		if (need_split_expand(cmd, current->params) == true)
 		{
-			current->params = split_expand(current->params);
+			current->params = split_expand(data, current->params);
 			if (current->params == NULL)
 				return (print_err_false(ERR_MALLOC));
 		}
