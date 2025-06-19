@@ -23,6 +23,7 @@ static char	*handle_ambiguous_file(t_data *data, char *var_name)
 static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 {
 	char	*env_value;
+	char	*tmp;
 	t_env	*current;
 	size_t	len_var_name;
 
@@ -31,16 +32,20 @@ static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 	while (current != NULL)
 	{
 		len_var_name = ft_strlen(var_name);
-		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name) == 0)
+		if (len_var_name != 0 && ft_strncmp(current->key, var_name,
+				len_var_name) == 0)
 			break ;
 		current = current->next;
 	}
 	if (current == NULL)
 		return (handle_ambiguous_file(data, var_name));
 	if (is_quote == true)
-		env_value = ft_strdup(current->value);
-	else
-		env_value = dup_word_splitting(ft_strdup(current->value));
+		return (ft_strdup(current->value));
+	tmp = ft_strdup(current->value);
+	if (tmp == NULL)
+		return (NULL);
+	env_value = dup_word_splitting(tmp);
+	free(tmp);
 	return (env_value);
 }
 
@@ -49,7 +54,7 @@ void	join_with_expand_file(t_data *data, char **expanded, char *s, size_t *i)
 	char	*var_name;
 	char	*env_value;
 
-	var_name =  get_var_name(&s[++*i]);
+	var_name = get_var_name(&s[++*i]);
 	if (var_name == NULL)
 	{
 		data->return_value = 1;

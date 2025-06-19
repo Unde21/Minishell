@@ -33,9 +33,7 @@ bool	is_key_valid(t_data *data, char *params)
 	}
 	while (params[++i])
 	{
-		if (params[i] == '=')
-			break ;
-		if (params[i] == '+' && params[i + 1] == '=')
+		if (params[i] == '=' || (params[i] == '+' && params[i + 1] == '='))
 			break ;
 		if (!ft_isalnum(params[i]) && params[i] != '_')
 		{

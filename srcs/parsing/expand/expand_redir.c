@@ -41,7 +41,6 @@ bool	replace_file_name(t_data *data, char **file_name, int is_heredoc,
 {
 	char	*expanded;
 
-	ft_printf("replace \n");
 	expanded = ft_calloc(sizeof(char), 1);
 	if (expanded == NULL)
 	{
@@ -94,7 +93,8 @@ bool	expand_redir(t_data *data, t_cmd *cmd)
 					data->cmd->redir) == false)
 				return (false);
 		}
-		else if (current_redir->type != HERE_DOC && remove_quote(data, &current_redir->file) == false)
+		else if (current_redir->type != HERE_DOC && remove_quote(data,
+				&current_redir->file) == false)
 			return (false);
 		current_redir = current_redir->next;
 	}

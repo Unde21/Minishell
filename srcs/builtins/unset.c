@@ -3,6 +3,14 @@
 #include "parsing.h"
 #include <stdlib.h>
 
+void	unset_free(t_env *tmp)
+{
+	free(tmp->value);
+	free(tmp->full_line);
+	free(tmp->key);
+	free(tmp);
+}
+
 bool	unset_loop(char *key, t_env *head, t_env *prev, t_data *data)
 {
 	t_env	*tmp;
@@ -23,10 +31,7 @@ bool	unset_loop(char *key, t_env *head, t_env *prev, t_data *data)
 				*data->listed_env = *head->next;
 			tmp = head;
 			head = head->next;
-			free(tmp->value);
-			free(tmp->full_line);
-			free(tmp->key);
-			free(tmp);
+			unset_free(tmp);
 			return (true);
 		}
 		prev = head;

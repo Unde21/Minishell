@@ -24,7 +24,6 @@ static bool	duplicate_limiter(size_t *i, int quote, char *limiter, char **dup)
 	size_t	index;
 	char	*tmp;
 
-	ft_printf("limiter 1 %s\n", limiter);
 	index = *i;
 	while (limiter[index] != quote && limiter[index])
 		++index;
@@ -52,7 +51,6 @@ static bool	remove_quote_loop(char *limiter, char **dup)
 	int		quote;
 
 	i = 0;
-	ft_printf("limiter 2 %s\n", limiter);
 	quote = wich_quote(limiter);
 	while (limiter[i])
 	{
@@ -87,12 +85,10 @@ char	*remove_quote_heredoc(t_data *data, char *limiter)
 		data->return_value = 1;
 		return (print_err_null(ERR_MALLOC));
 	}
-	if (remove_quote_loop(limiter, &dup) == false)
-	{
-		data->return_value = 1;
-		if (dup != NULL)
-			free(dup);
-		return (print_err_null(ERR_MALLOC));
-	}
-	return (dup);
+	if (remove_quote_loop(limiter, &dup) == true)
+		return (dup);
+	data->return_value = 1;
+	if (dup != NULL)
+		free(dup);
+	return (print_err_null(ERR_MALLOC));
 }

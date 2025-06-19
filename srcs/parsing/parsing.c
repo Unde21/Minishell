@@ -43,6 +43,5 @@ bool	parsing(t_data *data)
 		return (false);
 	if (manage_expansion(data, prev_return_value) == false)
 		return (false);
-
 	return (true);
 }

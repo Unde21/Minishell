@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
 void	join_return_value(char **expanded, size_t *i, int prev_return_value)
 {
 	char	*str_return_value;
