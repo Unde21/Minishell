@@ -17,7 +17,7 @@ static void	close_and_free_all(t_data *data, t_cmd *head)
 	data->save_stdout = -1;
 	close_fd(head, true);
 	free_all(data->env_array);
-	clear_cmd(head);
+	clear_cmd(data);
 	free_listed_env(data);
 }
 

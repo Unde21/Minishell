@@ -88,7 +88,7 @@ char	*ft_strjoin_and_free_array(char **tab, size_t len, char *cpy_file)
 		while (tab[i][++j])
 			join[len++] = tab[i][j];
 		if (tab[i + 1] != NULL)
-			join[len++] = ' ';
+			join[len++] = '/';
 	}
 	join[len] = '\0';
 	free_all(tab);

@@ -11,38 +11,38 @@ void	unset_free(t_env *tmp)
 	free(tmp);
 }
 
-bool	unset_loop(char *key, t_env *head, t_env *prev, t_data *data)
+bool	unset_loop(char *key, t_env **head, t_env *prev, t_data *data)
 {
 	t_env	*tmp;
+	t_env	*current;
 
+	current = *head;
 	if (key == NULL)
 	{
 		data->return_value = 1;
 		data->env_array = listed_env_to_array(data, data->listed_env);
 		return (print_err_false(ERR_MALLOC));
 	}
-	while (head)
+	while (current)
 	{
-		if (ft_strcmp(head->key, key) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 		{
 			if (prev)
-				prev->next = head->next;
+				prev->next = current->next;
 			else
-				*data->listed_env = *head->next;
-			tmp = head;
-			head = head->next;
+				data->listed_env = current->next;
+			tmp = current;
 			unset_free(tmp);
 			return (true);
 		}
-		prev = head;
-		head = head->next;
+		prev = current;
+		current = current->next;
 	}
 	return (true);
 }
 
-bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
+bool	ft_unset(t_data *data, t_cmd *cmd)
 {
-	t_env	*head;
 	t_env	*prev;
 	int		i;
 	char	*key;
@@ -52,12 +52,14 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 	while (cmd->params[++i])
 	{
 		prev = NULL;
-		head = *listed_env;
 		key = get_key(cmd->params[i]);
-		unset_loop(key, head, prev, data);
-		free(key);
-		if (data->return_value != 0)
+		if (unset_loop(key, &data->listed_env, prev, data) == false)
+		{
+			free(key);
+			data->return_value = 1;
 			return (false);
+		}
+		free(key);
 	}
 	data->env_array = listed_env_to_array(data, data->listed_env);
 	if (data->env_array == NULL)

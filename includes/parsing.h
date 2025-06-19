@@ -72,7 +72,7 @@ char	*create_cpy_pattern(t_data *data, char **expanded, char *wildcards);
 char	**ft_split_with_charset(char *s);
 bool	split_wildcards_file(t_cmd *cmd);
 bool	replace_file_name(t_data *data, char **file_name,
-			int is_heredoc, t_redir *redir);
+			bool is_heredoc, t_redir *redir);
 bool	replace_env_variables(t_data *data, char **params, size_t i);
 bool	remove_quote(t_data *data, char **params);
 bool	parsing(t_data *data);
