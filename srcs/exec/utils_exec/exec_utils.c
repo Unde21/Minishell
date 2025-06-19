@@ -1,9 +1,9 @@
 #include "builtins.h"
-#include "parsing.h"
 #include "exec.h"
-#include <unistd.h>
-#include <sys/types.h>
+#include "parsing.h"
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 bool	is_builtin(t_data *data)
 {

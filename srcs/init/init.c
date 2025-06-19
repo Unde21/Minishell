@@ -10,6 +10,7 @@ bool	init_data(t_data *data, int ac, char **av, char **env)
 	data->env = env;
 	data->save_stdin = -1;
 	data->save_stdout = -1;
+	data->is_heredoc = false;
 	init_listed_env(data);
 	if (data->return_value != 0)
 		return (false);
@@ -21,7 +22,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	size_t	i;
 
 	i = 0;
-	cmd->params = malloc(sizeof(char *) * (cmd->nb_args + 1));
+	cmd->params = calloc(sizeof(char *), (cmd->nb_args + 1));
 	if (cmd->params == NULL)
 		return (print_err_false(ERR_MALLOC));
 	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));

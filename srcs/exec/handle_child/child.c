@@ -27,7 +27,7 @@ static void	free_and_exit(t_data *data, char *path_cmd, t_cmd *head,
 	free_all(data->env_array);
 	free_all(params_cpy);
 	close_fd(head, true);
-	clear_cmd(head);
+	clear_cmd(data);
 	free_listed_env(data);
 	exit(data->return_value);
 }
@@ -46,7 +46,7 @@ static void	child_exec(t_data *data, char *path_cmd, char **params_cpy,
 	if (path_cmd == NULL)
 		free_and_exit(data, path_cmd, head, params_cpy);
 	close_fd(head, true);
-	clear_cmd(head);
+	clear_cmd(data);
 	execve(path_cmd, params_cpy, data->env_array);
 	perror(ERR_EXECVE);
 	free(path_cmd);

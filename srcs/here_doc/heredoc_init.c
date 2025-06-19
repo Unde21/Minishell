@@ -9,10 +9,11 @@ bool	expand_and_replace(t_data *data, char **line_ptr, char *limiter,
 {
 	if (is_expand_here_doc(limiter, line))
 	{
-		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
+		if (!replace_file_name(data, &line, data->is_heredoc, data->cmd->redir))
 		{
-			data->return_value = 1;
 			*line_ptr = NULL;
+			free(line);
+			data->return_value = 1;
 			return (false);
 		}
 		*line_ptr = line;

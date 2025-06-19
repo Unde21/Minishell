@@ -66,11 +66,13 @@ bool	init_redir(t_data *data, t_cmd *cmd)
 		if (redir_out(cmd) == false)
 		{
 			cmd->redir = head;
+			data->return_value = 1;
 			return (false);
 		}
 		if (redir_in(data, cmd) == false)
 		{
 			cmd->redir = head;
+			data->return_value = 1;
 			return (false);
 		}
 		cmd->redir = cmd->redir->next;
