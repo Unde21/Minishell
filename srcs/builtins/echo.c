@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/20 01:29:43 by samaouch          #+#    #+#             */
+/*   Updated: 2025/06/20 01:29:44 by samaouch         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtins.h"
 #include <unistd.h>
 
-bool	is_new_line(size_t *i, t_cmd *cmd)
+static bool	is_new_line(size_t *i, t_cmd *cmd)
 {
 	bool	new_line;
 	size_t	j;

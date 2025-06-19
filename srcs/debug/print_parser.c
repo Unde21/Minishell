@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_parser.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/20 01:30:06 by samaouch          #+#    #+#             */
+/*   Updated: 2025/06/20 01:30:07 by samaouch         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "debug.h"
 
 static void	print_special_operator_parser(t_redir *current_redir)
