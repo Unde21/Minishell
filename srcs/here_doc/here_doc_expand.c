@@ -1,4 +1,107 @@
+// #include "parsing.h"
+
+
 #include "parsing.h"
+#include <stdlib.h>
+
+static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
+{
+	if (s[*i] == ASCII_DOLLAR && s[*i + 1] != ASCII_DOLLAR && s[*i + 1] != '\0')
+	{
+		if (s[*i + 1] == '?')
+			join_return_value(expanded, i, data->return_value);
+		else
+			join_with_expand_file(data, expanded, s, i);
+	}
+	else if (s[*i] == ASCII_DBLE_QUOTE)
+		++(*i);
+	else
+		join_without_expand(expanded, s[*i], i);
+}
+
+static char	*expand(char *s, char *expanded, t_data *data, int is_heredoc)
+{
+	size_t	i;
+
+	i = 0;
+	(void)is_heredoc;
+	while (s[i])
+	{
+		expand_loop(s, &expanded, data, &i);
+		if (expanded == NULL)
+			break ;
+		else if (data->is_ambiguous == true)
+			break ;
+	}
+	free(s);
+	if (expanded == NULL)
+		return (NULL);
+	return (expanded);
+}
+
+bool	replace_file_name(t_data *data, char **file_name, int is_heredoc,
+		t_redir *redir)
+{
+	char	*expanded;
+
+	expanded = ft_calloc(sizeof(char), 1);
+	if (expanded == NULL)
+	{
+		data->return_value = 1;
+		return (print_err_false(ERR_MALLOC));
+	}
+	*file_name = expand(*file_name, expanded, data, is_heredoc);
+	if (*file_name == NULL)
+	{
+		data->return_value = 1;
+		return (print_err_false(ERR_MALLOC));
+	}
+	if (data->is_ambiguous == true && is_heredoc != HEREDOC)
+	{
+		redir->is_ambiguous = true;
+		data->is_ambiguous = false;
+	}
+	return (true);
+}
+
+bool	is_expand_redir(char *file_name)
+{
+	size_t	i;
+
+	i = 0;
+	if (file_name == NULL)
+		return (false);
+	if (file_name[i] == ASCII_SNGL_QUOTE)
+		return (false);
+	while (file_name[i])
+	{
+		if (file_name[i] == ASCII_DOLLAR)
+			return (true);
+		++i;
+	}
+	return (false);
+}
+
+bool	expand_redir(t_data *data, t_cmd *cmd)
+{
+	t_redir *current_redir;
+
+	current_redir = cmd->redir;
+	while (current_redir != NULL)
+	{
+		if (current_redir->type != HERE_DOC
+			&& is_expand_redir(current_redir->file) == true)
+		{
+			if (replace_file_name(data, &current_redir->file, NO_HERDOC,
+					data->cmd->redir) == false)
+				return (false);
+		}
+		else if (remove_quote(data, &current_redir->file) == false)
+			return (false);
+		current_redir = current_redir->next;
+	}
+	return (true);
+}
 
 bool	is_expand_here_doc(char *file_name)
 {

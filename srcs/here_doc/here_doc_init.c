@@ -77,6 +77,11 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 	old_line = NULL;
 	while (1)
 	{
+		if (data->return_value != 0)
+		{
+			close(fd_heredoc);
+			return (NULL);
+		}
 		line = readline(PROMPT_HERE_DOC);
 		if (g_return_value == 130)
 		{
