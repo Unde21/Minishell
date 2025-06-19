@@ -4,21 +4,27 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static bool	redir_out(t_cmd *cmd)
+static bool	redir_out(t_data *data, t_cmd *cmd)
 {
 	if (cmd->redir->type == REDIR_OUT)
 	{
 		cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_TRUNC,
 				0644);
 		if (cmd->fd_out < 0)
+		{
+			data->return_value = 1;
 			return (print_err_false(ERR_OP_FD));
+		}
 	}
 	if (cmd->redir->type == APPEND)
 	{
 		cmd->fd_out = open(cmd->redir->file, O_WRONLY | O_CREAT | O_APPEND,
 				0644);
 		if (cmd->fd_out < 0)
+		{
+			data->return_value = 1;
 			return (print_err_false(ERR_OP_FD));
+		}
 	}
 	return (true);
 }
@@ -63,7 +69,7 @@ bool	init_redir(t_data *data, t_cmd *cmd)
 			data->return_value = 1;
 			return (false);
 		}
-		if (redir_out(cmd) == false)
+		if (redir_out(data, cmd) == false)
 		{
 			cmd->redir = head;
 			return (false);
@@ -72,6 +78,13 @@ bool	init_redir(t_data *data, t_cmd *cmd)
 		{
 			cmd->redir = head;
 			return (false);
+		}
+		if (cmd->redir->next != NULL)
+		{
+			if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
+				close(cmd->fd_in);
+			if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out != -1)
+				close(cmd->fd_out);
 		}
 		cmd->redir = cmd->redir->next;
 	}

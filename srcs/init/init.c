@@ -21,7 +21,7 @@ bool	init_cmd_args(t_cmd *cmd)
 	size_t	i;
 
 	i = 0;
-	cmd->params = malloc(sizeof(char *) * (cmd->nb_args + 1));
+	cmd->params = ft_calloc(sizeof(char *), (cmd->nb_args + 1));
 	if (cmd->params == NULL)
 		return (print_err_false(ERR_MALLOC));
 	cmd->args = malloc(sizeof(t_args) * (cmd->nb_args + 1));

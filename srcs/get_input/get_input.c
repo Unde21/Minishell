@@ -33,18 +33,26 @@ static void	exit_with_right_value(t_data *data, char *prompt)
 	rl_clear_history();
 	free(prompt);
 	ft_printf("exit\n");
-	free(data->line_read);
 	free_listed_env(data);
 	exit(data->return_value);
 }
 
-static bool	check_prompt_error(char **prompt)
+static bool	check_prompt_error(t_data *data, char **prompt)
 {
+	if (data->return_value == -1)
+	{
+		free_listed_env(data);
+		return (false);
+	}
 	if (*prompt == NULL)
 	{
 		*prompt = ft_strdup(PATH_ERROR);
 		if (*prompt == NULL)
+		{
+			data->return_value = 1;
+			free_listed_env(data);
 			return (print_err_false(ERR_MALLOC));
+		}
 	}
 	return (true);
 }
@@ -58,8 +66,8 @@ static void	readline_loop(t_data *data)
 	{
 		set_signal_action();
 		get_prompt(data, &prompt);
-		if (check_prompt_error(&prompt) == false)
-			return ;
+		if (check_prompt_error(data, &prompt) == false)
+			exit(1);
 		data->line_read = readline(prompt);
 		if (data->line_read == NULL)
 			exit_with_right_value(data, prompt);
