@@ -79,6 +79,13 @@ bool	init_redir(t_data *data, t_cmd *cmd)
 			cmd->redir = head;
 			return (false);
 		}
+		if (cmd->redir->next != NULL)
+		{
+			if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
+				close(cmd->fd_in);
+			if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out != -1)
+				close(cmd->fd_out);
+		}
 		cmd->redir = cmd->redir->next;
 	}
 	cmd->redir = head;

@@ -13,7 +13,7 @@ char	*check_params(int *return_value, char *params)
 		return (NULL);
 	if (!params[i] || params[i + 1] == '\0')
 	{
-		value = NULL;//ft_strdup("");
+		value = ft_strdup("");
 		if (value == NULL)
 			*return_value = 1;
 		return (value);
