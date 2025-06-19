@@ -28,7 +28,7 @@ static void	save_head_and_tail_lst(t_data *data, t_token_lst *tokens,
 {
 	if (data->return_value != 0)
 		return ;
-	if (new != NULL &&new->in_list == false)
+	if (new != NULL && new->in_list == false)
 	{
 		if (tokens->head == NULL)
 			tokens->head = new;

@@ -1,12 +1,12 @@
 #include "builtins.h"
+#include "exec.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include "exec.h"
 
 static void	close_and_free_all(t_data *data, t_cmd *head)
 {
 	if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
-	close(data->cmd->fd_in);
+		close(data->cmd->fd_in);
 	if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
 		close(data->cmd->fd_out);
 	if (data->save_stdin != -1)

@@ -37,18 +37,14 @@ char	*get_pattern(char *s, size_t i)
 	len_wildcards = i;
 	while (s[len_wildcards])
 		++len_wildcards;
-	wildcards = NULL ; //malloc(sizeof(char) * (len_wildcards + 1));
+	wildcards = malloc(sizeof(char) * (len_wildcards + 1));
 	if (wildcards == NULL)
 	{
 		return (NULL);
 	}
 	j = 0;
 	while (s[i])
-	{
-		wildcards[j] = s[i];
-		++i;
-		++j;
-	}
+		wildcards[j++] = s[i++];
 	wildcards[j] = '\0';
 	return (wildcards);
 }
