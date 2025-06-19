@@ -56,6 +56,21 @@ static bool	redir_in(t_data *data, t_cmd *cmd)
 	return (true);
 }
 
+static void	close_redir_file(t_cmd *cmd)
+{
+	if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
+		close(cmd->fd_in);
+	if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out != -1)
+		close(cmd->fd_out);
+}
+
+static	bool	handle_error_redir(t_cmd *cmd, t_data *data, t_redir *head)
+{
+	cmd->redir = head;
+	data->return_value = 1;
+	return (false);
+}
+
 bool	init_redir(t_data *data, t_cmd *cmd)
 {
 	t_redir	*head;
@@ -70,24 +85,11 @@ bool	init_redir(t_data *data, t_cmd *cmd)
 			return (false);
 		}
 		if (redir_out(data, cmd) == false)
-		{
-			cmd->redir = head;
-			data->return_value = 1;
-			return (false);
-		}
+			return (handle_error_redir(cmd, data, head));
 		if (redir_in(data, cmd) == false)
-		{
-			cmd->redir = head;
-			data->return_value = 1;
-			return (false);
-		}
+			return (handle_error_redir(cmd, data, head));
 		if (cmd->redir->next != NULL)
-		{
-			if (cmd->fd_in != STDIN_FILENO && cmd->fd_in != -1)
-				close(cmd->fd_in);
-			if (cmd->fd_out != STDOUT_FILENO && cmd->fd_out != -1)
-				close(cmd->fd_out);
-		}
+			close_redir_file(cmd);
 		cmd->redir = cmd->redir->next;
 	}
 	cmd->redir = head;

@@ -3,7 +3,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-void	unset_free(t_env *tmp)
+static void	unset_free(t_env *tmp)
 {
 	free(tmp->value);
 	free(tmp->full_line);
@@ -11,7 +11,7 @@ void	unset_free(t_env *tmp)
 	free(tmp);
 }
 
-bool	unset_loop(char *key, t_env **head, t_env *prev, t_data *data)
+static bool	unset_loop(char *key, t_env **head, t_env *prev, t_data *data)
 {
 	t_env	*tmp;
 	t_env	*current;
@@ -19,7 +19,6 @@ bool	unset_loop(char *key, t_env **head, t_env *prev, t_data *data)
 	current = *head;
 	if (key == NULL)
 	{
-		data->return_value = 1;
 		data->env_array = listed_env_to_array(data, data->listed_env);
 		return (print_err_false(ERR_MALLOC));
 	}
@@ -41,6 +40,17 @@ bool	unset_loop(char *key, t_env **head, t_env *prev, t_data *data)
 	return (true);
 }
 
+static bool	reset_env_array(t_data *data)
+{
+	data->env_array = listed_env_to_array(data, data->listed_env);
+	if (data->env_array == NULL)
+	{
+		data->return_value = 1;
+		return (print_err_false(ERR_MALLOC));
+	}
+	return (true);
+}
+
 bool	ft_unset(t_data *data, t_cmd *cmd)
 {
 	t_env	*prev;
@@ -48,6 +58,8 @@ bool	ft_unset(t_data *data, t_cmd *cmd)
 	char	*key;
 
 	i = 0;
+	if (lst_size(data->listed_env) == 1)
+		return (true);
 	free_all(data->env_array);
 	while (cmd->params[++i])
 	{
@@ -61,11 +73,7 @@ bool	ft_unset(t_data *data, t_cmd *cmd)
 		}
 		free(key);
 	}
-	data->env_array = listed_env_to_array(data, data->listed_env);
-	if (data->env_array == NULL)
-	{
-		data->return_value = 1;
-		return (print_err_false(ERR_MALLOC));
-	}
+	if (reset_env_array(data) == false)
+		return (false);
 	return (true);
 }

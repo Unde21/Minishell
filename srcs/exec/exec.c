@@ -70,7 +70,6 @@ static bool	dup_parent_builtins(t_data *data, t_cmd *cmd, t_cmd *head)
 static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 		pid_t *last_pid)
 {
-	// data->return_value = 0;
 	if (data->cmd->next != NULL)
 	{
 		set_pipe(data->cmd, data);

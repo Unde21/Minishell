@@ -18,7 +18,7 @@ bool	is_new_line(size_t *i, t_cmd *cmd)
 			(*i)++;
 		}
 		else
-			break;
+			break ;
 	}
 	return (new_line);
 }

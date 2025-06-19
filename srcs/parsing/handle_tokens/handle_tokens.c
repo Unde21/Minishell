@@ -11,7 +11,7 @@ t_token	*new_token(char *content, t_token_type type)
 		print_err_null(ERR_MALLOC);
 		return (NULL);
 	}
-	token->content =ft_strdup(content);
+	token->content = ft_strdup(content);
 	if (token->content == NULL)
 	{
 		free(token);
@@ -28,7 +28,7 @@ static void	save_head_and_tail_lst(t_data *data, t_token_lst *tokens,
 {
 	if (data->return_value != 0)
 		return ;
-	if (new != NULL &&new->in_list == false)
+	if (new != NULL && new->in_list == false)
 	{
 		if (tokens->head == NULL)
 			tokens->head = new;
