@@ -6,6 +6,13 @@ static char	*handle_ambiguous_file(t_data *data, char *var_name)
 {
 	char	*tmp;
 
+	if (data->is_heredoc == true)
+	{
+		tmp = ft_strdup("");
+		if (tmp == NULL)
+			return (print_err_null(ERR_MALLOC));
+		return (tmp);
+	}
 	data->ambiguous_file = ft_strdup("$");
 	if (data->ambiguous_file == NULL)
 	{
@@ -19,12 +26,7 @@ static char	*handle_ambiguous_file(t_data *data, char *var_name)
 	{
 		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
-	}	
-	// if (data->ambiguous_file)
-	// {
-		// free(data->ambiguous_file);
-		// data->ambiguous_file = NULL;
-	// }
+	}
 	data->is_ambiguous = true;
 	return (NULL);
 }
@@ -46,7 +48,7 @@ static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 			break ;
 		current = current->next;
 	}
-	if (current == NULL && data->is_heredoc == false)
+	if (current == NULL)
 		return (handle_ambiguous_file(data, var_name));
 	if (is_quote == true)
 		return (ft_strdup(current->value));

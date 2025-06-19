@@ -9,6 +9,7 @@ bool	expand_and_replace(t_data *data, char **line_ptr, char *limiter,
 {
 	if (is_expand_here_doc(limiter, line))
 	{
+		data->is_heredoc = true;
 		if (!replace_file_name(data, &line, data->is_heredoc, data->cmd->redir))
 		{
 			*line_ptr = NULL;
@@ -52,9 +53,7 @@ bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 {
 	char	*line;
-	char	*old_line;
 
-	old_line = NULL;
 	while (1)
 	{
 		if (data->return_value != 0)

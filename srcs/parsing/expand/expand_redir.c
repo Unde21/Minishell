@@ -85,6 +85,7 @@ bool	expand_redir(t_data *data, t_cmd *cmd)
 		if (current_redir->type != HERE_DOC
 			&& is_expand_redir(current_redir->file) == true)
 		{
+			data->is_heredoc = false;
 			if (replace_file_name(data, &current_redir->file, false,
 					data->cmd->redir) == false)
 				return (false);
