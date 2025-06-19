@@ -8,6 +8,8 @@ bool	init_data(t_data *data, int ac, char **av, char **env)
 	data->ac = ac;
 	data->av = av;
 	data->env = env;
+	data->save_stdin = -1;
+	data->save_stdout = -1;
 	init_listed_env(data);
 	if (data->return_value != 0)
 		return (false);
