@@ -17,7 +17,7 @@ static void	close_and_free_all(t_data *data, t_cmd *head)
 	data->save_stdout = -1;
 	close_fd(head, true);
 	free_all(data->env_array);
-	clear_cmd(data);
+	clear_cmd(data, head);
 	free_listed_env(data);
 }
 
@@ -63,14 +63,11 @@ static void	get_exit_code(t_data *data, char *s, t_cmd *head)
 int	ft_exit(t_data *data, t_cmd *cmd, t_cmd *head)
 {
 	char	*s;
-	int		exit_code;
 
-	exit_code = 0;
 	if (cmd->nb_args == 1)
 	{
-		exit_code = data->return_value;
 		close_and_free_all(data, head);
-		exit(exit_code);
+		exit(data->return_value);
 	}
 	else
 		s = cmd->params[1];

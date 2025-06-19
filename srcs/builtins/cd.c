@@ -44,6 +44,12 @@ static bool	update_pwd(t_data *data, t_env *current)
 
 static bool	update_oldpwd(t_data *data, t_env *current, t_env *old)
 {
+	if (old == NULL || old->value == NULL || old->full_line == NULL)
+	{
+		data->return_value = 1;
+		ft_dprintf(2, "error: %s", NO_FILE);
+		return (false);
+	}
 	free(current->value);
 	current->value = ft_strdup(old->value);
 	if (current->value == NULL)

@@ -47,7 +47,7 @@ static bool	dup_parent_builtins(t_data *data, t_cmd *cmd, t_cmd *head)
 {
 	data->save_stdin = dup(STDIN_FILENO);
 	data->save_stdout = dup(STDOUT_FILENO);
-	data->return_value = 0;
+	// data->return_value = 0;
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 		return (err_dup_parent(data, cmd, data->save_stdin, data->save_stdout));
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
@@ -71,7 +71,7 @@ static bool	dup_parent_builtins(t_data *data, t_cmd *cmd, t_cmd *head)
 static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 		pid_t *last_pid)
 {
-	data->return_value = 0;
+	// data->return_value = 0;
 	if (data->cmd->next != NULL)
 	{
 		set_pipe(data->cmd, data);

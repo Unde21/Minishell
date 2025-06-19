@@ -17,7 +17,7 @@ static void	handle_input(t_data *data)
 	}
 	if (parsing(data) == false)
 	{
-		clear_cmd(data);
+		clear_cmd(data, data->cmd);
 		clear_token(data->token_lst->head);
 		free(data->token_lst);
 		return ;
@@ -25,7 +25,7 @@ static void	handle_input(t_data *data)
 	clear_token(data->token_lst->head);
 	free(data->token_lst);
 	exec(data);
-	clear_cmd(data);
+	clear_cmd(data, data->cmd);
 }
 
 static void	exit_with_right_value(t_data *data, char *prompt)
