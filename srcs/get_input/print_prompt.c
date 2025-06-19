@@ -24,7 +24,7 @@ void	get_prompt(t_data *data, char **prompt)
 		*prompt = ft_strjoin_and_free(*prompt, END_BLUE);
 		*prompt = ft_strjoin_and_free(*prompt, path);
 		*prompt = ft_strjoin_and_free(*prompt, END_COLOR);
+		free(code); // mal place?
 	}
 	free(path);
-	free(code);
 }

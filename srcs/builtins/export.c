@@ -86,8 +86,6 @@ static bool	check_key(t_data *data, int i)
 {
 	if (!is_key_valid(data, data->cmd->params[i]))
 	{
-		ft_dprintf(STDERR_FILENO, "error: export: `%s'%s", data->cmd->params[i],
-			ERR_EXPORT);
 		return (false);
 	}
 	return (true);

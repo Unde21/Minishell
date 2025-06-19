@@ -2,6 +2,7 @@
 #include "exec.h"
 #include "parsing.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 int	lst_size(t_env *head)
 {
@@ -26,6 +27,8 @@ bool	is_key_valid(t_data *data, char *params)
 	if (!params || !(ft_isalpha(params[0]) || params[0] == '_'))
 	{
 		data->return_value = 1;
+		ft_dprintf(STDERR_FILENO, "error: export: `%s'%s", data->cmd->params[i],
+			ERR_EXPORT);
 		return (false);
 	}
 	while (params[++i])
@@ -37,9 +40,13 @@ bool	is_key_valid(t_data *data, char *params)
 		if (!ft_isalnum(params[i]) && params[i] != '_')
 		{
 			data->return_value = 1;
+			ft_dprintf(STDERR_FILENO, "error: export: `%s'%s",
+				data->cmd->params[i], ERR_EXPORT);
 			return (false);
 		}
 	}
+	if (params[i] == '\0')
+		return (false);
 	return (true);
 }
 

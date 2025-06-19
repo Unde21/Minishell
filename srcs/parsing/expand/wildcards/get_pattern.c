@@ -37,10 +37,9 @@ char	*get_pattern(char *s, size_t i)
 	len_wildcards = i;
 	while (s[len_wildcards])
 		++len_wildcards;
-	wildcards = malloc(sizeof(char) * (len_wildcards + 1));
+	wildcards = NULL ; //malloc(sizeof(char) * (len_wildcards + 1));
 	if (wildcards == NULL)
 	{
-		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
 		return (NULL);
 	}
 	j = 0;
