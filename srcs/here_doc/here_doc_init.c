@@ -45,6 +45,7 @@ char	*get_limiter(t_cmd *cmd)
 bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 {
 	char	*line;
+	char	*dup;
 
 	line = *line_ptr;
 	if (!line && g_return_value == 0)
@@ -54,9 +55,14 @@ bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 		ft_printf("`%s')\n", limiter);
 		return (false);
 	}
-	if (!ft_strcmp(line, limiter))
+	dup = remove_quote_heredoc(data, limiter);
+	if (!ft_strcmp(line, dup))
+	{
+		free(dup);
 		return (false);
-	if (is_expand_here_doc(line))
+	}
+	free(dup);
+	if (is_expand_here_doc(limiter, line))
 	{
 		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
 		{

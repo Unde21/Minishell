@@ -50,7 +50,7 @@ bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd)
 		head = *listed_env;
 		key = get_key(cmd->params[i]);
 		unset_loop(key, head, prev, data);
-		free(key);  // --> a priori pas free 
+		free(key);
 		if (data->return_value != 0)
 			return (false);
 	}
