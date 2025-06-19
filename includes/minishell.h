@@ -88,6 +88,8 @@ typedef struct s_data
 	int			return_value;
 	int			last_type;
 	int			ac;
+	int			save_stdin;
+	int			save_stdout;
 	char		*name_outfile;
 	char		*name_infile;
 	char		*line_read;

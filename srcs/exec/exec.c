@@ -45,23 +45,22 @@ static void	get_absolute_path(t_data *data, char **path_cmd, int *return_value)
 
 static bool	dup_parent_builtins(t_data *data, t_cmd *cmd, t_cmd *head)
 {
-	int	save_stdin;
-	int	save_stdout;
-
-	save_stdin = dup(STDIN_FILENO);
-	save_stdout = dup(STDOUT_FILENO);
+	data->save_stdin = dup(STDIN_FILENO);
+	data->save_stdout = dup(STDOUT_FILENO);
 	data->return_value = 0;
 	if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
+		return (err_dup_parent(data, cmd, data->save_stdin, data->save_stdout));
 	if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
-	if (dup2(save_stdin, STDIN_FILENO) == -1)
-		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
-	if (dup2(save_stdout, STDOUT_FILENO) == -1)
-		return (err_dup_parent(data, cmd, save_stdin, save_stdout));
-	close(save_stdin);
-	close(save_stdout);
+		return (err_dup_parent(data, cmd, data->save_stdin, data->save_stdout));
 	execute_builtins(data, head);
+	if (dup2(data->save_stdin, STDIN_FILENO) == -1)
+		return (err_dup_parent(data, cmd, data->save_stdin, data->save_stdout));
+	if (dup2(data->save_stdout, STDOUT_FILENO) == -1)
+		return (err_dup_parent(data, cmd, data->save_stdin, data->save_stdout));
+	close(data->save_stdin);
+	close(data->save_stdout);
+	data->save_stdin = -1;
+	data->save_stdout = -1;
 	if (data->cmd->fd_in != STDIN_FILENO && data->cmd->fd_in != -1)
 		close(data->cmd->fd_in);
 	if (data->cmd->fd_out != STDOUT_FILENO && data->cmd->fd_out != -1)
