@@ -116,7 +116,7 @@ void	get_prompt(t_data *data, char **prompt);
 void	get_input(t_data *data);
 void	free_all(char **str);
 void	clear_token(t_token *lst);
-void	clear_cmd(t_data *data);
+void	clear_cmd(t_data *data, t_cmd *cmd);
 void	clear_all_data(t_data *data);
 int		wich_quote(char *input);
 int		do_nothing(void);
