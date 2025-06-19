@@ -80,6 +80,7 @@ static bool	export_right_type(t_data *data, int i, int type)
 	else if (type == 3)
 		return (append_export(data, key, data->listed_env,
 				data->cmd->params[i]));
+	free(key);
 	return (true);
 }
 
@@ -87,8 +88,6 @@ static bool	check_key(t_data *data, int i)
 {
 	if (!is_key_valid(data, data->cmd->params[i]))
 	{
-		ft_dprintf(STDERR_FILENO, "error: export: `%s'%s", data->cmd->params[i],
-			ERR_EXPORT);
 		return (false);
 	}
 	return (true);
@@ -113,8 +112,6 @@ void	ft_export(t_data *data)
 		if (export_right_type(data, i, type) == false)
 		{
 			data->return_value = 1;
-			free_all(data->env_array);
-			data->env_array = listed_env_to_array(data, data->listed_env);
 			if (data->env_array == NULL)
 				print_err_false(ERR_MALLOC);
 		}
