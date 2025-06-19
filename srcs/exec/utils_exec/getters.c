@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-char	*check_params(int return_value, char *params)
+char	*check_params(int *return_value, char *params)
 {
 	int		i;
 	char	*value;
@@ -15,7 +15,7 @@ char	*check_params(int return_value, char *params)
 	{
 		value = ft_strdup("");
 		if (value == NULL)
-			return_value = 1;
+			*return_value = 1;
 		return (value);
 	}
 	return (value);
@@ -29,7 +29,7 @@ char	*get_value(t_data *data, char *params)
 	int		i;
 
 	i = 0;
-	value = check_params(data->return_value, params);
+	value = check_params(&data->return_value, params);
 	while (params[i] && params[i] != '=')
 		i++;
 	start = i + 1;
