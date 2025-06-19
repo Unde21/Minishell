@@ -9,7 +9,7 @@ static bool	prompt_without_env(t_data *data, char **prompt)
 		*prompt = ft_strdup("Minishell--> ");
 		if (*prompt == NULL)
 		{
-			data->return_value = 1;
+			data->return_value = -1;
 			return (print_err_false(ERR_MALLOC));
 		}
 		return (false);
@@ -25,7 +25,7 @@ static void	create_prompt(t_data *data, char **prompt, char *code, char *path)
 		*prompt = ft_strdup(GREEN CHECK);
 	if (*prompt == NULL)
 	{
-		data->return_value = 1;
+		data->return_value = -1;
 		print_err_false(ERR_MALLOC);
 		return ;
 	}
@@ -35,7 +35,7 @@ static void	create_prompt(t_data *data, char **prompt, char *code, char *path)
 	*prompt = ft_strjoin_and_free(*prompt, END_COLOR);
 	if (*prompt == NULL)
 	{
-		data->return_value = 1;
+		data->return_value = -1;
 		print_err_false(ERR_MALLOC);
 		return ;
 	}
@@ -62,7 +62,7 @@ void	get_prompt(t_data *data, char **prompt)
 	}
 	else
 	{
-		data->return_value = 1;
+		data->return_value = -1;
 		print_err_false(ERR_MALLOC);
 	}
 	free(path);

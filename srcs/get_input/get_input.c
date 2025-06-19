@@ -39,7 +39,7 @@ static void	exit_with_right_value(t_data *data, char *prompt)
 
 static bool	check_prompt_error(t_data *data, char **prompt)
 {
-	if (data->return_value == 1)
+	if (data->return_value == -1)
 	{
 		free_listed_env(data);
 		return (false);
