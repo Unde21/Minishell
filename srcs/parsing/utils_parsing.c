@@ -71,7 +71,6 @@ char	*ft_strjoin_and_free(char *s1, char *s2)
 	while (s2[++j])
 		join[i + j] = s2[j];
 	join[i + j] = '\0';
-	free(s1);
-	// free(s2);  // ??? leaks
+	free(s1);1
 	return (join);
 }

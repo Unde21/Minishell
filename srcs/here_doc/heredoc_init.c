@@ -4,59 +4,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-char	*get_random_name(char *here_doc)
+bool	expand_and_replace(t_data *data, char **line_ptr, char *limiter,
+		char *line)
 {
-	char	c;
-	int		i;
-	int		fd;
-
-	i = 0;
-	here_doc = malloc(sizeof(char) * 26);
-	if (!here_doc)
-		return (print_err_null(ERR_MALLOC));
-	fd = open("/dev/random", O_RDONLY);
-	if (fd == -1)
-	{
-		free(here_doc);
-		return (print_err_null(ERR_OP_FD));
-	}
-	while (i < 25)
-	{
-		read(fd, &c, 1);
-		if (ft_isprint(c) && c != '/')
-			here_doc[i++] = c;
-	}
-	here_doc[i] = '\0';
-	close(fd);
-	return (here_doc);
-}
-
-char	*get_limiter(t_cmd *cmd)
-{
-	while (cmd->redir != NULL)
-	{
-		if (cmd->redir->type == HERE_DOC)
-			return (cmd->redir->file);
-		cmd->redir = cmd->redir->next;
-	}
-	return (NULL);
-}
-
-bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
-{
-	char	*line;
-
-	line = *line_ptr;
-	if (!line && g_return_value == 0)
-	{
-		data->return_value = 0;
-		ft_printf(WARNING_HEREDOC);
-		ft_printf("`%s')\n", limiter);
-		return (false);
-	}
-	if (!ft_strcmp(line, limiter))
-		return (false);
-	if (is_expand_here_doc(line))
+	if (is_expand_here_doc(limiter, line))
 	{
 		if (!replace_file_name(data, &line, HEREDOC, data->cmd->redir))
 		{
@@ -69,6 +20,34 @@ bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
 	return (true);
 }
 
+bool	fill_heredoc_loop(char **line_ptr, char *limiter, t_data *data)
+{
+	char	*line;
+	char	*dup;
+
+	line = *line_ptr;
+	if (!line && g_return_value == 0)
+	{
+		data->return_value = 0;
+		ft_printf(WARNING_HEREDOC);
+		ft_printf("`%s')\n", limiter);
+		return (false);
+	}
+	dup = remove_quote_heredoc(data, limiter);
+	if (dup == NULL)
+	{
+		data->return_value = 1;
+		return (print_err_null(ERR_MALLOC));
+	}
+	if (!ft_strcmp(line, dup))
+	{
+		free(dup);
+		return (false);
+	}
+	free(dup);
+	return (expand_and_replace(data, line_ptr, limiter, line));
+}
+
 char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 {
 	char	*line;
@@ -77,6 +56,11 @@ char	*fill_heredoc(t_data *data, int fd_heredoc, char *limiter)
 	old_line = NULL;
 	while (1)
 	{
+		if (data->return_value != 0)
+		{
+			close(fd_heredoc);
+			return (NULL);
+		}
 		line = readline(PROMPT_HERE_DOC);
 		if (g_return_value == 130)
 		{

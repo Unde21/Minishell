@@ -59,7 +59,10 @@ char	*get_key(char *env)
 	while (env[i] && env[i] != '=' && env[i] != '+')
 		i++;
 	if (env[i] == '\0')
-		return (NULL);
+	{
+		key = ft_strdup(env);
+		return (key);
+	}
 	key = malloc(sizeof(char) * (i + 1));
 	if (!key)
 		return (NULL);

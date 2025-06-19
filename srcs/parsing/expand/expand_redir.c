@@ -93,7 +93,8 @@ bool	expand_redir(t_data *data, t_cmd *cmd)
 					data->cmd->redir) == false)
 				return (false);
 		}
-		else if (remove_quote(data, &current_redir->file) == false)
+		else if (current_redir->type != HERE_DOC && remove_quote(data,
+				&current_redir->file) == false)
 			return (false);
 		current_redir = current_redir->next;
 	}
