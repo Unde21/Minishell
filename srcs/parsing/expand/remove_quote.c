@@ -39,9 +39,7 @@ bool	duplicate_params(size_t *i, int quote, char *params, char **dup)
 	*dup = ft_strjoin_and_free(*dup, tmp);
 	free(tmp);
 	if (*dup == NULL)
-	{
 		return (false);
-	}
 	return (true);
 }
 
@@ -71,7 +69,10 @@ bool	remove_quote(t_data *data, char **params)
 
 	dup = ft_strdup("");
 	if (dup == NULL)
+	{
+		data->return_value = 1;
 		return (print_err_false(ERR_MALLOC));
+	}
 	if (remove_quote_loop(*params, &dup) == false)
 	{
 		data->return_value = 1;

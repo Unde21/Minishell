@@ -86,7 +86,7 @@ bool	is_file_name_valid(char *file_name, char *wildcards,
 bool	is_expand_redir(char *file_name);
 bool	handle_token(t_data *data, char *input,
 			t_token_lst *tokens, t_token *current);
-bool	handle_split_expand(t_cmd *cmd);
+bool	handle_split_expand(t_data *data, t_cmd *cmd);
 bool	handle_expansion(t_data *data, t_cmd *cmd);
 bool	get_cmd_args(t_token *current, t_cmd **cmd);
 bool	fill_cmd_special_operator(t_token **current, t_cmd *current_cmd);

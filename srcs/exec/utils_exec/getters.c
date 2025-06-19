@@ -53,18 +53,13 @@ char	*get_key(char *env)
 {
 	char	*key;
 	int		i;
-	char	*env_dup;
 
 	key = NULL;
 	i = 0;
 	while (env[i] && env[i] != '=' && env[i] != '+')
 		i++;
 	if (env[i] == '\0')
-	{
-		env_dup = ft_strdup(env);
-		if (!env_dup)
-			return (print_err_null(ERR_MALLOC));
-	}
+		return (NULL);
 	key = malloc(sizeof(char) * (i + 1));
 	if (!key)
 		return (NULL);

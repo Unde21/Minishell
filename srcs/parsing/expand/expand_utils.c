@@ -83,8 +83,8 @@ static char	*get_env_value(char *var_name, t_env *listed_env, bool is_quote)
 	while (current != NULL)
 	{
 		len_var_name = ft_strlen(var_name);
-		if (len_var_name != 0 && ft_strncmp(current->key,
-				var_name, len_var_name + 1) == 0)
+		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name
+				+ 1) == 0)
 			break ;
 		current = current->next;
 	}
@@ -116,7 +116,8 @@ void	join_with_expand(t_data *data, char **expanded, char *s, size_t *i)
 	{
 		free(var_name);
 		free(env_value);
-		ft_dprintf(STDERR_FILENO, ERR_MALLOC);
+		free(*expanded);
+		*expanded = NULL;
 		return ;
 	}
 	*expanded = ft_strjoin_and_free(*expanded, env_value);
