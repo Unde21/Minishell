@@ -43,7 +43,7 @@ void	execute_builtins(t_data *data, t_cmd *head)
 	else if (ft_strcmp(data->cmd->params[0], "export") == 0)
 		ft_export(data);
 	else if (ft_strcmp(data->cmd->params[0], "unset") == 0)
-		ft_unset(data, &data->listed_env, data->cmd);
+		ft_unset(data, data->cmd);
 }
 
 bool	print_access_error(char *params, t_data *data)

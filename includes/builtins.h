@@ -25,7 +25,7 @@ int		lst_size(t_env *head);
 int		ft_exit(t_data *data, t_cmd *cmd, t_cmd *head);
 int		export_type(t_data *data, char *params, t_env *listed_env);
 bool	is_key_valid(t_data *data, char *params);
-bool	ft_unset(t_data *data, t_env **listed_env, t_cmd *cmd);
+bool	ft_unset(t_data *data, t_cmd *cmd);
 bool	ft_pwd(t_data *data);
 bool	ft_env(t_data *data, t_cmd *cmd);
 bool	ft_echo(t_cmd *cmd);

@@ -7,6 +7,8 @@ SRCS := srcs/main.c \
 		srcs/get_input/handle_signal.c \
 		srcs/get_input/signal_utils.c \
 		srcs/init/init.c \
+		srcs/init/init_minimal_env.c \
+		srcs/init/init_minimal_utils.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/utils_parsing.c \
 		srcs/parsing/handle_tokens/handle_word.c \

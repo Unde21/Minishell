@@ -123,6 +123,9 @@ char	*print_err_null(char *str_error);
 bool	print_err_false(char *str_error);
 bool	init_lst(t_data *data);
 bool	init_data(t_data *data, int ac, char **av, char **env);
+bool	create_first_node(t_data *data, char *pwd);
+bool	fill_next_node_minimal(t_data *data);
 bool	init_cmd_args(t_cmd *cmd);
+bool	minimal_env(t_data *data);
 
 #endif
