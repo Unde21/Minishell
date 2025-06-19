@@ -16,12 +16,11 @@ static void	expand_loop(char *s, char **expanded, t_data *data, size_t *i)
 		join_without_expand(expanded, s[*i], i);
 }
 
-static char	*expand(char *s, char *expanded, t_data *data, int is_heredoc)
+static char	*expand(char *s, char *expanded, t_data *data)
 {
 	size_t	i;
 
 	i = 0;
-	(void)is_heredoc;
 	while (s[i])
 	{
 		expand_loop(s, &expanded, data, &i);
@@ -36,24 +35,21 @@ static char	*expand(char *s, char *expanded, t_data *data, int is_heredoc)
 	return (expanded);
 }
 
-bool	replace_file_name(t_data *data, char **file_name, int is_heredoc,
+bool	replace_file_name(t_data *data, char **file_name, bool is_heredoc,
 		t_redir *redir)
 {
 	char	*expanded;
 
 	expanded = ft_calloc(sizeof(char), 1);
 	if (expanded == NULL)
-	{
-		data->return_value = 1;
 		return (print_err_false(ERR_MALLOC));
-	}
-	*file_name = expand(*file_name, expanded, data, is_heredoc);
+	*file_name = expand(*file_name, expanded, data);
 	if (*file_name == NULL)
 	{
 		data->return_value = 1;
 		return (print_err_false(ERR_MALLOC));
 	}
-	if (data->is_ambiguous == true && is_heredoc != HEREDOC)
+	if (data->is_ambiguous == true && is_heredoc != true)
 	{
 		redir->is_ambiguous = true;
 		data->is_ambiguous = false;
@@ -89,7 +85,7 @@ bool	expand_redir(t_data *data, t_cmd *cmd)
 		if (current_redir->type != HERE_DOC
 			&& is_expand_redir(current_redir->file) == true)
 		{
-			if (replace_file_name(data, &current_redir->file, NO_HERDOC,
+			if (replace_file_name(data, &current_redir->file, false,
 					data->cmd->redir) == false)
 				return (false);
 		}

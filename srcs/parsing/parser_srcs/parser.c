@@ -1,4 +1,5 @@
 #include "parsing.h"
+#include <stdlib.h>
 
 static bool	check_error(t_token *current)
 {
