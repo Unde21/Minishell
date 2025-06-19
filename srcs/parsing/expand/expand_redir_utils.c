@@ -31,8 +31,7 @@ static char	*get_env_value(t_data *data, char *var_name, bool is_quote)
 	while (current != NULL)
 	{
 		len_var_name = ft_strlen(var_name);
-		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name
-				+ 1) == 0)
+		if (len_var_name != 0 && ft_strncmp(current->key, var_name, len_var_name) == 0)
 			break ;
 		current = current->next;
 	}
