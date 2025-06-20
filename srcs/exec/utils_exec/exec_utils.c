@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:30:22 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:30:23 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 10:31:09 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ bool	print_access_error(char *params, t_data *data)
 		ft_dprintf(STDERR_FILENO, "%s%s", params, NO_FILE);
 	}
 	else
+	{
 		data->return_value = 126;
+		ft_dprintf(STDERR_FILENO, "%s%s", params, NO_FILE);
+	}
 	return (false);
 }
 
@@ -84,9 +87,8 @@ static bool	is_directory(char *path, t_data *data)
 		data->return_value = 127;
 		return (false);
 	}
-	if (S_ISDIR(s.st_mode))
+	if (S_ISDIR(s.st_mode) && data->cmd->params[0] != NULL)
 	{
-		ft_dprintf(2, "%s %s", path, ERR_IS_DIR);
 		data->return_value = -42;
 		return (false);
 	}
