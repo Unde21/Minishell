@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:54 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:29:55 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 11:53:05 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	export_no_argument(t_env *listed_env)
 		}
 		if (min)
 		{
-			ft_dprintf(STDOUT_FILENO, "export %s \n", min->full_line);
+			print_export(min);
 			min->printed = 1;
 		}
 	}
@@ -96,8 +96,11 @@ static bool	export_right_type(t_data *data, int i, int type)
 
 static bool	check_key(t_data *data, int i)
 {
+	printf("params=> %s\n", data->cmd->params[i]);
 	if (!is_key_valid(data, data->cmd->params[i]))
 	{
+		if (data->cmd->params[i] != NULL && data->return_value == 0)
+			return (true);
 		return (false);
 	}
 	return (true);
