@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:30:30 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:30:31 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 12:10:12 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,16 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-char	*check_params(int *return_value, char *params)
+char	*check_params(int *return_value, char *params, int *i)
 {
-	int		i;
 	char	*value;
 
-	i = 0;
+	(void)return_value;
 	value = NULL;
 	if (!params)
 		return (NULL);
-	if (!params[i] || params[i + 1] == '\0')
-	{
-		value = ft_strdup("");
-		if (value == NULL)
-			*return_value = 1;
-		return (value);
-	}
+	while (params[*i] && params[*i] != '=')
+		(*i)++;
 	return (value);
 }
 
@@ -41,10 +35,11 @@ char	*get_value(t_data *data, char *params)
 	int		i;
 
 	i = 0;
-	value = check_params(&data->return_value, params);
-	while (params[i] && params[i] != '=')
-		i++;
-	start = i + 1;
+	value = check_params(&data->return_value, params, &i);
+	if (params[i] != '\0')
+		start = i + 1;
+	else
+		start = i;
 	len = 0;
 	while (params[start + len])
 		len++;

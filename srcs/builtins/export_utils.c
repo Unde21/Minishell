@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:51 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 09:58:13 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 11:54:17 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,38 +89,17 @@ int	export_type(t_data *data, char *params, t_env *listed_env)
 	return (1);
 }
 
-static bool	free_key_and_return_false(char *key, char *value)
+bool	free_key_and_return_false(char *key, char *value)
 {
 	free(key);
 	free(value);
 	return (print_err_false(ERR_MALLOC));
 }
 
-bool	append_export(t_data *data, char *key, t_env *listed_env, char *params)
+void	print_export(t_env *min)
 {
-	char	*value;
-
-	value = get_value(data, params);
-	if (value == NULL)
-	{
-		free(key);
-		return (print_err_false(ERR_MALLOC));
-	}
-	while (listed_env)
-	{
-		if (ft_strncmp(key, listed_env->key, ft_strlen(key)) == 0)
-		{
-			listed_env->value = ft_strjoin_and_free(listed_env->value, value);
-			if (listed_env->value == NULL)
-				return (free_key_and_return_false(key, value));
-			listed_env->full_line = ft_strjoin_and_free(listed_env->full_line,
-					value);
-			if (listed_env->full_line == NULL)
-				return (free_key_and_return_false(key, value));
-		}
-		listed_env = listed_env->next;
-	}
-	free(key);
-	free(value);
-	return (true);
+	if (strchr(min->full_line, '=') != NULL)
+		ft_dprintf(STDOUT_FILENO, "export %s=\"%s\" \n", min->key, min->value);
+	else
+		ft_dprintf(STDOUT_FILENO, "export %s\n", min->full_line);
 }

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:45 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:29:46 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 11:42:08 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "exec.h"
 #include <unistd.h>
 
 static bool	print_error_env(t_cmd *cmd)
@@ -54,7 +55,8 @@ bool	ft_env(t_data *data, t_cmd *cmd)
 	}
 	while (current != NULL)
 	{
-		ft_dprintf(STDOUT_FILENO, "%s\n", current->full_line);
+		if (ft_strchr(current->full_line, '=') != NULL)
+			ft_dprintf(STDOUT_FILENO, "%s\n", current->full_line);
 		current = current->next;
 	}
 	return (true);

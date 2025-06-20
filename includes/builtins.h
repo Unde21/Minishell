@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:17 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 09:57:27 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 11:54:28 by erbuffet         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ env: use -[v]S to pass options in shebang lines\n"
 # define PRT_EX "error: export:: "
 
 void	reset(t_env *listed_env);
+void	print_export(t_env *min);
 void	ft_export(t_data *data);
 int		lst_size(t_env *head);
 int		ft_exit(t_data *data, t_cmd *cmd, t_cmd *head);
 int		export_type(t_data *data, char *params, t_env *listed_env);
+bool	free_key_and_return_false(char *key, char *value);
 bool	is_key_valid(t_data *data, char *params);
 bool	ft_unset(t_data *data, t_cmd *cmd);
 bool	ft_pwd(t_data *data);
