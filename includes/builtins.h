@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:17 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:29:18 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 09:57:27 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ env: use -[v]S to pass options in shebang lines\n"
 # define ERR_PWD "pwd: No such file or directory\n"
 # define OLDPWD "OLDPWD"
 # define PWD "PWD"
-# define ERR_EXPORT ": not a valid identifier\n"
+# define ERR_EXP ": not a valid identifier\n"
+# define PRT_EX "error: export:: "
 
 void	reset(t_env *listed_env);
 void	ft_export(t_data *data);

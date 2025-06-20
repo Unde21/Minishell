@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:30:34 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:30:35 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 09:53:52 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static bool	dup_parent_builtins(t_data *data, t_cmd *cmd, t_cmd *head)
 static bool	exec_loop(t_data *data, t_cmd *head_cmd, char *path_cmd,
 		pid_t *last_pid)
 {
+	data->prev_return = data->return_value;
+	data->return_value = 0;
 	if (data->cmd->next != NULL)
 	{
 		set_pipe(data->cmd, data);

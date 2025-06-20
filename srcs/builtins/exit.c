@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:47 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:29:48 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 09:53:22 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ft_exit(t_data *data, t_cmd *cmd, t_cmd *head)
 	if (cmd->nb_args == 1)
 	{
 		close_and_free_all(data, head);
-		exit(data->return_value);
+		exit(data->prev_return);
 	}
 	else
 		s = cmd->params[1];

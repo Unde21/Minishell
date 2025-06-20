@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:27 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:29:28 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 09:52:30 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_data
 	t_cmd			*cmd;
 	size_t			size_cmd;
 	int				return_value;
+	int				prev_return;
 	int				last_type;
 	int				ac;
 	int				save_stdin;

@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:51 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 01:29:52 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 09:58:13 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ bool	is_key_valid(t_data *data, char *params)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	if (!params || !(ft_isalpha(params[0]) || params[0] == '_'))
 	{
 		data->return_value = 1;
-		ft_dprintf(STDERR_FILENO, "error: export: `%s'%s", data->cmd->params[i],
-			ERR_EXPORT);
+		ft_dprintf(2, "%s`%s'%s", PRT_EX, data->cmd->params[i], ERR_EXP);
 		return (false);
 	}
-	while (params[++i])
+	while (params[i])
 	{
 		if (params[i] == '=' || (params[i] == '+' && params[i + 1] == '='))
 			break ;
@@ -51,9 +50,10 @@ bool	is_key_valid(t_data *data, char *params)
 		{
 			data->return_value = 1;
 			ft_dprintf(STDERR_FILENO, "error: export: `%s'%s",
-				data->cmd->params[i], ERR_EXPORT);
+				data->cmd->params[i], ERR_EXP);
 			return (false);
 		}
+		++i;
 	}
 	if (params[i] == '\0')
 		return (false);
