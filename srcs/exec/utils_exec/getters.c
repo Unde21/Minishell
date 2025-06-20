@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:30:30 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 12:10:12 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 12:18:27 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 #include "parsing.h"
 #include <stdlib.h>
 
-char	*check_params(int *return_value, char *params, int *i)
+static char	*check_params(char *params, int *i)
 {
 	char	*value;
 
-	(void)return_value;
 	value = NULL;
 	if (!params)
 		return (NULL);
@@ -35,7 +34,7 @@ char	*get_value(t_data *data, char *params)
 	int		i;
 
 	i = 0;
-	value = check_params(&data->return_value, params, &i);
+	value = check_params(params, &i);
 	if (params[i] != '\0')
 		start = i + 1;
 	else

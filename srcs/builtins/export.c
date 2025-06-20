@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erbuffet <erbuffet@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:29:54 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 11:53:05 by erbuffet         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 12:13:34 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static bool	export_right_type(t_data *data, int i, int type)
 
 static bool	check_key(t_data *data, int i)
 {
-	printf("params=> %s\n", data->cmd->params[i]);
 	if (!is_key_valid(data, data->cmd->params[i]))
 	{
 		if (data->cmd->params[i] != NULL && data->return_value == 0)
