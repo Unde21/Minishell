@@ -6,7 +6,7 @@
 /*   By: samaouch <samaouch@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 01:30:34 by samaouch          #+#    #+#             */
-/*   Updated: 2025/06/20 09:53:52 by samaouch         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 10:39:14 by samaouch         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static void	get_absolute_path(t_data *data, char **path_cmd, int *return_value)
 {
 	if (data->cmd->params[0] && g_return_value == 0)
 	{
+		ft_printf("3\n");
 		if (data->env[0] == NULL || ft_strchr(data->cmd->params[0],
 				'/') != NULL)
 		{
@@ -52,6 +53,11 @@ static void	get_absolute_path(t_data *data, char **path_cmd, int *return_value)
 			*path_cmd = get_path_cmd(data, data->cmd->params);
 		if (*path_cmd == NULL)
 			print_access_error(data->cmd->params[0], data);
+	}
+	if (data->cmd->params[0] == NULL && data->cmd->redir == NULL)
+	{
+		data->return_value = 127;
+		ft_dprintf(STDERR_FILENO, "'' %s", CMD_NOT_FOUND);
 	}
 }
 
